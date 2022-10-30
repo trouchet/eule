@@ -3,7 +3,7 @@
 """Tests for `eule` package."""
 
 import pytest
-from eule.utils import keyfy, reduce, unique
+from eule.utils import keyfy, reduce_, unique
 
 # define the tests
 def test_keyfy():

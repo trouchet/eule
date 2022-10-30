@@ -1,13 +1,12 @@
 """Main module."""
-
-from eule.utils import keyfy, reduce, unique
 from warnings import warn
+
+from eule.utils import keyfy, reduce_, unique
 
 def euler(sets):
     '''
         @abstract returns each tuple [key, elems] of the Euler diagram
         systematic in a generator-wise fashion
-        
         Rationale: 
            1. Begin with the available sets and their exclusive elements;
            2. Compute complementary elements to current key-set;

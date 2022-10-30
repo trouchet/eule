@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 
 """Tests for `eule` package."""
-import pytest
-import warnings
-
-from eule.eule import euler, spread_euler
+from eule import euler, spread_euler
 
 def test_euler_iter_1_input():
     assert next(euler({'a': [1,2]})) == ('a', [1,2])
