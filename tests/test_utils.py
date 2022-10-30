@@ -1,9 +1,9 @@
-.#!/usr/bin/env python
+#!/usr/bin/env python
 
 """Tests for `eule` package."""
 
 import pytest
-from utils import keyfy, reduce, unique
+from eule.utils import keyfy, reduce, unique
 
 # define the tests
 def test_keyfy():
