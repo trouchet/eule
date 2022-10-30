@@ -1,6 +1,7 @@
 """Main module."""
 
 from eule.utils import keyfy, reduce, unique
+from warnings import warn
 
 def euler(sets):
     '''
@@ -30,7 +31,7 @@ def euler(sets):
                    for values in sets.values()
               ], True):
             
-        warnings.warn("Each array MUST NOT have duplicates")
+        warn("Each array MUST NOT have duplicates")
         sets = {key: unique(values) for key, values in sets.items()}
     
     # Only a set
