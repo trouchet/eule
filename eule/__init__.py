@@ -7,4 +7,4 @@ __email__ = 'brunolnetto@gmail.com'
 __version__ = '0.1.0'
 
 
-__all__ = ['spread_euler', 'euler']
+__all__ = ['spread_euler', 'euler', 'keyfy', 'keyfy', 'reduce_', 'unique']
