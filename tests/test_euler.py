@@ -39,6 +39,16 @@ def test_euler_iter_warning_2items():
         next(euler({'a': [42, 42], 'b': [42, 42]}))
 
 
+def test_spread_euler_ill_input_str():
+    with pytest.raises(TypeError, match='Ill-conditioned input.'):
+        spread_euler('')
+
+
+def test_spread_euler_ill_input_num():
+    with pytest.raises(TypeError, match='Ill-conditioned input.'):
+        spread_euler(1)
+
+
 def test_spread_euler_1_set():
     assert spread_euler(
         {
@@ -46,6 +56,14 @@ def test_spread_euler_1_set():
         }
     ) == {'a': [1, 2, 3]}
 
+
+def test_spread_euler_2_sets_with_non_exclusivity():
+    assert spread_euler(
+        {
+            'a': [1],
+            'b': [1, 2]
+        }
+    ) == {'b': [2], 'a,b': [1]}
 
 def test_spread_euler_2_sets():
     assert spread_euler(

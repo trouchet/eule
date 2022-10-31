@@ -24,6 +24,10 @@ def euler(sets):
         @param {Array} sets
         @return {Array} keys_elems
     '''
+    # There are no sets
+    if not isinstance(sets, (list, dict)):
+        raise TypeError("Ill-conditioned input.")
+    
     is_unique_set_arr = [len(unique(values)) == len(values) for values in sets.values()]
     if not reduce_(lambda a, b: a and b, is_unique_set_arr, True):
         warn("Each array MUST NOT have duplicates")
@@ -36,10 +40,6 @@ def euler(sets):
         yield (key, value)
 
     else:
-        # There are no sets
-        if not isinstance(sets, (list, dict)):
-            raise Exception("Ill-conditioned input.")
-
         # Remove empty sets
 
         # Keys complementary to current available key-set
