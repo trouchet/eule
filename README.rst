@@ -15,7 +15,7 @@
         :target: https://travis-ci.com/brunolnetto/eule
 
 .. image:: https://codecov.io/gh/quivero/eule/branch/main/graph/badge.svg?token=PJMBaLIqar
-:target: https://codecov.io/gh/quivero/eule
+        :target: https://codecov.io/gh/quivero/eule
 
 .. image:: https://readthedocs.org/projects/eule/badge/?version=latest
         :target: https://eule.readthedocs.io/en/latest/?version=latest
