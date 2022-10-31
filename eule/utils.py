@@ -1,13 +1,41 @@
-import numpy as np
 import functools
+import numpy as np
 
-# Function to turn array to key with comma-delimiter
 def keyfy(lst):
-	return str(lst).strip('[]').replace(' ', '')
+    """
+        @abstract returns array entries in string fashion delimited by commas
+        
+        @param {Array} arr
+        @return {string} str
+    """
+    return str(lst).strip('[]').replace(' ', '')
 
-# reduce function handler
-def reduce(func, elems, elem0): 
-	return functools.reduce(func, elems+[elem0])
+def reduce_(func, elems, elem0): 
+    """
+        @abstract returns reduce function handler
+        
+        @param {function} func
+        @param {object} elems
+        @param {object} elem0
+        @return {string} str
+    """
+    return functools.reduce(func, elems+[elem0])
 
-# List with unique elements
-unique = lambda lst: list(np.unique(lst))
+def unique(lst): 
+    """
+        @abstract returns list with unique elements
+        
+        @param {array} arr
+        @return {array} sorted_arr
+    """
+    return list(np.unique(lst))
+
+
+def delimited_sort(str_, delimiter):
+    """
+        @abstract returns a sorted string delimited by token
+        
+        @param {array} arr
+        @return {array} sorted_arr
+    """
+    return delimiter.join(sorted(str_.split(delimiter)))
