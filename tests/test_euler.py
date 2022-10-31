@@ -65,6 +65,7 @@ def test_spread_euler_2_sets_with_non_exclusivity():
         }
     ) == {'b': [2], 'a,b': [1]}
 
+
 def test_spread_euler_2_sets():
     assert spread_euler(
         {

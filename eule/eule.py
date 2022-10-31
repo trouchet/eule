@@ -27,7 +27,7 @@ def euler(sets):
     # There are no sets
     if not isinstance(sets, (list, dict)):
         raise TypeError("Ill-conditioned input.")
-    
+
     is_unique_set_arr = [len(unique(values)) == len(values) for values in sets.values()]
     if not reduce_(lambda a, b: a and b, is_unique_set_arr, True):
         warn("Each array MUST NOT have duplicates")
