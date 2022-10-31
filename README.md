@@ -1,4 +1,4 @@
-![a night owl](/images/eule_small.png)
+![a night owl](https://raw.githubusercontent.com/quivero/eule/main/images/eule_small.png)
 
 [![image](https://img.shields.io/pypi/v/eule.svg)](https://pypi.python.org/pypi/eule)
 [![image](https://codecov.io/gh/quivero/eule/branch/main/graph/badge.svg?token=PJMBaLIqar)](https://codecov.io/gh/quivero/eule)
