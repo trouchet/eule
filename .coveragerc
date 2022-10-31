@@ -2,7 +2,7 @@
     branch = True
     data_file = .coverage
     source =
-        statemachine
+        eule
     omit =
         *test*.py
         tmp/*
