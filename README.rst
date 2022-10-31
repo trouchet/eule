@@ -1,12 +1,7 @@
-.. image:: /images/eule_small.png
+.. image:: /images/eule_medium.png
    :alt: a night owl
    :class: with-shadow
    :height: 4ex
-
-
-====
-|Eule| Eule
-====
 
 .. image:: https://img.shields.io/pypi/v/eule.svg
         :target: https://pypi.python.org/pypi/eule
