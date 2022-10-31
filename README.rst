@@ -1,4 +1,4 @@
-.. image:: /images/eule_medium.png
+.. image:: /images/eule_big.png
    :alt: a night owl
    :class: with-shadow
    :height: 4ex
