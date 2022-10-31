@@ -33,6 +33,12 @@ jobs:
         verbose: true
   safety:
     runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    env:
+      OS: ${{ matrix.os }}
+      PYTHON: '3.7'
     steps:
       - uses: pyupio/safety@2.2.1
         with:
