@@ -1,11 +1,9 @@
-flake8==3.7.8
 tox==3.14.0
 sphinxcontrib-serializinghtml==1.1.5    
 sphinxcontrib-websupport==1.2.4  
-pytest==6.2.4    
 pytest-cov==4.0.0    
 pytest-testmon==1.4.1 
-pip==19.2.3
+pip==21.1
 bump2version==0.5.11
 wheel==0.33.6
 watchdog==0.9.0
