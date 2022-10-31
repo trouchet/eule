@@ -1,5 +1,5 @@
 
-name: Example workflow for Codecov
+name: Codecov workflow 
 on: [push, pull_request]
 jobs:
   run:
@@ -31,4 +31,9 @@ jobs:
         name: codecov-umbrella
         path_to_write_report: ./coverage/codecov_report.txt
         verbose: true
-
+  safety:
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: pyupio/safety@2.2.1
+        with:
+          api-key: ${{secrets.SAFETY_API_KEY}}
