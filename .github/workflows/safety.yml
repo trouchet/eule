@@ -1,0 +1,17 @@
+# This workflow will run PyUp security scans on all dependencies that are installed into the environment.
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+# Saved to `.github/workflows/safety.yml`
+
+name: PyUp Security Scan
+
+on:
+  push: # Run on every push to any branch
+  pull_request: # Run on new pull requests
+
+jobs:
+  safety:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: pyupio/safety@2.2.1
+        with:
+          api-key: ${{secrets.SAFETY_API_KEY}}
