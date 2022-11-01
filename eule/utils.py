@@ -1,7 +1,9 @@
+"""
+    Submodule `utils`
+"""
+
 import functools
 import numpy as np
-
-"""Submodule `utils`"""
 
 def keyfy(lst):
     """
