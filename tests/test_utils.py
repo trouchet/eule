@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 """Tests for `utils` package."""
 
 from eule.utils import keyfy, reduce_, unique, delimited_sort, non_empty_sets_keys

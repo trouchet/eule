@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 """Tests for `eule` package."""
 
 import pytest
