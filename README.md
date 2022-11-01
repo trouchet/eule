@@ -1,6 +1,7 @@
 ![a night owl](https://raw.githubusercontent.com/quivero/eule/main/images/eule_small.png)
 
-[![image](https://img.shields.io/pypi/v/eule.svg)](https://pypi.python.org/pypi/eule)
+[![Version](https://img.shields.io/pypi/v/eule.svg)](https://pypi.python.org/pypi/eule)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/quivero/eule/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/quivero/eule/?branch=main)
 [![python](https://img.shields.io/pypi/pyversions/eule.svg)](https://pypi.org/project/eule/)
 [![codecov](https://codecov.io/gh/quivero/eule/branch/main/graph/badge.svg?token=PJMBaLIqar)](https://codecov.io/gh/quivero/eule)
 [![Documentation Status](https://readthedocs.org/projects/eule/badge/?version=latest)](https://eule.readthedocs.io/en/latest/?version=latest)
