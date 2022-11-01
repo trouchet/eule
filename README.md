@@ -7,7 +7,14 @@
 [![downloads](https://img.shields.io/pypi/dd/eule)]()
 [![Documentation Status](https://readthedocs.org/projects/eule/badge/?version=latest)](https://eule.readthedocs.io/en/latest/?version=latest)
 
-Euler\'s diagrams are non-empty Venn\'s diagrams. For further information, read the documentation: <https://eule.readthedocs.io>.
+Euler\'s diagrams are non-empty Venn\'s diagrams. For further information about:
+
+1. the library: read the documentation on URL <https://eule.readthedocs.io>;
+2. Euler diagrams: read the wikipedia article <https://en.wikipedia.org/wiki/Euler_diagram>
+
+Have fun!
+
+<img src="https://github.com/quivero/eule/blob/main/images/euler_venn.png?raw=true" width="400" height="364"/>
 
 How to install
 ========
