@@ -40,7 +40,7 @@ setup(
     packages=find_packages(include=['eule', 'eule.*']),
     test_suite='tests',
     tests_require=test_requirements,
-    url='https://github.com/brunolnetto/eule',
+    url='https://github.com/quivero/eule',
     version='0.1.5',
     zip_safe=False,
 )
