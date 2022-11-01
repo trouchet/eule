@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+""" Package Eule  """
+
 from __future__ import unicode_literals, absolute_import
 from .eule import euler, spread_euler
 
