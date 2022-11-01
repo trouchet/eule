@@ -1,9 +1,9 @@
 ![a night owl](https://raw.githubusercontent.com/quivero/eule/main/images/eule_small.png)
 
 [![image](https://img.shields.io/pypi/v/eule.svg)](https://pypi.python.org/pypi/eule)
-[![image](https://codecov.io/gh/quivero/eule/branch/main/graph/badge.svg?token=PJMBaLIqar)](https://codecov.io/gh/quivero/eule)
+[![python](https://img.shields.io/pypi/pyversions/eule.svg)](https://pypi.org/project/eule/)
+[![codecov](https://codecov.io/gh/quivero/eule/branch/main/graph/badge.svg?token=PJMBaLIqar)](https://codecov.io/gh/quivero/eule)
 [![Documentation Status](https://readthedocs.org/projects/eule/badge/?version=latest)](https://eule.readthedocs.io/en/latest/?version=latest)
-[![Updates](https://pyup.io/repos/github/brunolnetto/eule/shield.svg)](https://pyup.io/repos/github/brunolnetto/eule/)
 
 Euler\'s diagrams are non-empty Venn\'s diagrams. For further information, read the documentation: <https://eule.readthedocs.io>.
 
