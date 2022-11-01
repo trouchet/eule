@@ -29,14 +29,14 @@ def test_unique_elems():
 
 def test_delimited_sort():
     '''
-    tests sorting delimited by token 
+    tests sorting delimited by token
     '''
     assert delimited_sort('4,1,2,3', ',') == '1,2,3,4'
 
 
 def test_non_empty_sets_keys():
     '''
-    tests dict clean with empty values 
+    tests dict clean with empty values
     '''
     assert non_empty_sets_keys({
         'a': [1, 2, 3],
