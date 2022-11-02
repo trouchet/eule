@@ -21,14 +21,8 @@ jobs:
         python-version: ${{ matrix.python }}
     - name: Generate coverage report
       run: |
-          if [ ${{ matrix.os }} == 'windows-latest' ]; then
-            c:\hostedtoolcache\windows\python\3.7.9\x64\python.exe -m pip install -r requirements_dev.txt  
-            c:\hostedtoolcache\windows\python\3.7.9\x64\python.exe -m pytest --cov=./ --cov-report=xml
-          else
-            pip install -r requirements_dev.txt  
-            pytest --cov=./ --cov-report=xml
-          fi
-      if: ${{ matrix.os == 'windows-latest' }}
+            python -m pip install -r requirements_dev.txt  
+            python -m pytest --cov=./ --cov-report=xml
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
