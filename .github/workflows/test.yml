@@ -2,7 +2,7 @@
 name: Codecov workflow 
 on: [push, pull_request]
 jobs:
-  run:
+  codecov:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -25,6 +25,7 @@ jobs:
       with:
         directory: ./coverage/reports/
         env_vars: OS,PYTHON
+        token: ${{ secrets.CODECOV_TOKEN }}
         fail_ci_if_error: true
         files: ./coverage.xml
         flags: unittests
