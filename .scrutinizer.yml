@@ -8,8 +8,7 @@ build:
     coverage:
       tests:
         override:
-           - py-scrutinizer-run
-           - command: ./scripts/run-tests.sh
+           - command: './run-tests.sh'
             coverage:
               file: '.coverage'
               config_file: '.coveragerc'
