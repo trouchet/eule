@@ -21,7 +21,7 @@ jobs:
         python-version: ${{ matrix.python }}
     - name: Generate coverage report
       run: |
-        if ["${{ matrix.os }}" = "windows-latest"]; then
+        if ("${{ matrix.os }}" = "windows-latest"); then
           c:\hostedtoolcache\windows\python\3.7.9\x64\python.exe -m pip install -r requirements_dev.txt  
           c:\hostedtoolcache\windows\python\3.7.9\x64\python.exe -m pytest --cov=./ --cov-report=xml  
         else
