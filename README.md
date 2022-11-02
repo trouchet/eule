@@ -4,7 +4,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/quivero/eule/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/quivero/eule/?branch=main)
 [![python](https://img.shields.io/pypi/pyversions/eule.svg)](https://pypi.org/project/eule/)
 [![codecov](https://codecov.io/gh/quivero/eule/branch/main/graph/badge.svg?token=PJMBaLIqar)](https://codecov.io/gh/quivero/eule)
-[![downloads](https://img.shields.io/pypi/dd/eule)]()
+[![downloads](https://img.shields.io/pypi/dw/eule)]()
 [![Documentation Status](https://readthedocs.org/projects/eule/badge/?version=latest)](https://eule.readthedocs.io/en/latest/?version=latest)
 
 Euler\'s diagrams are non-empty Venn\'s diagrams. For further information about:
