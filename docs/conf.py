@@ -109,7 +109,6 @@ html_last_updated_fmt = TODAY.isoformat()
 
 html_logo = "eule_small.png"
 
-
 # -- Options for HTMLHelp output ---------------------------------------
 
 # Output file base name for HTML help builder.
