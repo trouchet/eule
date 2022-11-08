@@ -40,7 +40,7 @@ jobs:
     - name: Generate coverage report
       run: "python -m pytest --cov=./ --cov-report=xml"
     - name: Run tox
-      run: "python -m tox"
+      run: "python -m tox -vv"
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
