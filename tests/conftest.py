@@ -1,1 +1,1 @@
-pytest_plugins = "tox._pytestplugin"
+pytest_plugins = 'tox._pytestplugin'

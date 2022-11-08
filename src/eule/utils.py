@@ -56,6 +56,6 @@ def non_empty_sets_keys(sets):
     return list(
         filter(
             lambda key: len(sets[key]) != 0,
-            sets.keys()
-        )
+            sets.keys(),
+        ),
     )
