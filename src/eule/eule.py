@@ -1,10 +1,9 @@
 """Main module."""
-from __future__ import annotations
+from __future__ import unicode_literals, absolute_import
 
 from warnings import warn
 
-from .utils import delimited_sort, non_empty_sets_keys, reduce_, unique
-
+from .utils import reduce_, unique, delimited_sort, non_empty_sets_keys
 
 def euler(sets):
     '''
@@ -20,8 +19,7 @@ def euler(sets):
            5. Compute exclusive combination elements;
            6. In case there are exclusive elements to combination:
            6.a Yield exclusive combination elements;
-           6.b Remove exclusive combination elements from current
-           key-set;
+           6.b Remove exclusive combination elements from current key-set;
 
         @param {Array} sets
         @return {Array} keys_elems
@@ -63,7 +61,7 @@ def euler(sets):
                     cset_key: sets[cset_key]
                     for cset_key in compl_sets_keys
                 }
-
+                
                 for comb_str, celements in euler(csets):
                     # Exclusive combination elements
                     comb_excl = list(set(celements)-set(sets[set_key]))
