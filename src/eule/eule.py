@@ -1,5 +1,4 @@
 """Main module."""
-from __future__ import unicode_literals, absolute_import
 
 from warnings import warn
 
@@ -61,7 +60,7 @@ def euler(sets):
                     cset_key: sets[cset_key]
                     for cset_key in compl_sets_keys
                 }
-                
+
                 for comb_str, celements in euler(csets):
                     # Exclusive combination elements
                     comb_excl = list(set(celements)-set(sets[set_key]))
