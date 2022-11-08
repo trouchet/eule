@@ -31,8 +31,6 @@ jobs:
             python -m pip install -r requirements_dev.txt
     - name: Generate coverage report
       run: "python -m pytest --cov=./ --cov-report=xml"
-    - name: Run tox
-      run: "python -m tox"
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
