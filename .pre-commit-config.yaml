@@ -27,7 +27,6 @@ repos:
     -   id: fix-byte-order-marker
     -   id: forbid-new-submodules
     -   id: mixed-line-ending
-    -   id: name-tests-test
     -   id: requirements-txt-fixer
     -   id: sort-simple-yaml
     -   id: trailing-whitespace

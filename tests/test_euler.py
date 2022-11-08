@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-"""Tests for `eule` package."""
-
 import pytest
 
 from eule import euler, spread_euler
