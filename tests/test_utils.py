@@ -1,8 +1,5 @@
-"""Tests for `utils` package."""
-
-from eule.utils import (delimited_sort, keyfy, non_empty_sets_keys, reduce_,
+from src.eule.utils import (delimited_sort, keyfy, non_empty_sets_keys, reduce_,
                         unique)
-
 
 # define the tests
 def test_keyfy():
