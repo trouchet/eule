@@ -2,6 +2,7 @@
 import functools
 import numpy as np
 
+
 def keyfy(lst):
     """
         @abstract returns array entries in string fashion delimited by commas
