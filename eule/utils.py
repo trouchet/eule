@@ -1,5 +1,4 @@
-""" Submodule utils """
-
+"""utils module."""
 import functools
 import numpy as np
 
