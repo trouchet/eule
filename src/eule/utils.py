@@ -1,6 +1,10 @@
 """utils module."""
+from __future__ import annotations
+
 import functools
+
 import numpy as np
+
 
 def keyfy(lst):
     """
@@ -55,6 +59,6 @@ def non_empty_sets_keys(sets):
     return list(
         filter(
             lambda key: len(sets[key]) != 0,
-            sets.keys()
-        )
+            sets.keys(),
+        ),
     )
