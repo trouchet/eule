@@ -24,23 +24,23 @@ def euler(sets):
         @param {Array} sets
         @return {Array} keys_elems
     '''
-    sets = deepcopy(sets);
+    sets_ = deepcopy(sets);
 
     # There are no sets
-    if not isinstance(sets, (list, dict)):
+    if not isinstance(sets_, (list, dict)):
         raise TypeError('Ill-conditioned input.')
 
     is_unique_set_arr = [
-        len(unique(values)) == len(values) for values in sets.values()
+        len(unique(values)) == len(values) for values in sets_.values()
     ]
     if not reduce_(lambda a, b: a and b, is_unique_set_arr, True):
         warn('Each array MUST NOT have duplicates')
         sets = {key: unique(values) for key, values in sets.items()}
 
     # Only a set
-    if len(sets.values()) == 1:
-        key = list(sets.keys())[0]
-        value = list(sets.values())[0]
+    if len(sets_.values()) == 1:
+        key = list(sets_.keys())[0]
+        value = list(sets_.values())[0]
         yield (key, value)
 
     else:
@@ -50,7 +50,7 @@ def euler(sets):
         compl_sets_keys = []
 
         # Sets with non-empty elements
-        set_keys = non_empty_sets_keys(sets)
+        set_keys = non_empty_sets_keys(sets_)
 
         # Traverse the combination lattice
         for set_key in set_keys:
@@ -60,13 +60,13 @@ def euler(sets):
             # Morgan Rule: ¬(A & B) = ¬A | ¬B
             if (len(compl_sets_keys) != 0 and len(sets[set_key]) != 0):
                 csets = {
-                    cset_key: sets[cset_key]
+                    cset_key: sets_[cset_key]
                     for cset_key in compl_sets_keys
                 }
 
                 for comb_str, celements in euler(csets):
                     # Exclusive combination elements
-                    comb_excl = list(set(celements)-set(sets[set_key]))
+                    comb_excl = list(set(celements)-set(sets_[set_key]))
 
                     # Non-empty combination exclusivity case
                     if len(comb_excl) != 0:
@@ -75,15 +75,15 @@ def euler(sets):
                         yield (delimited_sort(comb_str, ','), comb_excl)
 
                         for ckey in comb_str.split(','):
-                            sets[ckey] = list(
-                                set(sets[ckey])-set(comb_excl),
+                            sets_[ckey] = list(
+                                set(sets_[ckey])-set(comb_excl),
                             )
 
                     comb_intersec = list(
                         set(celements).intersection(set(sets[set_key])),
                     )
-                    sets[set_key] = list(
-                        set(sets[set_key]) - set(comb_intersec),
+                    sets_[set_key] = list(
+                        set(sets_[set_key]) - set(comb_intersec),
                     )
 
                     if len(comb_intersec) != 0:
@@ -98,19 +98,19 @@ def euler(sets):
                         # Remove intersection elements from current key-set and
                         #     complementary sets
                         for ckey in comb_str.split(','):
-                            sets[ckey] = list(
-                                set(sets[ckey])-set(comb_intersec),
+                            sets_[ckey] = list(
+                                set(sets_[ckey])-set(comb_intersec),
                             )
 
-                        sets[set_key] = list(
-                            set(sets[set_key])-set(comb_intersec),
+                        sets_[set_key] = list(
+                            set(sets_[set_key])-set(comb_intersec),
                         )
 
-                set_keys = non_empty_sets_keys(sets)
+                set_keys = non_empty_sets_keys(sets_)
 
                 # 3. Set-key exclusive elements
-                if len(sets[set_key]) != 0:
-                    yield (str(set_key), sets[set_key])
+                if len(sets_[set_key]) != 0:
+                    yield (str(set_key), sets_[set_key])
 
 
 def spread_euler(sets):
