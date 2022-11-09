@@ -1,6 +1,7 @@
 """Main module."""
 
 from warnings import warn
+from copy import deepcopy
 
 from .utils import reduce_, unique, delimited_sort, non_empty_sets_keys
 
@@ -23,6 +24,8 @@ def euler(sets):
         @param {Array} sets
         @return {Array} keys_elems
     '''
+    sets = deepcopy(sets);
+
     # There are no sets
     if not isinstance(sets, (list, dict)):
         raise TypeError('Ill-conditioned input.')
