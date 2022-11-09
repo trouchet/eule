@@ -5,6 +5,8 @@ from copy import deepcopy
 
 from .utils import reduce_, unique, delimited_sort, non_empty_sets_keys
 
+delimiter=','
+
 def euler(sets):
     '''
         @abstract returns each tuple [key, elems] of the Euler diagram
@@ -30,6 +32,10 @@ def euler(sets):
     if not isinstance(sets_, (list, dict)):
         raise TypeError('Ill-conditioned input.')
 
+    print('--------------------')
+    print('Init '+str(sets_.keys()))
+    print('--------------------')
+
     is_unique_set_arr = [
         len(unique(values)) == len(values) for values in sets_.values()
     ]
@@ -44,60 +50,72 @@ def euler(sets):
         yield (key, value)
 
     else:
-        # Remove empty sets
-
-        # Keys complementary to current available key-set
-        compl_sets_keys = []
-
         # Sets with non-empty elements
         set_keys = non_empty_sets_keys(sets_)
 
         # Traverse the combination lattice
         for set_key in set_keys:
+            print('Continue: '+str(list(sets.keys()))+', set key: '+str(set_key))
+
             compl_sets_keys = list(set(set_keys) - {set_key})
 
             # There are still sets to analyze
             # Morgan Rule: ¬(A & B) = ¬A | ¬B
             if (len(compl_sets_keys) != 0 and len(sets[set_key]) != 0):
+                # Complementary sets
                 csets = {
-                    cset_key: sets_[cset_key]
-                    for cset_key in compl_sets_keys
+                    cset_key: sets_[cset_key] for cset_key in compl_sets_keys
                 }
 
+                # Exclusive combination elements
                 for comb_str, celements in euler(csets):
-                    # Exclusive combination elements
+
+                    # Remove current set_key elements
                     comb_excl = list(set(celements)-set(sets_[set_key]))
 
                     # Non-empty combination exclusivity case
                     if len(comb_excl) != 0:
                         # 1. Exclusive group elements except current
                         # analysis set
-                        yield (delimited_sort(comb_str, ','), comb_excl)
+                        print('Yield: '+str(
+                                (delimited_sort(comb_str, delimiter), comb_excl)
+                            ))
+                        yield (delimited_sort(comb_str, delimiter), comb_excl)
 
-                        for ckey in comb_str.split(','):
+                        # Remove comb_excl elements from its original sets
+                        for ckey in comb_str.split(delimiter):
                             sets_[ckey] = list(
                                 set(sets_[ckey])-set(comb_excl),
                             )
 
+                    #
                     comb_intersec = list(
                         set(celements).intersection(set(sets[set_key])),
                     )
+
                     sets_[set_key] = list(
                         set(sets_[set_key]) - set(comb_intersec),
                     )
 
+                    #
                     if len(comb_intersec) != 0:
                         # 2. Intersection of analysis element and
                         # exclusive group
-                        comb_intersec_key = set_key+','+comb_str
+                        comb_intersec_key = set_key+delimiter+comb_str
+
+                        print('Yield: '+str(
+                                (delimited_sort(comb_intersec_key, delimiter),
+                                comb_intersec)
+                            ))
+
                         yield (
-                            delimited_sort(comb_intersec_key, ','),
+                            delimited_sort(comb_intersec_key, delimiter),
                             comb_intersec,
                         )
 
-                        # Remove intersection elements from current key-set and
-                        #     complementary sets
-                        for ckey in comb_str.split(','):
+                        # Remove intersection elements from
+                        # current key-set and complementary sets
+                        for ckey in comb_str.split(delimiter):
                             sets_[ckey] = list(
                                 set(sets_[ckey])-set(comb_intersec),
                             )
@@ -110,7 +128,13 @@ def euler(sets):
 
                 # 3. Set-key exclusive elements
                 if len(sets_[set_key]) != 0:
+                    print('Yield: '+str(
+                            (str(set_key), sets_[set_key])
+                        )
+                    )
                     yield (str(set_key), sets_[set_key])
+
+            print(sets_)
 
 
 def spread_euler(sets):
