@@ -21,7 +21,7 @@ setup(
     python_requires='>=2.7',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
-        'Intended Audience :: Scientists',
+        'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Programming Language :: Python :: 2.7',
