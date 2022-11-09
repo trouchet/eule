@@ -32,10 +32,6 @@ def euler(sets):
     if not isinstance(sets_, (list, dict)):
         raise TypeError('Ill-conditioned input.')
 
-    print('--------------------')
-    print('Init '+str(sets_.keys()))
-    print('--------------------')
-
     is_unique_set_arr = [
         len(unique(values)) == len(values) for values in sets_.values()
     ]
@@ -55,8 +51,6 @@ def euler(sets):
 
         # Traverse the combination lattice
         for set_key in set_keys:
-            print('Continue: '+str(list(sets.keys()))+', set key: '+str(set_key))
-
             compl_sets_keys = list(set(set_keys) - {set_key})
 
             # There are still sets to analyze
@@ -77,9 +71,6 @@ def euler(sets):
                     if len(comb_excl) != 0:
                         # 1. Exclusive group elements except current
                         # analysis set
-                        print('Yield: '+str(
-                                (delimited_sort(comb_str, delimiter), comb_excl)
-                            ))
                         yield (delimited_sort(comb_str, delimiter), comb_excl)
 
                         # Remove comb_excl elements from its original sets
@@ -103,11 +94,6 @@ def euler(sets):
                         # exclusive group
                         comb_intersec_key = set_key+delimiter+comb_str
 
-                        print('Yield: '+str(
-                                (delimited_sort(comb_intersec_key, delimiter),
-                                comb_intersec)
-                            ))
-
                         yield (
                             delimited_sort(comb_intersec_key, delimiter),
                             comb_intersec,
@@ -128,13 +114,10 @@ def euler(sets):
 
                 # 3. Set-key exclusive elements
                 if len(sets_[set_key]) != 0:
-                    print('Yield: '+str(
-                            (str(set_key), sets_[set_key])
-                        )
-                    )
                     yield (str(set_key), sets_[set_key])
 
-            print(sets_)
+                    sets_[set_key] = []
+
 
 
 def spread_euler(sets):
