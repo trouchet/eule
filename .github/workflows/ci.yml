@@ -15,7 +15,7 @@ jobs:
     - name: "Install and run pre-commit via tox"
       run: |
         python -m pip install --upgrade tox tox-gh-actions
-        python -m tox
+        python -m tox -vv
   codecov:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -28,9 +28,9 @@ jobs:
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2
     - name: Setup Python
-      uses: actions/setup-python@master
+      uses: actions/checkout@v2
       with:
         python-version: ${{ matrix.python }}
     - name: Install dependencies
