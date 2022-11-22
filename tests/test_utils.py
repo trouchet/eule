@@ -1,4 +1,4 @@
-from eule.utils import (delimited_sort, keyfy, non_empty_sets_keys,
+from src.utils import (delimited_sort, keyfy, non_empty_sets_keys,
                         reduce_, unique)
 
 
