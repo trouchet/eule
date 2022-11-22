@@ -10,7 +10,7 @@ babel==2.11.0
     # via sphinx
 certifi==2022.9.24
     # via requests
-charset-normalizer==2.1.1
+charset-normalizer==3.0.1
     # via requests
 docutils==0.17.1
     # via
