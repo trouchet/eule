@@ -1,5 +1,5 @@
 bump2version==0.5.11
-coverage==6.1.1
+coverage==5.6b1
 flake8==3.7.8
 jinja2==3.0.3
 numpy==1.19.5
