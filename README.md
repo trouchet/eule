@@ -2,10 +2,12 @@
 
 [![Version](https://img.shields.io/pypi/v/eule.svg)](https://pypi.python.org/pypi/eule)
 [![python](https://img.shields.io/pypi/pyversions/eule.svg)](https://pypi.org/project/eule/)
+[![Documentation Status](https://readthedocs.org/projects/eule/badge/?version=latest)](https://eule.readthedocs.io/en/latest/?version=latest)
+
 [![codecov](https://codecov.io/gh/quivero/eule/branch/main/graph/badge.svg?token=PJMBaLIqar)](https://codecov.io/gh/quivero/eule)
 [![Codecov workflow](https://github.com/quivero/eule/actions/workflows/ci.yml/badge.svg)](https://github.com/quivero/eule/actions/workflows/ci.yml)
 [![downloads](https://img.shields.io/pypi/dm/eule)](https://pypi.org/project/eule/)
-[![Documentation Status](https://readthedocs.org/projects/eule/badge/?version=latest)](https://eule.readthedocs.io/en/latest/?version=latest)
+
 
 Euler\'s diagrams are non-empty Venn\'s diagrams. For further information about:
 
