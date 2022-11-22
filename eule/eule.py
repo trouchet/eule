@@ -3,7 +3,7 @@
 from warnings import warn
 from copy import deepcopy
 
-from .utils import reduce_, unique, delimited_sort, non_empty_sets_keys
+from utils import reduce_, unique, delimited_sort, non_empty_sets_keys
 
 delimiter=','
 
