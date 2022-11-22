@@ -8,5 +8,5 @@ __version__ = '0.1.8'
 
 
 __all__ = [
-	'spread_euler', 'euler'
+    'spread_euler', 'euler'
 ]

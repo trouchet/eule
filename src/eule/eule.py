@@ -5,7 +5,8 @@ from copy import deepcopy
 
 from utils import reduce_, unique, delimited_sort, non_empty_sets_keys
 
-delimiter=','
+delimiter = ','
+
 
 def euler(sets):
     '''
@@ -26,7 +27,7 @@ def euler(sets):
         @param {Array} sets
         @return {Array} keys_elems
     '''
-    sets_ = deepcopy(sets);
+    sets_ = deepcopy(sets)
 
     # There are no sets
     if not isinstance(sets_, (list, dict)):
@@ -117,7 +118,6 @@ def euler(sets):
                     yield (str(set_key), sets_[set_key])
 
                     sets_[set_key] = []
-
 
 
 def spread_euler(sets):
