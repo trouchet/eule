@@ -7,7 +7,7 @@ pip
 pip-tools
 pre-commit
 pytest==6.2.4
-pytest-cov==4.0.0
+pytest-cov==4.6.11
 Sphinx==3.5.0
 sphinxcontrib-serializinghtml==1.1.5
 sphinxcontrib-websupport==1.1.0
