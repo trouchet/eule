@@ -16,7 +16,7 @@ docutils==0.19
     # via
     #   sphinx
     #   sphinx-rtd-theme
-idna==3.3
+idna==3.4
     # via requests
 imagesize==1.4.1
     # via sphinx
