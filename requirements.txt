@@ -9,7 +9,7 @@ pre-commit
 pytest
 pytest-cov
 Sphinx
-sphinxcontrib-serializinghtml==1.1.5
+sphinxcontrib-serializinghtml
 sphinxcontrib-websupport==1.1.0
 tox==3.23.1
 twine==2.0.0
