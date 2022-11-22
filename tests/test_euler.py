@@ -1,7 +1,9 @@
 import pytest
 
-from src.eule.eule import euler, spread_euler
+from eule import eule
 
+euler = eule.euler
+spread_euler = eule.spread_euler
 
 def test_euler_iter_1_input():
     '''

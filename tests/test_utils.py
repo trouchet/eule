@@ -1,5 +1,10 @@
-from src.eule.utils import (delimited_sort, keyfy, non_empty_sets_keys, reduce_,
-                        unique)
+from eule import utils
+
+delimited_sort = utils.delimited_sort
+keyfy = utils.keyfy
+non_empty_sets_keys = utils.non_empty_sets_keys
+reduce_ = utils.reduce_
+unique = utils.unique
 
 # define the tests
 def test_keyfy():
