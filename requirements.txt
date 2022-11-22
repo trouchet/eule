@@ -1,6 +1,6 @@
 bump2version==0.5.11
 coverage
-flake8==5.0.4
+flake8
 jinja2==2.11.3
 numpy
 pip
