@@ -5,7 +5,7 @@ from copy import deepcopy
 
 from .utils import reduce_, unique, delimited_sort, non_empty_sets_keys
 
-delimiter=','
+delimiter = ','
 
 def euler(sets):
     '''
@@ -26,11 +26,13 @@ def euler(sets):
         @param {Array} sets
         @return {Array} keys_elems
     '''
-    sets_ = deepcopy(sets);
+    sets_ = deepcopy(sets)
 
     # There are no sets
     if not isinstance(sets_, (list, dict)):
-        raise TypeError('Ill-conditioned input.')
+        msg_1='Ill-conditioned input.'
+        msg_2='It must be either a json-like or array of arrays object!'
+        raise TypeError(msg_1+msg_2)
 
     is_unique_set_arr = [
         len(unique(values)) == len(values) for values in sets_.values()
@@ -54,7 +56,6 @@ def euler(sets):
             compl_sets_keys = list(set(set_keys) - {set_key})
 
             # There are still sets to analyze
-            # Morgan Rule: ¬(A & B) = ¬A | ¬B
             if (len(compl_sets_keys) != 0 and len(sets[set_key]) != 0):
                 # Complementary sets
                 csets = {
@@ -69,8 +70,7 @@ def euler(sets):
 
                     # Non-empty combination exclusivity case
                     if len(comb_excl) != 0:
-                        # 1. Exclusive group elements except current
-                        # analysis set
+                        # 1. Exclusive group elements except current analysis set
                         yield (delimited_sort(comb_str, delimiter), comb_excl)
 
                         # Remove comb_excl elements from its original sets
@@ -79,16 +79,10 @@ def euler(sets):
                                 set(sets_[ckey])-set(comb_excl),
                             )
 
-                    #
                     comb_intersec = list(
                         set(celements).intersection(set(sets[set_key])),
                     )
 
-                    sets_[set_key] = list(
-                        set(sets_[set_key]) - set(comb_intersec),
-                    )
-
-                    #
                     if len(comb_intersec) != 0:
                         # 2. Intersection of analysis element and
                         # exclusive group
@@ -110,14 +104,13 @@ def euler(sets):
                             set(sets_[set_key])-set(comb_intersec),
                         )
 
-                set_keys = non_empty_sets_keys(sets_)
+                    set_keys = non_empty_sets_keys(sets_)
 
                 # 3. Set-key exclusive elements
                 if len(sets_[set_key]) != 0:
                     yield (str(set_key), sets_[set_key])
 
                     sets_[set_key] = []
-
 
 
 def spread_euler(sets):

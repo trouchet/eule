@@ -4,8 +4,6 @@ data_file = .coverage
 source =
     eule
 omit =
-    *test*.py
-    tmp/*
     pytest_cov
     setup.py
 
