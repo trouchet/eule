@@ -56,7 +56,6 @@ def euler(sets):
             compl_sets_keys = list(set(set_keys) - {set_key})
 
             # There are still sets to analyze
-            # Morgan Rule: ¬(A & B) = ¬A | ¬B
             if (len(compl_sets_keys) != 0 and len(sets[set_key]) != 0):
                 # Complementary sets
                 csets = {
