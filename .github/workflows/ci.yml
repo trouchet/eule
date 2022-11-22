@@ -10,7 +10,7 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         python: [3.6, 3.7, 3.9]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: actions/setup-python@v2
     - name: "Install and run pre-commit via tox"
       run: |
@@ -28,9 +28,9 @@ jobs:
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup Python
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         python-version: ${{ matrix.python }}
     - name: Install dependencies
