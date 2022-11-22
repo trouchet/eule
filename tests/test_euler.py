@@ -1,6 +1,6 @@
 import pytest
 
-from eule.eule import *
+from src.eule import *
 
 
 def test_euler_iter_1_input():
