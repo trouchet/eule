@@ -11,7 +11,7 @@ pytest-cov
 Sphinx
 sphinxcontrib-serializinghtml
 sphinxcontrib-websupport
-tox=3.27.1
+tox==3.27.1
 twine
 watchdog
 wheel
