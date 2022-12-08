@@ -1,4 +1,4 @@
-name: Codecov workflow
+name: Lint and coverage workflow
 on: [push, pull_request]
 jobs:
   lint:
@@ -8,14 +8,17 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python: [3.6, 3.7, 3.9]
+        python-version: [3.6, 3.7, 3.9]
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-    - name: "Install and run pre-commit via tox"
-      run: |
-            python -m pip install tox==3.27.1 tox-gh-actions
-            python -m tox -vv
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+            node-version: ${{ matrix.python-version }}
+            cache: "pip"
+      - name: "Install and run pre-commit via tox"
+        run: |
+              python -m pip install tox==3.27.1 tox-gh-actions
+              python -m tox -vv
   codecov:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -23,16 +26,16 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python: [3.6, 3.7, 3.9]
+        python-version: [3.6, 3.7, 3.9]
     env:
       OS: ${{ matrix.os }}
       PYTHON: ${{ matrix.python }}
     steps:
     - uses: actions/checkout@v3
     - name: Setup Python
-      uses: actions/checkout@v3
+      uses: actions/setup-python@v4
       with:
-        python-version: ${{ matrix.python }}
+        python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
             python -m pip install --upgrade tox-gh-actions
