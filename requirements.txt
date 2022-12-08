@@ -10,8 +10,8 @@ pytest
 pytest-cov
 Sphinx
 sphinxcontrib-serializinghtml
-sphinxcontrib-websupport==1.1.2
-tox==4.0.2
+sphinxcontrib-websupport
+tox
 twine
 watchdog
 wheel
