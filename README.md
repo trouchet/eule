@@ -33,19 +33,19 @@ Features
 We run a file with extension `*.py` with following content:
 
 ``` {.python}
-    #!/usr/bin/env python
-    from eule import spread_euler
+#!/usr/bin/env python
+from eule import spread_euler
 
-    diagram = spread_euler(
-        {
-            'a': [1, 2, 3],
-            'b': [2, 3, 4],
-            'c': [3, 4, 5],
-            'd': [3, 5, 6]
-        })
+diagram = spread_euler(
+    {
+        'a': [1, 2, 3],
+        'b': [2, 3, 4],
+        'c': [3, 4, 5],
+        'd': [3, 5, 6]
+    })
 
-    # Euler dictionary: {'a,b': [2], 'b,c': [4], 'a,b,c,d': [3], 'c,d': [5], 'd': [6], 'a': [1]}
-    print(diagram)
+# Euler dictionary: {'a,b': [2], 'b,c': [4], 'a,b,c,d': [3], 'c,d': [5], 'd': [6], 'a': [1]}
+print(diagram)
 ```
 
 License
