@@ -78,11 +78,10 @@ Ready to contribute? Here's how to set up ``eule`` for local development.
 5. When you're done making changes, check that your changes pass flake8 and the
    tests, including testing other Python versions with tox::
 
-    $ flake8 eule tests
-    $ python setup.py test or pytest
-    $ tox
+    $ pytest
+    $ poetry run tox
 
-   To get flake8 and tox, just pip install them into your virtualenv.
+   To get flake8 and tox, just `poetry install` them into your virtualenv.
 
 6. Commit your changes and push your branch to GitHub::
 
@@ -111,15 +110,21 @@ To run a subset of tests::
 $ pytest tests/test_euler.py
 
 
-Deploying
----------
+Version update
+------------------
 
-A reminder for the maintainers on how to deploy.
+A reminder for the maintainers on how to version update and further publish.
 Make sure all your changes are committed (including an entry in HISTORY.rst).
 Then run::
 
 $ poetry version patch # possible: major / minor / patch
-$ git push
-$ git push --tags
 
-Travis will then deploy to PyPI if tests pass.
+
+Publish
+---------
+
+To publish a package, the developer requires to run previous section instructions. 
+Then, run::
+
+$ poetry publish --build
+

@@ -16,4 +16,5 @@ History
 0.2.3 (2022-12-28)
 ------------------
 
-* Render PyPI repository with Markdown.
+* Review documentation with a minimal example and few sections;
+* Add package manager `poetry` to main stack.   
