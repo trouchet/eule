@@ -15,19 +15,18 @@ def euler(sets):
     @abstract returns each tuple [key, elems] of the Euler diagram
     systematic in a generator-wise fashion
     Rationale:
-       1. Begin with the available sets and their exclusive elements;
-       2. Compute complementary elements to current key-set;
-       3. In case complementary set-keys AND current set content
-       are not empty, continue;
-       Otherwise, go to next key-set;
-       4. Find the euler diagram on complementary sets;
-       5. Compute exclusive combination elements;
-       6. In case there are exclusive elements to combination:
-       6.a Yield exclusive combination elements;
-       6.b Remove exclusive combination elements from current key-set;
+    1. Begin with the available sets and their exclusive elements;
+    2. Compute complementary elements to current key-set;
+    3. In case complementary set-keys AND current set content 
+    are not empty, continue. Otherwise, go to next key-set;
+    4. Find the euler diagram on complementary sets;
+    5. Compute exclusive combination elements;
+    6. In case there are exclusive elements to combination:
+    6.a Yield exclusive combination elements;
+    6.b Remove exclusive combination elements from current key-set;
 
     @param {Array} sets
-    @return {Array} keys_elems
+    @return {Array} euler_diagrams
     """
     sets_ = deepcopy(sets)
 
