@@ -1,4 +1,4 @@
-name: Lint and coverage workflow
+name: Lint workflow
 on: [push, pull_request]
 jobs:
   lint:
