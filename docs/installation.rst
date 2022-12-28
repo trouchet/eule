@@ -32,7 +32,7 @@ You can either clone the public repository:
 
 .. code-block:: console
 
-    $ git clone git://github.com/brunolnetto/eule
+    $ git clone git://github.com/quivero/eule
 
 Or download the `tarball`_:
 

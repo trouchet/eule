@@ -19,7 +19,6 @@ Table of contents
 
    installation
    usage
-   example
    contributing
    authors
    history

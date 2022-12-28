@@ -12,3 +12,8 @@ History
 ------------------
 
 * Render PyPI repository with Markdown.
+
+0.2.3 (2022-12-28)
+------------------
+
+* Render PyPI repository with Markdown.

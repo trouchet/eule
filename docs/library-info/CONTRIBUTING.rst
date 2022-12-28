@@ -45,7 +45,7 @@ articles, and such.
 Submit Feedback
 ~~~~~~~~~~~~~~~
 
-The best way to send feedback is to file an issue at https://github.com/brunolnetto/eule/issues.
+The best way to send feedback is to file an issue at https://github.com/quivero/eule/issues.
 
 If you are proposing a feature:
 
@@ -64,11 +64,10 @@ Ready to contribute? Here's how to set up ``eule`` for local development.
 
     $ git clone git@github.com:your_name_here/eule.git
 
-3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
+3. Install your local copy into a virtualenv. This is how you set up your fork for local development::
 
-    $ mkvirtualenv eule
-    $ cd eule/
-    $ python setup.py develop
+    $ curl -sSL https://install.python-poetry.org | python3 -
+    $ poetry shell
 
 4. Create a branch for local development::
 
