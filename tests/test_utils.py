@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-import src.utils as utils
+import eule.utils as utils
 
 
 # define the tests

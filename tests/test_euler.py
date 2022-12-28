@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from src.eule import euler, spread_euler
+from eule.eule import euler, spread_euler
 
 
 def test_euler_iter_1_input():
