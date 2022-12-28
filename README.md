@@ -6,6 +6,7 @@
 
 [![codecov](https://codecov.io/gh/quivero/eule/branch/main/graph/badge.svg?token=PJMBaLIqar)](https://codecov.io/gh/quivero/eule)
 [![Codecov workflow](https://github.com/quivero/eule/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/quivero/eule/actions/workflows/test-coverage.yml)
+[![Lint workflow](https://github.com/quivero/eule/actions/workflows/check-lint.yaml/badge.svg)](https://github.com/quivero/eule/actions/workflows/check-lint.yaml)
 [![downloads](https://img.shields.io/pypi/dm/eule)](https://pypi.org/project/eule/)
 
 
