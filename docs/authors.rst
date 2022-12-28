@@ -1,1 +1,1 @@
-.. include:: ../AUTHORS.rst
+.. include:: ./library-info/AUTHORS.rst

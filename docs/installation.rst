@@ -47,5 +47,5 @@ Once you have a copy of the source, you can install it with:
     $ python setup.py install
 
 
-.. _Github repo: https://github.com/brunolnetto/eule
+.. _Github repo: https://github.com/quivero/eule
 .. _tarball: https://github.com/brunolnetto/eule/tarball/master
