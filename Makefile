@@ -1,4 +1,4 @@
-.PHONY: clean clean-build clean-pyc clean-test coverage dist docs help install lint lint/flake8 lint/black
+.PHONY: clean clean-build clean-pyc clean-test coverage dist docs help install
 .DEFAULT_GOAL := help
 
 define BROWSER_PYSCRIPT
@@ -47,13 +47,6 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
 
-lint/flake8: ## check style with flake8
-	flake8 eule tests
-lint/black: ## check style with black
-	black --check eule tests
-
-lint: lint/flake8 lint/black ## check style
-
 test: ## run tests quickly with the default Python
 	pytest
 
@@ -86,4 +79,17 @@ dist: clean ## builds source and wheel package
 	ls -l dist
 
 install: clean ## install the package to the active Python's site-packages
-	python setup.py install
+	poetry shell 
+	poetry install
+
+version-patch: clean ## bump version to patch
+	poetry version patch
+
+version-minor: clean ## bump version to minor
+	poetry version minor
+
+version-major: clean ## bump version to major
+	poetry version major
+
+publish: clean ## builds source and wheel package
+	poetry publish --build
