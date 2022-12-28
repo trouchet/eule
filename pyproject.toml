@@ -9,7 +9,7 @@ packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
-coverage = "^5.3"
+coverage = "^7.0"
 tox = "^4.0.19"
 sphinxcontrib-websupport = "^1.2.4"
 sphinxcontrib-serializinghtml = "^1.1.5"
