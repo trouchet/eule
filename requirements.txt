@@ -32,7 +32,7 @@ nodeenv==1.7.0
 numpy==1.24.1
 packaging==22.0
 pathspec==0.10.3
-platformdirs==2.6.1
+platformdirs==2.6.2
 pluggy==1.0.0
 pre-commit==2.21.0
 pycodestyle==2.10.0
