@@ -62,6 +62,6 @@ tox==4.1.2
 typing_extensions==4.4.0
 urllib3==1.26.13
 virtualenv==20.17.1
-watchdog==2.2.0
+watchdog==2.2.1
 wrapt==1.14.1
 zipp==3.11.0
