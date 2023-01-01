@@ -20,7 +20,7 @@ flake8==6.0.0
 identify==2.5.11
 idna==3.4
 imagesize==1.4.1
-importlib-metadata==5.2.0
+importlib-metadata==6.0.0
 iniconfig==1.1.1
 isort==5.11.4
 Jinja2==3.1.2
