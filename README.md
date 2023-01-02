@@ -1,4 +1,4 @@
-![a night owl](https://raw.githubusercontent.com/quivero/eule/main/images/eule_small.png)
+![a night owl](https://github.com/quivero/eule/blob/master/images/eule_small.png?raw=true)
 
 [![Version](https://img.shields.io/pypi/v/eule.svg)](https://pypi.python.org/pypi/eule)
 [![python](https://img.shields.io/pypi/pyversions/eule.svg)](https://pypi.org/project/eule/)
@@ -9,9 +9,6 @@
 [![Codecov workflow](https://github.com/quivero/eule/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/quivero/eule/actions/workflows/test-coverage.yml)
 [![Lint workflow](https://github.com/quivero/eule/actions/workflows/check-lint.yaml/badge.svg)](https://github.com/quivero/eule/actions/workflows/check-lint.yaml)
 
-
-
-
 Euler\'s diagrams are non-empty Venn\'s diagrams. For further information about:
 
 1. the library: read the documentation on URL <https://eule.readthedocs.io>;
@@ -20,7 +17,7 @@ Euler\'s diagrams are non-empty Venn\'s diagrams. For further information about:
 Motivation
 ================
 
-<img src="https://github.com/quivero/eule/blob/main/images/euler_venn.png?raw=true" width="400" height="364"/>
+<img src="https://github.com/quivero/eule/blob/master/images/euler_venn.png?raw=true" width="400" height="364"/>
 
 How to install
 ================
