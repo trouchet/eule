@@ -124,8 +124,7 @@ def test_spread_euler_3_sets():
 def test_spread_euler_4_sets():
     """
     Returns an euler dictionary for 4 valid sets
-    """
-
+    """ 
     input_ = {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5], 'd': [3, 5, 6]}
 
     result = spread_euler(input_)
