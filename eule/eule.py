@@ -5,7 +5,7 @@ from warnings import warn
 
 from .utils import delimited_sort, non_empty_sets_keys, reduce_, unique
 
-delimiter = ','
+delimiter = ","
 
 
 def euler(sets):
@@ -30,15 +30,15 @@ def euler(sets):
 
     # There are no sets
     if not isinstance(sets_, (list, dict)):
-        msg_1 = 'Ill-conditioned input.'
-        msg_2 = 'It must be either a json-like or array of arrays object!'
+        msg_1 = "Ill-conditioned input."
+        msg_2 = "It must be either a json-like or array of arrays object!"
         raise TypeError(msg_1 + msg_2)
 
     is_unique_set_arr = [
         len(unique(values)) == len(values) for values in sets_.values()
     ]
     if not reduce_(lambda a, b: a and b, is_unique_set_arr, True):
-        warn('Each array MUST NOT have duplicates')
+        warn("Each array MUST NOT have duplicates")
         sets = {key: unique(values) for key, values in sets.items()}
 
     # Only a set

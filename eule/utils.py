@@ -11,7 +11,7 @@ def keyfy(lst):
     @param {Array} arr
     @return {string} str
     """
-    return str(lst).strip('[]').replace(' ', '')
+    return str(lst).strip("[]").replace(" ", "")
 
 
 def reduce_(func, elems, elem0):
