@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "eule"
-version = "0.2.3"
+version = "0.2.4"
 description = "Euler diagrams in python"
 authors = ["Bruno Peixoto <brunolnetto@gmail.com>"]
 license = "MIT license"
@@ -10,12 +10,12 @@ homepage = "https://pypi.org/project/eule/"
 repository = "https://github.com/quivero/eule"
 keywords = ["euler-diagram", "sets"]
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: Mature",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9"
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering :: Information Analysis"
 ]
 
 [tool.poetry.dependencies]
