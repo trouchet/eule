@@ -79,7 +79,7 @@ dist: clean ## builds source and wheel package
 	ls -l dist
 
 install: clean ## install the package to the active Python's site-packages
-	poetry shell 
+	poetry shell
 	poetry install
 
 version-patch: clean ## bump version to patch
