@@ -45,9 +45,9 @@ def euler(sets):
 
     # Only a set
     if len(sets_.values()) == 1:
-        key = list(sets_.keys())[0]
-        value = list(sets_.values())[0]
-        yield (key, value)
+        comb_key = list(sets_.keys())[0]
+        comb_elements = list(sets_.values())[0]
+        yield (comb_key, comb_elements)
 
     else:
         # Sets with non-empty elements
@@ -55,62 +55,65 @@ def euler(sets):
 
         # Traverse the combination lattice
         for set_key in set_keys:
-            compl_sets_keys = list(set(set_keys) - {set_key})
+            compl_sets_keys = list( set(set_keys) - {set_key} )
 
             # There are still sets to analyze
             if len(compl_sets_keys) != 0 and len(sets[set_key]) != 0:
                 # Complementary sets
                 csets = {cset_key: sets_[cset_key] for cset_key in compl_sets_keys}
 
-                # Exclusive combination elements
+                # Instrospective recursion: Exclusive combination elements
                 for comb_str, celements in euler(csets):
 
                     # Remove current set_key elements
-                    comb_excl = list(set(celements) - set(sets_[set_key]))
+                    comb_elems = list(set(celements) - set(sets_[set_key]))
 
                     # Non-empty combination exclusivity case
-                    if len(comb_excl) != 0:
+                    if len(comb_elems) != 0:
+                        # Sort keys to assure deterministic behavior
+                        sorted_comb_key = delimited_sort(comb_str, delimiter)
+
                         # 1. Exclusive group elements except current analysis set
-                        yield (delimited_sort(comb_str, delimiter), comb_excl)
+                        yield (sorted_comb_key, comb_elems)
 
-                        # Remove comb_excl elements from its original sets
+                        # Remove comb_elems elements from its original sets
                         for ckey in comb_str.split(delimiter):
-                            sets_[ckey] = list(
-                                set(sets_[ckey]) - set(comb_excl),
-                            )
+                            sets_[ckey] = list( set(sets_[ckey]) - set(comb_elems) )
 
-                    comb_intersec = list(
+                    # Retrieve intersection elements
+                    comb_elems = list(
                         set(celements).intersection(set(sets[set_key])),
                     )
 
-                    if len(comb_intersec) != 0:
-                        # 2. Intersection of analysis element and
-                        # exclusive group
-                        comb_intersec_key = set_key + delimiter + comb_str
+                    # Non-empty intersection set
+                    if len(comb_elems) != 0:
+                        # 2. Intersection of analysis element and exclusive group:
+                        # Sort keys to assure deterministic behavior 
+                        comb_key = delimited_sort(set_key + delimiter + comb_str, delimiter)
 
-                        yield (
-                            delimited_sort(comb_intersec_key, delimiter),
-                            comb_intersec,
-                        )
+                        yield (comb_key, comb_elems)
 
-                        # Remove intersection elements from
-                        # current key-set and complementary sets
+                        # Remove intersection elements from current key-set and complementary sets
                         for ckey in comb_str.split(delimiter):
-                            sets_[ckey] = list(
-                                set(sets_[ckey]) - set(comb_intersec),
-                            )
+                            sets_[ckey] = list( set(sets_[ckey]) - set(comb_elems) )
 
-                        sets_[set_key] = list(
-                            set(sets_[set_key]) - set(comb_intersec),
-                        )
+                        sets_[set_key] = list( set(sets_[set_key]) - set(comb_elems) )
 
                     set_keys = non_empty_sets_keys(sets_)
 
-                # 3. Set-key exclusive elements
+                # 3. Remaining exclusive elements
                 if len(sets_[set_key]) != 0:
-                    yield (str(set_key), sets_[set_key])
+                    # Load combination key
+                    comb_key = str(set_key)
+                    comb_elems = sets_[set_key]
 
+                    # Yield tuple
+                    yield (comb_key, comb_elems)
+
+                    # Remove remaining set elements
                     sets_[set_key] = []
+
+                set_keys = non_empty_sets_keys(sets_)
 
 
 def spread_euler(sets):
