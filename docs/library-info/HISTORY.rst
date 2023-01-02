@@ -17,4 +17,4 @@ History
 ------------------
 
 * Review documentation with a minimal example and few sections;
-* Add package manager `poetry` to main stack.   
+* Add package manager `poetry` to main stack.
