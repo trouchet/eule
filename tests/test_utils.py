@@ -8,32 +8,54 @@ def test_keyfy():
     """
     tests the key string generation
     """
-    assert utils.keyfy([1, 2, 3]) == "1,2,3"
+    input_ = [1, 2, 3]
+    result = utils.keyfy(input_)
+    expected_output = "1,2,3"
+
+    assert result == expected_output
 
 
 def test_one_set_euler():
     """
     tests the reduce function
     """
-    assert utils.reduce_(lambda a, b: a + b, [1, 2], 0) == 3
+    reduce_func = lambda a, b: a + b
+    input_ = [1, 2]
+    result = utils.reduce_(reduce_func, input_, 0)
+    expected_output = 3
+
+    assert result == expected_output
 
 
 def test_unique_elems():
     """
     tests the reduce function
     """
-    assert utils.unique([1, 2, 3, 3]) == [1, 2, 3]
+    input_ = [1, 2, 3, 3]
+    result = utils.unique(input_)
+    expected_output = [1, 2, 3]
+
+    assert result == expected_output
 
 
 def test_delimited_sort():
     """
     tests sorting delimited by token
     """
-    assert utils.delimited_sort("4,1,2,3", ",") == "1,2,3,4"
+    input_ = "4,1,2,3"
+    config = ","
+    result = utils.delimited_sort(input_, config)
+    expected_output = "1,2,3,4"
+
+    assert result == expected_output
 
 
 def test_non_empty_sets_keys():
     """
     tests dict clean with empty values
     """
-    assert utils.non_empty_sets_keys({"a": [1, 2, 3], "b": []}) == ["a"]
+    input_ = {"a": [1, 2, 3], "b": []}
+    result = utils.non_empty_sets_keys(input_)
+    expected_output = ["a"]
+
+    assert result == expected_output
