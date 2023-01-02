@@ -19,7 +19,10 @@ def test_one_set_euler():
     """
     tests the reduce function
     """
-    reduce_func = lambda a, b: a + b
+
+    def reduce_func(a, b):
+        return a + b
+
     input_ = [1, 2]
     result = utils.reduce_(reduce_func, input_, 0)
     expected_output = 3
