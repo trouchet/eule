@@ -1,6 +1,4 @@
 """utils module."""
-from __future__ import annotations
-
 import functools
 
 import numpy as np
