@@ -123,8 +123,7 @@ $ poetry version patch # possible: major / minor / patch
 Publish
 ---------
 
-To publish a package, the developer requires to run previous section instructions. 
+To publish a package, the developer requires to run previous section instructions.
 Then, run::
 
 $ poetry publish --build
-

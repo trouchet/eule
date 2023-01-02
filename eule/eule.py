@@ -15,7 +15,7 @@ def euler(sets):
     Rationale:
     1. Begin with the available sets and their exclusive elements;
     2. Compute complementary elements to current key-set;
-    3. In case complementary set-keys AND current set content 
+    3. In case complementary set-keys AND current set content
     are not empty, continue. Otherwise, go to next key-set;
     4. Find the euler diagram on complementary sets;
     5. Compute exclusive combination elements;
@@ -53,7 +53,7 @@ def euler(sets):
 
         # Traverse the combination lattice
         for set_key in set_keys:
-            compl_sets_keys = list( set(set_keys) - {set_key} )
+            compl_sets_keys = list(set(set_keys) - {set_key})
 
             # There are still sets to analyze
             if len(compl_sets_keys) != 0 and len(sets[set_key]) != 0:
@@ -76,7 +76,7 @@ def euler(sets):
 
                         # Remove comb_elems elements from its original sets
                         for ckey in comb_str.split(delimiter):
-                            sets_[ckey] = list( set(sets_[ckey]) - set(comb_elems) )
+                            sets_[ckey] = list(set(sets_[ckey]) - set(comb_elems))
 
                     # Retrieve intersection elements
                     comb_elems = list(
@@ -86,16 +86,18 @@ def euler(sets):
                     # Non-empty intersection set
                     if len(comb_elems) != 0:
                         # 2. Intersection of analysis element and exclusive group:
-                        # Sort keys to assure deterministic behavior 
-                        comb_key = delimited_sort(set_key + delimiter + comb_str, delimiter)
+                        # Sort keys to assure deterministic behavior
+                        comb_key = delimited_sort(
+                            set_key + delimiter + comb_str, delimiter
+                        )
 
                         yield (comb_key, comb_elems)
 
                         # Remove intersection elements from current key-set and complementary sets
                         for ckey in comb_str.split(delimiter):
-                            sets_[ckey] = list( set(sets_[ckey]) - set(comb_elems) )
+                            sets_[ckey] = list(set(sets_[ckey]) - set(comb_elems))
 
-                        sets_[set_key] = list( set(sets_[set_key]) - set(comb_elems) )
+                        sets_[set_key] = list(set(sets_[set_key]) - set(comb_elems))
 
                     set_keys = non_empty_sets_keys(sets_)
 
