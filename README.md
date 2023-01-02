@@ -1,14 +1,13 @@
-![a night owl](https://raw.githubusercontent.com/quivero/eule/main/images/eule_small.png)
+![a night owl](https://github.com/quivero/eule/blob/master/images/eule_small.png?raw=true)
 
 [![Version](https://img.shields.io/pypi/v/eule.svg)](https://pypi.python.org/pypi/eule)
 [![python](https://img.shields.io/pypi/pyversions/eule.svg)](https://pypi.org/project/eule/)
-[![Documentation Status](https://readthedocs.org/projects/eule/badge/?version=latest)](https://eule.readthedocs.io/en/latest/?version=latest)
-
-[![codecov](https://codecov.io/gh/quivero/eule/branch/main/graph/badge.svg?token=PJMBaLIqar)](https://codecov.io/gh/quivero/eule)
-[![Codecov workflow](https://github.com/quivero/eule/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/quivero/eule/actions/workflows/test-coverage.yml)
-[![Lint workflow](https://github.com/quivero/eule/actions/workflows/check-lint.yaml/badge.svg)](https://github.com/quivero/eule/actions/workflows/check-lint.yaml)
 [![downloads](https://img.shields.io/pypi/dm/eule)](https://pypi.org/project/eule/)
 
+[![codecov](https://codecov.io/gh/quivero/eule/branch/main/graph/badge.svg?token=PJMBaLIqar)](https://codecov.io/gh/quivero/eule)
+[![Documentation Status](https://readthedocs.org/projects/eule/badge/?version=latest)](https://eule.readthedocs.io/en/latest/?version=latest)
+[![Codecov workflow](https://github.com/quivero/eule/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/quivero/eule/actions/workflows/test-coverage.yaml)
+[![Lint workflow](https://github.com/quivero/eule/actions/workflows/check-lint.yaml/badge.svg)](https://github.com/quivero/eule/actions/workflows/check-lint.yaml)
 
 Euler\'s diagrams are non-empty Venn\'s diagrams. For further information about:
 
@@ -18,7 +17,7 @@ Euler\'s diagrams are non-empty Venn\'s diagrams. For further information about:
 Motivation
 ================
 
-<img src="https://github.com/quivero/eule/blob/main/images/euler_venn.png?raw=true" width="400" height="364"/>
+<img src="https://github.com/quivero/eule/blob/master/images/euler_venn.png?raw=true" width="400" height="364"/>
 
 How to install
 ================
@@ -60,7 +59,5 @@ License
 Credits
 ===============
 
-This package was created with
-[Cookiecutter](https://github.com/audreyr/cookiecutter) and the
-[audreyr/cookiecutter-pypackage](https://github.com/audreyr/cookiecutter-pypackage)
-project template.
+This package was created with [Cookiecutter](https://github.com/audreyr/cookiecutter) and the [audreyr/cookiecutter-pypackage](https://github.com/audreyr/cookiecutter-pypackage) project template. There were stylistic modifications along development.
+ 
