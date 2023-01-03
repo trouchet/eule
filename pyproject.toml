@@ -10,7 +10,7 @@ homepage = "https://pypi.org/project/eule/"
 repository = "https://github.com/quivero/eule"
 keywords = ["euler-diagram", "sets"]
 classifiers = [
-    "Development Status :: Mature",
+    "Development Status :: 6 - Mature",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
