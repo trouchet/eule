@@ -1,25 +1,14 @@
 [run]
 branch = True
 data_file = .coverage
-source =
-    eule
-omit =
-    pytest_cov
-    setup.py
+source = eule
+omit = eule/examples/example.py, *__init__.py*
 
 [report]
 show_missing = True
-exclude_lines =
-    # Have to re-enable the standard pragma
-    pragma: no cover
-
-    # Don't complain about missing debug-only code:
-    def __repr__
-    if self\.debug
-
-    # Don't complain if tests don't hit defensive assertion code:
-    raise AssertionError
-    raise NotImplementedError
-
+# Have to re-enable the standard pragma
+# Don't complain if tests don't hit defensive assertion code:
+exclude_lines = "pragma: no cover", "raise AssertionError", "raise NotImplementedError"
+    
 [html]
-directory = tmp/htmlcov
+directory = htmlcov

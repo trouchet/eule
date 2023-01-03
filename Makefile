@@ -1,4 +1,4 @@
-.PHONY: clean clean-build clean-pyc clean-test coverage dist docs help install
+.PHONY: help clean test coverage docs servedocs install
 .DEFAULT_GOAL := help
 
 define BROWSER_PYSCRIPT
@@ -6,90 +6,91 @@ import os, webbrowser, sys
 
 from urllib.request import pathname2url
 
-webbrowser.open("file://" + pathname2url(os.path.abspath(sys.argv[1])))
+rel_current_path = sys.argv[1]
+abs_current_path = os.path.abspath(rel_current_path)
+uri = "file://" + pathname2url(abs_current_path)
+
+webbrowser.open(uri)
 endef
+
 export BROWSER_PYSCRIPT
 
 define PRINT_HELP_PYSCRIPT
 import re, sys
 
+regex_pattern = r'^([a-zA-Z_-]+):.*?## (.*)$$'
+
 for line in sys.stdin:
-	match = re.match(r'^([a-zA-Z_-]+):.*?## (.*)$$', line)
+	match = re.match(regex_pattern, line)
 	if match:
 		target, help = match.groups()
 		print("%-20s %s" % (target, help))
 endef
+
 export PRINT_HELP_PYSCRIPT
 
 BROWSER := python -c "$$BROWSER_PYSCRIPT"
+DO_DOCS_HTML := $(MAKE) -C docs html
+
+PACKAGE_NAME = "eule"
+COVERAGE_IGNORE_PATHS = "eule/examples"
 
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
-
+clean: clean-build clean-pyc clean-test clean-cache ## remove all build, test, coverage, Python artifacts and cache
+	
 clean-build: ## remove build artifacts
-	rm -fr build/
-	rm -fr dist/
-	rm -fr .eggs/
-	find . -name '*.egg-info' -exec rm -fr {} +
-	find . -name '*.egg' -exec rm -f {} +
+	rm -fr build/ dist/ .eggs/
+	find . -name '*.egg-info' -o -name '*.egg' -exec rm -fr {} +
 
 clean-pyc: ## remove Python file artifacts
-	find . -name '*.pyc' -exec rm -f {} +
-	find . -name '*.pyo' -exec rm -f {} +
-	find . -name '*~' -exec rm -f {} +
-	find . -name '__pycache__' -exec rm -fr {} +
+	find . -name '*.pyc' -o -name '*.pyo' -o -name '*~' -exec rm -rf {} +
 
 clean-test: ## remove test and coverage artifacts
-	rm -fr .tox/
-	rm -f .coverage
-	rm -fr htmlcov/
-	rm -fr .pytest_cache
+	rm -fr .tox/ .coverage coverage.* htmlcov/ .pytest_cache 
+
+clean-cache: ## remove test and coverage artifacts
+	find . -name '*cache*' -exec rm -rf {} +
 
 test: ## run tests quickly with the default Python
 	pytest
 
-test-all: ## run tests on every Python version with tox
-	tox
+atest: ## run tests on every Python version with tox
+	tox -q
 
-coverage: ## check code coverage quickly with the default Python
-	coverage run --source eule -m pytest
-	coverage report -m
+test-watch: ## run tests on watchdog mode
+	ptw
+
+coverage: clean ## check code coverage quickly with the default Python
+	coverage run --source "$$PACKAGE_NAME" -m pytest
+	coverage report -m --omit="$$COVERAGE_IGNORE_PATHS"
 	coverage html
 	$(BROWSER) htmlcov/index.html
 
-docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/eule.rst
-	rm -f docs/modules.rst
-	sphinx-apidoc -o docs/ eule
-	$(MAKE) -C docs clean
+docs: clean ## generate Sphinx HTML documentation, including API docs
+	$(MAKE) -C docs clean 
+	sphinx-apidoc -o "docs/" "$$PACKAGE_NAME"
 	$(MAKE) -C docs html
-	$(BROWSER) docs/_build/html/index.html
+	$(BROWSER) 'docs/_build/html/index.html'
 
-servedocs: docs ## compile the docs watching for changes
-	watchmedo shell-command -p '*.rst' -c '$(MAKE) -C docs html' -R -D .
-
-release: dist ## package and upload a release
-	twine upload dist/*
-
-dist: clean ## builds source and wheel package
-	python setup.py sdist
-	python setup.py bdist_wheel
-	ls -l dist
+docs-watch: docs ## compile the docs watching for changes
+	watchmedo shell-command -p '*.rst' -c '$$DO_DOCS_HTML' -R -D .
 
 install: clean ## install the package to the active Python's site-packages
 	poetry shell
 	poetry install
 
-version-patch: clean ## bump version to patch
-	poetry version patch
+bump-version: ## bump version to user-provided {patch|minor|major} semantic
+	poetry version $(v)
+	PACKAGE_VERSION := poetry version -s
+	git add pyproject.toml
+	git commit -m "release/ tag v$$PACKAGE_VERSION"
+	git tag v$$PACKAGE_VERSION
+	git push
+	git push --tags
+	poetry version
 
-version-minor: clean ## bump version to minor
-	poetry version minor
-
-version-major: clean ## bump version to major
-	poetry version major
-
-publish: clean ## builds source and wheel package
+publish: clean ## build source and publish package
 	poetry publish --build
+
