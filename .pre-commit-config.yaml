@@ -1,0 +1,59 @@
+repos:
+    -   repo: https://github.com/asottile/setup-cfg-fmt
+        rev: v2.2.0
+        hooks:
+        -   id: setup-cfg-fmt
+
+    -   repo: https://github.com/asottile/pyupgrade
+        rev: v3.3.1
+        hooks:
+        -   id: pyupgrade
+            args: [--py37-plus]
+
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v4.4.0
+      hooks:
+        -   id: check-added-large-files
+        -   id: check-ast
+        -   id: check-byte-order-marker
+        -   id: check-builtin-literals
+        -   id: check-case-conflict
+            exclude: tests/fixtures/invalid_lock/poetry\.lock
+        -   id: check-docstring-first
+        -   id: check-json
+        -   id: pretty-format-json
+            args: [--autofix, --no-ensure-ascii, --no-sort-keys]
+        -   id: check-merge-conflict
+        -   id: check-symlinks
+        -   id: check-toml
+        -   id: check-vcs-permalinks
+        -   id: check-xml
+        -   id: check-yaml
+        -   id: debug-statements
+        -   id: destroyed-symlinks
+        -   id: detect-private-key
+        -   id: double-quote-string-fixer
+        -   id: end-of-file-fixer
+            exclude: ^.*\.egg-info/
+        -   id: file-contents-sorter
+        -   id: fix-byte-order-marker
+        -   id: forbid-new-submodules
+        -   id: mixed-line-ending
+        -   id: requirements-txt-fixer
+        -   id: sort-simple-yaml
+        -   id: trailing-whitespace
+        -   id: check-ast
+        -   id: check-docstring-first
+
+    - repo: https://github.com/asottile/pyupgrade
+      rev: v3.3.1
+      hooks:
+        - id: pyupgrade
+          args: [--py37-plus]
+          exclude: ^(install|get)-poetry.py$
+
+    - repo: https://github.com/hadialqattan/pycln
+      rev: v2.1.2
+      hooks:
+        - id: pycln
+          args: [--all]
