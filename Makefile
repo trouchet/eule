@@ -39,7 +39,7 @@ help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
 clean: clean-build clean-pyc clean-test clean-cache ## remove all build, test, coverage, Python artifacts and cache
-	
+
 clean-build: ## remove build artifacts
 	rm -fr build/ dist/ .eggs/
 	find . -name '*.egg-info' -o -name '*.egg' -exec rm -fr {} +
@@ -48,7 +48,7 @@ clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyc' -o -name '*.pyo' -o -name '*~' -exec rm -rf {} +
 
 clean-test: ## remove test and coverage artifacts
-	rm -fr .tox/ .coverage coverage.* htmlcov/ .pytest_cache 
+	rm -fr .tox/ .coverage coverage.* htmlcov/ .pytest_cache
 
 clean-cache: ## remove test and coverage artifacts
 	find . -name '*cache*' -exec rm -rf {} +
@@ -69,7 +69,7 @@ coverage: clean ## check code coverage quickly with the default Python
 	$(BROWSER) htmlcov/index.html
 
 docs: clean ## generate Sphinx HTML documentation, including API docs
-	$(MAKE) -C docs clean 
+	$(MAKE) -C docs clean
 	sphinx-apidoc -o "docs/" "$$PACKAGE_NAME"
 	$(MAKE) -C docs html
 	$(BROWSER) 'docs/_build/html/index.html'
@@ -93,4 +93,3 @@ bump-version: ## bump version to user-provided {patch|minor|major} semantic
 
 publish: clean ## build source and publish package
 	poetry publish --build
-
