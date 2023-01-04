@@ -11,8 +11,8 @@
 
 Euler\'s diagrams are non-empty Venn\'s diagrams. For further information about:
 
-1. the library: read the documentation on URL <https://eule.readthedocs.io>;
-2. Euler diagrams: read the wikipedia article <https://en.wikipedia.org/wiki/Euler_diagram>
+1. the library: on URL <https://eule.readthedocs.io>;
+2. Euler diagrams: on wikipedia article <https://en.wikipedia.org/wiki/Euler_diagram>
 
 Motivation
 ================
