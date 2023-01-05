@@ -20,12 +20,22 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
-coverage = "^7.0"
-tox = "^4.0.19"
+numpy = "^1.24.1"
+
+[tool.poetry.group.dev.dependencies]
+sphinx = "^6.0.0"
 sphinxcontrib-websupport = "^1.2.4"
 sphinxcontrib-serializinghtml = "^1.1.5"
-sphinx = "^6.0.0"
-numpy = "^1.24.1"
+ruff = "^0.0.210"
+pre-commit = "^2.20.0"
+black = "^22.12.0"
+coverage = "^7.0"
+tox = "^4.0.19"
+flake8 = "^6.0.0"
+pytest = "^7.2.0"
+pytest-cov = "^4.0.0"
+pytest-watch = "^4.2.0"
+pylint = "^2.15.9"
 wheel = "^0.38.4"
 watchdog = "^2.2.0"
 isort = "^5.11.4"
@@ -33,18 +43,6 @@ mypy = "^0.991"
 types-mock = "^4.0.15.2"
 pygments = "^2.14.0"
 docutils = "^0.19"
-ruff = "^0.0.211"
-black = "^22.12.0"
-pytest-watch = "^4.2.0"
-
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.0.211"
-pre-commit = "^2.20.0"
-black = "^22.12.0"
-flake8 = "^6.0.0"
-pytest = "^7.2.0"
-pytest-cov = "^4.0.0"
-pylint = "^2.15.9"
 
 [tool.ruff]
 line-length = 100
