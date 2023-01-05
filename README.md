@@ -1,6 +1,6 @@
 ![a night owl](https://github.com/quivero/eule/blob/master/images/eule_small.png?raw=true)
 
-[![Version](https://img.shields.io/pypi/v/pybary.svg)](https://pypi.python.org/pypi/eule)
+[![Version](https://img.shields.io/pypi/v/eule.svg)](https://pypi.python.org/pypi/eule)
 [![python](https://img.shields.io/pypi/pyversions/eule.svg)](https://pypi.org/project/eule/)
 [![downloads](https://img.shields.io/pypi/dm/eule)](https://pypi.org/project/eule/)
 
