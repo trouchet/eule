@@ -63,6 +63,10 @@ atest: ## run tests on every Python version with tox
 test-watch: ## run tests on watchdog mode
 	ptw
 
+lint: clean ## perform inplace lint fixes
+	ruff --fix .
+	pre-commit run --all-files
+
 coverage: clean ## check code coverage quickly with the default Python
 	coverage run --source "$$PACKAGE_NAME" -m pytest
 	coverage report -m --omit="$$COVERAGE_IGNORE_PATHS"
@@ -85,8 +89,8 @@ install: clean ## install the package to the active Python's site-packages
 bump-version: ## bump version to user-provided {patch|minor|major} semantic
 	poetry version $(v)
 	git add pyproject.toml
-	git commit -m "release/ tag v$$PACKAGE_VERSION"
-	git tag v$$PACKAGE_VERSION
+	git commit -m "release/ tag v$(poetry version -s)"
+	git tag "v$(poetry version -s)"
 	git push
 	git push --tags
 	poetry version
