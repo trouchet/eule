@@ -24,7 +24,7 @@ How to install
 We run the command on desired installation environment:
 
 ``` {.bash}
-    pip install eule
+pip install eule
 ```
 
 Minimal example
