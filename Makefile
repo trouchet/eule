@@ -91,7 +91,6 @@ bump-version: ## bump version to user-provided {patch|minor|major} semantic
 	git add pyproject.toml
 	git commit -m "release/ tag v$$PACKAGE_VERSION"
 	git tag "v$$PACKAGE_VERSION"
-	git tag "v$$PACKAGE_VERSION"
 	git push
 	git push --tags
 	poetry version
