@@ -6,7 +6,7 @@
 
 [![codecov](https://codecov.io/gh/trouchet/eule/branch/main/graph/badge.svg?token=PJMBaLIqar)](https://codecov.io/gh/trouchet/eule)
 [![Documentation Status](https://readthedocs.org/projects/eule/badge/?version=latest)](https://eule.readthedocs.io/en/latest/?version=latest)
-[![Lint workflow](https://github.com/quivero/eule/actions/workflows/check-lint.yaml/badge.svg)](https://github.com/trouchet/eule/actions/workflows/check-lint.yaml)
+[![Lint workflow](https://github.com/trouchet/eule/actions/workflows/check-lint.yaml/badge.svg)](https://github.com/trouchet/eule/actions/workflows/check-lint.yaml)
 
 Euler\'s diagrams are non-empty Venn\'s diagrams. For further information about:
 
