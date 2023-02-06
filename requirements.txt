@@ -35,7 +35,7 @@ pathspec==0.10.3
 platformdirs==2.6.2
 pluggy==1.0.0
 pre-commit==2.21.0
-pycodestyle==2.10.0
+pycodestyle==2.9.0
 pyflakes==2.5.0
 Pygments==2.14.0
 pylint==2.15.10
