@@ -1,4 +1,4 @@
-![a night owl](https://github.com/quivero/eule/blob/master/images/eule_small.png?raw=true)
+![a night owl](https://github.com/trouchet/eule/blob/master/images/eule_small.png?raw=true)
 
 [![Version](https://img.shields.io/pypi/v/eule.svg)](https://pypi.python.org/pypi/eule)
 [![python](https://img.shields.io/pypi/pyversions/eule.svg)](https://pypi.org/project/eule/)
@@ -6,7 +6,7 @@
 
 [![codecov](https://codecov.io/gh/trouchet/eule/branch/main/graph/badge.svg?token=PJMBaLIqar)](https://codecov.io/gh/trouchet/eule)
 [![Documentation Status](https://readthedocs.org/projects/eule/badge/?version=latest)](https://eule.readthedocs.io/en/latest/?version=latest)
-[![Lint workflow](https://github.com/quivero/eule/actions/workflows/check-lint.yaml/badge.svg)](https://github.com/quivero/eule/actions/workflows/check-lint.yaml)
+[![Lint workflow](https://github.com/trouchet/eule/actions/workflows/check-lint.yaml/badge.svg)](https://github.com/trouchet/eule/actions/workflows/check-lint.yaml)
 
 Euler\'s diagrams are non-empty Venn\'s diagrams. For further information about:
 
@@ -16,7 +16,7 @@ Euler\'s diagrams are non-empty Venn\'s diagrams. For further information about:
 Motivation
 ================
 
-<img src="https://github.com/quivero/eule/blob/master/images/euler_venn.png?raw=true" width="400" height="364"/>
+<img src="https://github.com/trouchet/eule/blob/master/images/euler_venn.png?raw=true" width="400" height="364"/>
 
 How to install
 ================
