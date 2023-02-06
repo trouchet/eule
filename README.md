@@ -3,6 +3,7 @@
 [![Version](https://img.shields.io/pypi/v/eule.svg)](https://pypi.python.org/pypi/eule)
 [![python](https://img.shields.io/pypi/pyversions/eule.svg)](https://pypi.org/project/eule/)
 [![downloads](https://img.shields.io/pypi/dm/eule)](https://pypi.org/project/eule/)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/trouchet/eule/HEAD)
 
 [![codecov](https://codecov.io/gh/trouchet/eule/branch/main/graph/badge.svg?token=PJMBaLIqar)](https://codecov.io/gh/trouchet/eule)
 [![Documentation Status](https://readthedocs.org/projects/eule/badge/?version=latest)](https://eule.readthedocs.io/en/latest/?version=latest)
