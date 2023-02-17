@@ -31,9 +31,11 @@ export PRINT_HELP_PYSCRIPT
 
 BROWSER := python -c "$$BROWSER_PYSCRIPT"
 DO_DOCS_HTML := $(MAKE) -C docs html
-PACKAGE_VERSION := "$(poetry version -s)"
+SPHINXBUILD   = python3 -msphinx
 
 PACKAGE_NAME = "eule"
+PACKAGE_VERSION := poetry version -s
+
 COVERAGE_IGNORE_PATHS = "eule/examples"
 
 help:
@@ -86,11 +88,14 @@ install: clean ## install the package to the active Python's site-packages
 	poetry shell
 	poetry install
 
+echo-version: ## echo current package version
+	echo "v$$(poetry version -s)"
+
 bump-version: ## bump version to user-provided {patch|minor|major} semantic
 	poetry version $(v)
 	git add pyproject.toml
-	git commit -m "release/ tag v$$PACKAGE_VERSION"
-	git tag "v$$PACKAGE_VERSION"
+	git commit -m "release/ tag v$$(poetry version -s)"
+	git tag "v$$(poetry version -s)"
 	git push
 	git push --tags
 	poetry version
