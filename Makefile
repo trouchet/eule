@@ -30,7 +30,7 @@ endef
 export PRINT_HELP_PYSCRIPT
 
 BROWSER := python -c "$$BROWSER_PYSCRIPT"
-DO_DOCS_HTML := $(MAKE) -C docs html
+DO_DOCS_HTML := $(MAKE) -C clean-docs && $(MAKE) -C docs html
 SPHINXBUILD   = python3 -msphinx
 
 PACKAGE_NAME = "eule"
@@ -44,7 +44,7 @@ help:
 clean: clean-build clean-pyc clean-test clean-cache clean-docs ## remove all build, test, coverage, Python artifacts, cache and docs
 
 clean-docs: # remove docs for update
-	rm -fr "docs/$$PACKAGE_NAME.rst" "docs/modules.rst" "docs/conftest.rst" "docs/examples.rst" "docs/tests.rst"
+	rm -fr "docs/$$PACKAGE_NAME.rst" "docs/modules.rst" "docs/conftest.rst" "docs/examples.rst" "docs/tests.rst" "docs/_build" 
 
 clean-build: # remove build artifacts
 	rm -fr build/ dist/ .eggs/
@@ -79,7 +79,7 @@ coverage: clean ## check code coverage quickly with the default Python
 
 docs: clean ## generate Sphinx HTML documentation, including API docs
 	poetry shell
-	sphinx-apidoc -o "docs/" "$$PACKAGE_NAME" "tests" "examples" "conftest.py" "__init__.py"
+	sphinx-apidoc -o "docs/" "$$PACKAGE_NAME" "tests" "examples" "conftest.py"
 	$(MAKE) -C docs html
 	$(BROWSER) 'docs/_build/html/index.html'
 
