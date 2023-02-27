@@ -3,28 +3,23 @@
 from copy import deepcopy
 from warnings import warn
 
-from .utils import delimited_sort, non_empty_sets_keys, reduce_, unique
+from .utils import dsort, clear, reduc, uniq
 
 delimiter = ','
 
-
 def euler(sets):
-    """
-    @abstract returns each tuple [key, elems] of the Euler diagram
-    systematic in a generator-wise fashion
-    Rationale:
-    1. Begin with the available sets and their exclusive elements;
+    """This generator function returns each tuple (key, elems) of the Euler diagram in a generator-wise fashion systematic:
+    
+    1. Begin with the available `sets` and their exclusive elements;
     2. Compute complementary elements to current key-set;
-    3. In case complementary set-keys AND current set content
-    are not empty, continue. Otherwise, go to next key-set;
+    3. In case complementary set-keys AND current set content are not empty, continue; Otherwise, go to next key-set;
     4. Find the euler diagram on complementary sets;
     5. Compute exclusive combination elements;
-    6. In case there are exclusive elements to combination:
-    6.a Yield exclusive combination elements;
-    6.b Remove exclusive combination elements from current key-set;
+    6. In case there are exclusive elements to combination: yield exclusive combination elements; Remove exclusive combination elements from current key-set. 
 
-    @param {Array} sets
-    @return {Array} euler_diagrams
+    :param dict sets: array/dict of arrays
+    :returns: (key, euler_set) tuple of given sets
+    :rtype: tuple
     """
     sets_ = deepcopy(sets)
 
@@ -35,11 +30,11 @@ def euler(sets):
         raise TypeError(msg_1 + msg_2)
 
     is_unique_set_arr = [
-        len(unique(values)) == len(values) for values in sets_.values()
+        len(uniq(values)) == len(values) for values in sets_.values()
     ]
-    if not reduce_(lambda a, b: a and b, is_unique_set_arr, True):
+    if not reduc(lambda a, b: a and b, is_unique_set_arr, True):
         warn('Each array MUST NOT have duplicates')
-        sets = {key: unique(values) for key, values in sets.items()}
+        sets = {key: uniq(values) for key, values in sets.items()}
 
     # Only a set
     if len(sets_.values()) == 1:
@@ -49,7 +44,7 @@ def euler(sets):
 
     else:
         # Sets with non-empty elements
-        set_keys = non_empty_sets_keys(sets_)
+        set_keys = clear(sets_)
 
         # Traverse the combination lattice
         for set_key in set_keys:
@@ -69,7 +64,7 @@ def euler(sets):
                     # Non-empty combination exclusivity case
                     if len(comb_elems) != 0:
                         # Sort keys to assure deterministic behavior
-                        sorted_comb_key = delimited_sort(comb_str, delimiter)
+                        sorted_comb_key = dsort(comb_str, delimiter)
 
                         # 1. Exclusive group elements except current analysis set
                         yield (sorted_comb_key, comb_elems)
@@ -87,7 +82,7 @@ def euler(sets):
                     if len(comb_elems) != 0:
                         # 2. Intersection of analysis element and exclusive group:
                         # Sort keys to assure deterministic behavior
-                        comb_key = delimited_sort(
+                        comb_key = dsort(
                             set_key + delimiter + comb_str, delimiter
                         )
 
@@ -99,7 +94,7 @@ def euler(sets):
 
                         sets_[set_key] = list(set(sets_[set_key]) - set(comb_elems))
 
-                    set_keys = non_empty_sets_keys(sets_)
+                    set_keys = clear(sets_)
 
                 # 3. Remaining exclusive elements
                 if len(sets_[set_key]) != 0:
@@ -113,15 +108,14 @@ def euler(sets):
                     # Remove remaining set elements
                     sets_[set_key] = []
 
-                set_keys = non_empty_sets_keys(sets_)
+                set_keys = clear(sets_)
 
 
 def spread_euler(sets):
-    """
-    @abstract returns Euler diagram dictionary of set-dictionary of
-    non-repetitive elements
-
-    @param {Array} sets
-    @return {dict} euler_diagram
+    """Euler diagram dictionary of set-dictionary of non-repetitive elements
+    
+    :param dict sets: array/dict of arrays
+    :returns: euler sets
+    :rtype: dict
     """
     return dict(euler(sets))
