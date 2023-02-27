@@ -6,6 +6,14 @@
 Welcome to eule's documentation!
 ================================
 
+Euler\'s diagrams are non-empty Venn\'s diagrams.
+
+Motivation
+================
+
+.. image:: ../images/euler_venn.png
+   :scale: 40%
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
@@ -22,4 +30,3 @@ Indices and tables
 
 * :ref:`genindex`
 * :ref:`modindex`
-* :ref:`search`
