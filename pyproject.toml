@@ -7,7 +7,7 @@ license = "MIT license"
 readme = "README.md"
 packages = [{include = "eule"}]
 homepage = "https://pypi.org/project/eule/"
-repository = "https://github.com/quivero/eule"
+repository = "https://github.com/trouchet/eule"
 keywords = ["euler-diagram", "sets"]
 classifiers = [
     "Development Status :: 6 - Mature",
