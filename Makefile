@@ -41,28 +41,30 @@ COVERAGE_IGNORE_PATHS = "eule/examples"
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-clean: clean-build clean-pyc clean-test clean-cache ## remove all build, test, coverage, Python artifacts and cache
+clean: clean-build clean-pyc clean-test clean-cache clean-docs ## remove all build, test, coverage, Python artifacts, cache and docs
 
-clean-build: ## remove build artifacts
+clean-docs: # remove docs for update
+	rm -fr "docs/$$PACKAGE_NAME.rst" "docs/modules.rst" "docs/conftest.rst" "docs/examples.rst" "docs/tests.rst"
+
+clean-build: # remove build artifacts
 	rm -fr build/ dist/ .eggs/
 	find . -name '*.egg-info' -o -name '*.egg' -exec rm -fr {} +
 
-clean-pyc: ## remove Python file artifacts
+clean-pyc: # remove Python file artifacts
 	find . -name '*.pyc' -o -name '*.pyo' -o -name '*~' -exec rm -rf {} +
 
-clean-test: ## remove test and coverage artifacts
+clean-test: # remove test and coverage artifacts
 	rm -fr .tox/ .coverage coverage.* htmlcov/ .pytest_cache
 
-clean-cache: ## remove test and coverage artifacts
+clean-cache: # remove test and coverage artifacts
 	find . -name '*cache*' -exec rm -rf {} +
 
 test: ## run tests quickly with the default Python
+	poetry shell
 	pytest
 
-atest: ## run tests on every Python version with tox
-	tox -q
-
 test-watch: ## run tests on watchdog mode
+	poetry shell
 	ptw
 
 lint: clean ## perform inplace lint fixes
@@ -76,8 +78,8 @@ coverage: clean ## check code coverage quickly with the default Python
 	$(BROWSER) htmlcov/index.html
 
 docs: clean ## generate Sphinx HTML documentation, including API docs
-	$(MAKE) -C docs clean
-	sphinx-apidoc -o "docs/" "$$PACKAGE_NAME"
+	poetry shell
+	sphinx-apidoc -o "docs/" "$$PACKAGE_NAME" "tests" "examples" "conftest.py" "__init__.py"
 	$(MAKE) -C docs html
 	$(BROWSER) 'docs/_build/html/index.html'
 
