@@ -3,7 +3,7 @@
 from copy import deepcopy
 from warnings import warn
 
-from .utils import dsort, clear, reduc, uniq
+from .utils import dsort, clear, reduc, uniq, areSpiderKeys
 
 delimiter = ','
 
@@ -119,3 +119,12 @@ def euler(sets):
     :rtype: dict
     """
     return dict(eulerGenerator(sets))
+
+def eulerKeys(sets):
+    """Euler diagram dictionary of set-dictionary of non-repetitive elements
+    
+    :param dict sets: array/dict of arrays
+    :returns: euler sets
+    :rtype: dict
+    """
+    return list(euler(sets).keys())

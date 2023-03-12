@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from eule.eule import eulerGenerator, euler
+from eule.eule import eulerGenerator, euler, eulerKeys
 
 
 def test_euler_iter_1_input():
@@ -138,3 +138,16 @@ def test_spread_euler_4_sets():
     }
 
     assert result == expected_output
+
+def test_spread_euler_4_sets():
+    """
+    Returns an euler keys for 4 valid sets
+    """
+    input_ = {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5], 'd': [3, 5, 6]}
+
+    result = eulerKeys(input_)
+    expected_output = ['a,b', 'b,c', 'a,b,c,d', 'c,d', 'd', 'a']
+
+    def intersection(a, b): return list(set(a) & set(b))
+
+    assert len(intersection(result, expected_output)) == len(expected_output) 
