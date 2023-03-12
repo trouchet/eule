@@ -7,7 +7,7 @@ from .utils import dsort, clear, reduc, uniq
 
 delimiter = ','
 
-def euler(sets):
+def eulerGenerator(sets):
     """This generator function returns each tuple (key, elems) of the Euler diagram in a generator-wise fashion systematic:
     
     1. Begin with the available `sets` and their exclusive elements;
@@ -56,7 +56,7 @@ def euler(sets):
                 csets = {cset_key: sets_[cset_key] for cset_key in compl_sets_keys}
 
                 # Instrospective recursion: Exclusive combination elements
-                for comb_str, celements in euler(csets):
+                for comb_str, celements in eulerGenerator(csets):
 
                     # Remove current set_key elements
                     comb_elems = list(set(celements) - set(sets_[set_key]))
@@ -111,11 +111,11 @@ def euler(sets):
                 set_keys = clear(sets_)
 
 
-def spread_euler(sets):
+def euler(sets):
     """Euler diagram dictionary of set-dictionary of non-repetitive elements
     
     :param dict sets: array/dict of arrays
     :returns: euler sets
     :rtype: dict
     """
-    return dict(euler(sets))
+    return dict(eulerGenerator(sets))
