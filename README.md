@@ -44,7 +44,7 @@ set = {
     'd': [3, 5, 6]
 }
 
-diagram = eule.spread_euler(set)
+diagram = eule.euler(set)
 
 # Euler dictionary: {'a,b': [2], 'b,c': [4], 'a,b,c,d': [3], 'c,d': [5], 'd': [6], 'a': [1]}
 print(diagram)
