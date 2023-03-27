@@ -105,5 +105,5 @@ bump-version: ## bump version to user-provided {patch|minor|major} semantic
 publish: clean ## build source and publish package
 	poetry publish --build
 
-release: $(MAKE) -C bump-version v=$(v)##
+release: $(MAKE) -C bump-version v=$(v) ## release package on PyPI
 	$(MAKE) -C publish
