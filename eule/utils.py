@@ -45,3 +45,16 @@ def clear(sets):
             sets.keys(),
         ),
     )
+
+def areSpiderKeys(arr):
+    """This map returns a boolean variable that type check a list of arrays
+
+    :param dict set:  
+    :returns: a set universe with  
+    :rtype: boolean
+    """
+
+    def isString(el): return isinstance(el, str)
+    def and_(a, b): return a and b
+
+    return reduce(and_, map(isString, arr)) if isinstance(arr, list) else False
