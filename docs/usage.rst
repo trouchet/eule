@@ -15,7 +15,7 @@ We run a file with extension `*.py` with following content:
     :caption: Minimal example
 
     #!/usr/bin/env python
-    from eule import spread_euler
+    from eule import euler
 
     set = {
         'a': [1, 2, 3],
@@ -24,7 +24,7 @@ We run a file with extension `*.py` with following content:
         'd': [3, 5, 6]
     }
 
-    diagram = spread_euler(set)
+    diagram = euler(set)
 
     # Euler dictionary: {'a,b': [2], 'b,c': [4], 'a,b,c,d': [3], 'c,d': [5], 'd': [6], 'a': [1]}
     print(diagram)
