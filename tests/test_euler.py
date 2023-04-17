@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import pytest
 
-from eule.eule import eulerGenerator, euler, eulerKeys
+from eule.eule import eulerGenerator, euler, \
+    eulerKeys, eulerBoundaries
 
+from .fixtures import sets, setsBoundaries
 
 def test_euler_iter_1_input():
     """
@@ -150,4 +152,7 @@ def test_spread_euler_4_sets():
 
     def intersection(a, b): return list(set(a) & set(b))
 
-    assert len(intersection(result, expected_output)) == len(expected_output) 
+    assert len(intersection(result, expected_output)) == len(expected_output)
+
+def test_boundaries():
+    assert eulerBoundaries(sets) == setsBoundaries

@@ -3,7 +3,8 @@
 from copy import deepcopy
 from warnings import warn
 
-from .utils import dsort, clear, reduc, uniq, areSpiderKeys
+from .utils import dsort, clear, reduc, \
+    uniq, unite, difference
 
 delimiter = ','
 
@@ -121,10 +122,31 @@ def euler(sets):
     return dict(eulerGenerator(sets))
 
 def eulerKeys(sets):
-    """Euler diagram dictionary of set-dictionary of non-repetitive elements
+    """Euler diagram keys
     
     :param dict sets: array/dict of arrays
-    :returns: euler sets
-    :rtype: dict
+    :returns: euler sets keys
+    :rtype: list
     """
     return list(euler(sets).keys())
+
+def eulerBoundaries(sets):
+    """Euler diagram set boundaries 
+    
+    :param dict sets: array/dict of arrays
+    :returns: euler boundary dict
+    :rtype: list
+    """
+
+    setsKeys = list(sets.keys())
+    diagram = eulerKeys(sets)
+    eulerSetsKeys = [keys.split(',') for keys in diagram]
+
+    boundaries = dict(map(lambda key: (key, []), setsKeys))
+
+    for setKey in setsKeys:
+        for eulerSetKeys in eulerSetsKeys:
+            if setKey in eulerSetKeys:
+                boundaries[setKey] = unite(boundaries[setKey], difference(eulerSetKeys, [setKey]))
+                
+    return {setKey: sorted(neighborsKeys) for setKey, neighborsKeys in boundaries.items()}
