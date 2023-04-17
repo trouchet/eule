@@ -46,6 +46,37 @@ def clear(sets):
         ),
     )
 
+def listToSet(arr):
+    """This map converts a list into a set
+
+    :param list of elements:  
+    :returns: a set-converted list
+    :rtype: set
+    """
+    return {s for s in arr}
+
+def unite(listA, listB):
+    """This map returns the union of two lists without repetition
+
+    :param listA:
+    :param listB:
+    :returns: list with non-repeated elements
+    :rtype: list
+    """
+
+    return list(listToSet(listA).union(listToSet(listB)))
+
+def difference(listA, listB):
+    """This map returns the difference of a list respective to other, without repetition
+
+    :param listA:
+    :param listB:
+    :returns: difference list with non-repeated elements
+    :rtype: list
+    """
+    
+    return list(listToSet(listA)-(listToSet(listB)))
+
 def areSpiderKeys(arr):
     """This map returns a boolean variable that type check a list of arrays
 
