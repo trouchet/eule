@@ -13,7 +13,7 @@ def test_euler_iter_1_input():
     """
     input_ = {'a': [1, 2]}
     euler_gen = eulerGenerator(input_)
-    expected_output = ('a', [1, 2])
+    expected_output = (('a'), [1, 2])
 
     assert next(euler_gen) == expected_output
 
@@ -25,9 +25,9 @@ def test_euler_iter_2_input():
     input_ = {'a': [1, 2], 'b': [2, 3]}
     euler_gen = eulerGenerator(input_)
 
-    assert next(euler_gen) == ('b', [3])
-    assert next(euler_gen) == ('a,b', [2])
-    assert next(euler_gen) == ('a', [1])
+    assert next(euler_gen) == (('b',), [3])
+    assert next(euler_gen) == (('a','b',), [2])
+    assert next(euler_gen) == (('a',), [1])
 
 
 def test_euler_iter_warning_1item():
@@ -74,7 +74,7 @@ def test_spread_euler_1_set():
     """
     input_ = {'a': [1, 2, 3]}
     result = euler(input_)
-    expected_output = {'a': [1, 2, 3]}
+    expected_output = {('a'): [1, 2, 3]}
 
     assert result == expected_output
 
@@ -85,7 +85,7 @@ def test_spread_euler_2_sets_with_non_exclusivity():
     """
     input_ = {'a': [1], 'b': [1, 2]}
     result = euler(input_)
-    expected_output = {'b': [2], 'a,b': [1]}
+    expected_output = {('b', ): [2], ('a','b'): [1]}
 
     assert result == expected_output
 
@@ -97,9 +97,9 @@ def test_spread_euler_2_sets():
     input_ = {'a': [1, 2, 3], 'b': [2, 3, 4]}
     result = euler(input_)
     expected_output = {
-        'b': [4],
-        'a,b': [2, 3],
-        'a': [1],
+        ('b', ): [4],
+        ('a','b'): [2, 3],
+        ('a', ): [1],
     }
 
     assert result == expected_output
@@ -113,11 +113,11 @@ def test_spread_euler_3_sets():
     input_ = {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5]}
     result = euler(input_)
     expected_output = {
-        'a,b': [2],
-        'b,c': [4],
-        'a,b,c': [3],
-        'c': [5],
-        'a': [1],
+        ('a','b'): [2],
+        ('b','c'): [4],
+        ('a','b','c'): [3],
+        ('c', ): [5],
+        ('a', ): [1],
     }
 
     assert result == expected_output
@@ -131,12 +131,12 @@ def test_spread_euler_4_sets():
 
     result = euler(input_)
     expected_output = {
-        'a,b': [2],
-        'b,c': [4],
-        'a,b,c,d': [3],
-        'c,d': [5],
-        'd': [6],
-        'a': [1],
+        ('a','b'): [2],
+        ('b','c'): [4],
+        ('a','b','c','d'): [3],
+        ('c','d'): [5],
+        ('d', ): [6],
+        ('a', ): [1],
     }
 
     assert result == expected_output
@@ -148,7 +148,9 @@ def test_spread_euler_4_sets():
     input_ = {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5], 'd': [3, 5, 6]}
 
     result = eulerKeys(input_)
-    expected_output = ['a,b', 'b,c', 'a,b,c,d', 'c,d', 'd', 'a']
+    expected_output = [
+        ('a','b'), ('b','c'), ('a','b','c','d'), ('c','d'), ('d', ), ('a', )
+    ]
 
     def intersection(a, b): return list(set(a) & set(b))
 

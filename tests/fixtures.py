@@ -1,5 +1,10 @@
 # Fixture for functionalities
 
+# tuplify
+tuple_=(1,3,2,4)
+value=5
+updated_tuple=(1,3,2,4,5)
+
 # "uniq"
 arr_with_repetition=[1, 2, 3, 3]
 arr_with_repetition_uniq=[1, 2, 3]
@@ -30,8 +35,10 @@ setsBoundaries={
 
 arrA=[1,2,3]
 setA={1,2,3}
+tupleA=(1,2,3)
 
 arrB=[3,4,5]
 
 arrApB=[1,2,3,4,5]
 arrAmB=[1,2]
+arrAiB=[3]

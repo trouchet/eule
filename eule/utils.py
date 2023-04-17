@@ -31,6 +31,19 @@ def dsort(str_, delimiter):
     """
     return delimiter.join(sorted(str_.split(delimiter)))
 
+def tuplify(candidate):
+    """This map returns a tuple element on given candidate
+
+    :param candidate: tuplification candidate
+    :returns: string with sorted elements delimited by given delimiter 
+    :rtype: str
+    """
+    return candidate if isinstance(candidate, tuple) \
+        else ( \
+            tuple(candidate) if isinstance(candidate, list) \
+            else (candidate)
+        )
+
 
 def clear(sets):
     """This map returns a set with non-empty values
@@ -39,14 +52,22 @@ def clear(sets):
     :returns: a set universe with  
     :rtype: dict
     """
-    return list(
-        filter(
-            lambda key: len(sets[key]) != 0,
-            sets.keys(),
-        ),
-    )
+    non_empty_mask=lambda key: len(sets[key]) != 0
 
-def listToSet(arr):
+    return list(filter(non_empty_mask, sets.keys(), ),)
+
+def update_tuple(tuple_, value):
+    """This map updates and sorts a tuple with a value
+
+    :param tuple of elements:
+    :param value: element to update
+    :returns: an ordered and updated tuple
+    :rtype: tuple
+    """
+    
+    return tuple(list(tuple_)+[value])
+
+def list_to_set(arr):
     """This map converts a list into a set
 
     :param list of elements:  
@@ -55,7 +76,7 @@ def listToSet(arr):
     """
     return {s for s in arr}
 
-def unite(listA, listB):
+def union(listA, listB):
     """This map returns the union of two lists without repetition
 
     :param listA:
@@ -64,7 +85,7 @@ def unite(listA, listB):
     :rtype: list
     """
 
-    return list(listToSet(listA).union(listToSet(listB)))
+    return list(list_to_set(listA).union(list_to_set(listB)))
 
 def difference(listA, listB):
     """This map returns the difference of a list respective to other, without repetition
@@ -75,7 +96,19 @@ def difference(listA, listB):
     :rtype: list
     """
     
-    return list(listToSet(listA)-(listToSet(listB)))
+    return list(list_to_set(listA)-(list_to_set(listB)))
+
+def intersection(listA, listB):
+    """This map returns the intersection of a list respective to other, without repetition
+
+    :param listA:
+    :param listB:
+    :returns: intersection list with non-repeated elements
+    :rtype: list
+    """
+    
+    return list(list_to_set(listA).intersection(list_to_set(listB)))
+
 
 def areSpiderKeys(arr):
     """This map returns a boolean variable that type check a list of arrays
