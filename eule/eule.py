@@ -115,8 +115,6 @@ def eulerGenerator(sets):
 
                 set_keys = clear(sets_)
 
-            else:
-                pass
 
 def euler(sets):
     """Euler diagram dictionary of set-dictionary of non-repetitive elements
