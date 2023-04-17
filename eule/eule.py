@@ -123,8 +123,6 @@ def euler(sets):
     :returns: euler sets
     :rtype: dict
     """
-    print(list(eulerGenerator(sets)))
-
     return dict(eulerGenerator(sets))
 
 def eulerKeys(sets):
