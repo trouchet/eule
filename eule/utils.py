@@ -52,7 +52,8 @@ def clear(sets):
     :returns: a set universe with  
     :rtype: dict
     """
-    non_empty_mask=lambda key: len(sets[key]) != 0
+    def non_empty_mask(key):
+        return (len(sets[key]) != 0)
 
     return list(filter(non_empty_mask, sets.keys(), ),)
 

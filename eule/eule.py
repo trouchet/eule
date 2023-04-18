@@ -31,7 +31,8 @@ def eulerGenerator(sets):
         len(uniq(values)) == len(values) for values in sets_.values()
     ]
 
-    and_map = lambda a, b: a and b
+    def and_map(a, b):
+        return (a and b)
 
     if not reduc(and_map, is_unique_set_arr, True):
         warn('Each array MUST NOT have duplicates')
