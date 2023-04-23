@@ -46,6 +46,14 @@ set = {
 
 diagram = eule.euler(set)
 
-# Euler dictionary: {'a,b': [2], 'b,c': [4], 'a,b,c,d': [3], 'c,d': [5], 'd': [6], 'a': [1]}
+# Euler dictionary:
+# {
+#     ('a', 'b'): [2], 
+#     ('b', 'c'): [4], 
+#     ('a', 'b', 'c', 'd'): [3], 
+#     ('d',): [6], 
+#     ('c', 'd'): [5], 
+#     ('a',): [1]
+# }
 print(diagram)
 ```
