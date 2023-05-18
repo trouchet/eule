@@ -61,11 +61,11 @@ clean-cache: # remove test and coverage artifacts
 
 test: ## run tests quickly with the default Python
 	poetry shell
-	pytest
+	pytest --cov=eule/ --cov-report term-missing
 
-test-watch: ## run tests on watchdog mode
+watch: ## run tests on watchdog mode
 	poetry shell
-	ptw
+	ptw -- --cov=eule/ --cov-report term-missing
 
 lint: clean ## perform inplace lint fixes
 	ruff --fix .
