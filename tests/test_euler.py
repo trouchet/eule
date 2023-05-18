@@ -2,17 +2,24 @@ from __future__ import annotations
 
 import pytest
 
-from eule.eule import eulerGenerator, euler, \
-    eulerKeys, eulerBoundaries
+from eule.eule import euler_generator, euler, \
+    euler_keys, euler_boundaries
 
-from .fixtures import sets, setsBoundaries
+from .fixtures import sets, setsBoundaries, verbose_key_sets, verbose_key_sets_euler
+
+def test_verbose_keys_euler():
+    """
+    Generates a tuple with key-value
+    """
+    
+    assert euler(verbose_key_sets) == verbose_key_sets_euler
 
 def test_euler_iter_1_input():
     """
     Generates a tuple with key-value
     """
     input_ = {'a': [1, 2]}
-    euler_gen = eulerGenerator(input_)
+    euler_gen = euler_generator(input_)
     expected_output = (('a'), [1, 2])
 
     assert next(euler_gen) == expected_output
@@ -23,7 +30,7 @@ def test_euler_iter_2_input():
     Generates all tuples with key-value
     """
     input_ = {'a': [1, 2], 'b': [2, 3]}
-    euler_gen = eulerGenerator(input_)
+    euler_gen = euler_generator(input_)
 
     assert next(euler_gen) == (('b',), [3])
     assert next(euler_gen) == (('a','b',), [2])
@@ -35,7 +42,7 @@ def test_euler_iter_warning_1item():
     Raises a warning for duplicated dict values
     """
     input_ = {'a': [42, 42]}
-    euler_gen = eulerGenerator(input_)
+    euler_gen = euler_generator(input_)
 
     with pytest.warns(UserWarning):
         next(euler_gen)
@@ -46,7 +53,7 @@ def test_euler_iter_warning_2items():
     Raises a warning for duplicated dict values
     """
     input_ = {'a': [42, 42], 'b': [42, 42]}
-    eule_gen = eulerGenerator(input_)
+    eule_gen = euler_generator(input_)
 
     with pytest.warns(UserWarning):
         next(eule_gen)
@@ -147,7 +154,7 @@ def test_spread_euler_4_sets():
     """
     input_ = {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5], 'd': [3, 5, 6]}
 
-    result = eulerKeys(input_)
+    result = euler_keys(input_)
     expected_output = [
         ('a','b'), ('b','c'), ('a','b','c','d'), ('c','d'), ('d', ), ('a', )
     ]
@@ -157,4 +164,4 @@ def test_spread_euler_4_sets():
     assert len(intersection(result, expected_output)) == len(expected_output)
 
 def test_boundaries():
-    assert eulerBoundaries(sets) == setsBoundaries
+    assert euler_boundaries(sets) == setsBoundaries
