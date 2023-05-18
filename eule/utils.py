@@ -11,7 +11,6 @@ def reduc(func, elems, elem0):
     """
     return reduce(func, elems + [elem0])
 
-
 def uniq(lst):
     """This map returns list with unique elements
 
@@ -20,7 +19,6 @@ def uniq(lst):
     :rtype: list
     """
     return list(unique(lst))
-
 
 def dsort(str_, delimiter):
     """This map returns a sorted string delimited by token
@@ -41,7 +39,10 @@ def tuplify(candidate):
     return candidate if isinstance(candidate, tuple) \
         else ( \
             tuple(candidate) if isinstance(candidate, list) \
-            else (candidate)
+            else ( \
+                (candidate,) if isinstance(candidate, str) \
+                else (candidate,) 
+            )
         )
 
 
@@ -66,7 +67,10 @@ def update_tuple(tuple_, value):
     :rtype: tuple
     """
     
-    return tuple(list(tuple_)+[value])
+    tuple_lst=list(tuplify(tuple_))
+    tuple_lst.append(value)
+    
+    return tuple(tuple_lst)
 
 def list_to_set(arr):
     """This map converts a list into a set
@@ -109,3 +113,4 @@ def intersection(listA, listB):
     """
     
     return list(list_to_set(listA).intersection(list_to_set(listB)))
+

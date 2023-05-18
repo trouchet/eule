@@ -88,4 +88,4 @@ def test_tuplify():
     """
     assert utils.tuplify(tupleA) == tupleA
     assert utils.tuplify(arrA) == tupleA
-    assert utils.tuplify(42) == (42)
+    assert utils.tuplify(42) == (42, )
