@@ -88,10 +88,6 @@ def euler_generator(sets):
                     # Non-empty intersection set
                     if len(comb_elems) != 0:
                         # Sort keys to assure deterministic behavior
-                        print('------')
-                        print(euler_tuple)
-                        print(set_key)
-                        print(update_tuple(euler_tuple, set_key))
                         comb_key = tuplify(sorted(update_tuple(euler_tuple, set_key)))
                         
                         # 2. Intersection of analysis element and exclusive group:
