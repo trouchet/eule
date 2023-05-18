@@ -90,10 +90,10 @@ install: clean ## install the package to the active Python's site-packages
 	poetry shell
 	poetry install
 
-echo-version: ## echo current package version
+echo: ## echo current package version
 	echo "v$$(poetry version -s)"
 
-bump-version: ## bump version to user-provided {patch|minor|major} semantic
+bump: ## bump version to user-provided {patch|minor|major} semantic
 	poetry version $(v)
 	git add pyproject.toml
 	git commit -m "release/ tag v$$(poetry version -s)"
