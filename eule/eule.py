@@ -124,9 +124,9 @@ def euler(sets):
     :returns: euler sets
     :rtype: dict
     """
-    return dict(eulerGenerator(sets))
+    return dict(euler_generator(sets))
 
-def eulerKeys(sets):
+def euler_keys(sets):
     """Euler diagram keys
     
     :param dict sets: array/dict of arrays
@@ -135,7 +135,7 @@ def eulerKeys(sets):
     """
     return list(euler(sets).keys())
 
-def eulerBoundaries(sets):
+def euler_boundaries(sets):
     """Euler diagram set boundaries 
     
     :param dict sets: array/dict of arrays
@@ -144,7 +144,7 @@ def eulerBoundaries(sets):
     """
 
     setsKeys = list(sets.keys())
-    eulerSetsKeys = eulerKeys(sets)
+    eulerSetsKeys = euler_keys(sets)
 
     boundaries = dict(map(lambda key: (key, []), setsKeys))
 
