@@ -35,25 +35,33 @@ We run command `python example.py` on the folder with file `example.py` and foll
 
 ``` {.python}
 #!/usr/bin/env python
-import eule
+from eule import euler
 
-set = {
+sets = {
     'a': [1, 2, 3],
     'b': [2, 3, 4],
     'c': [3, 4, 5],
     'd': [3, 5, 6]
 }
 
-diagram = eule.euler(set)
+euler_diagram = euler(sets)
+euler_keys = euler_keys(sets)
+euler_boundaries = euler_boundaries(sets)
 
-# Euler dictionary:
+# Euler dictionary: 
+# {'a,b': [2], 'b,c': [4], 'a,b,c,d': [3], 'c,d': [5], 'd': [6], 'a': [1]}
+print(euler_diagram)
+
+# Euler keys list:
+# ['a,b', 'b,c', 'a,b,c,d', 'c,d', 'd', 'a']
+print(euler_keys)
+
+# Euler boundaries dictionary: 
 # {
-#     ('a', 'b'): [2], 
-#     ('b', 'c'): [4], 
-#     ('a', 'b', 'c', 'd'): [3], 
-#     ('d',): [6], 
-#     ('c', 'd'): [5], 
-#     ('a',): [1]
+#   'a': ['b', 'c', 'd'], 
+#   'b': ['a', 'c', 'd'], 
+#   'c': ['a', 'b', 'd'], 
+#   'd': ['a', 'b', 'c']
 # }
-print(diagram)
+print(euler_boundaries)
 ```
