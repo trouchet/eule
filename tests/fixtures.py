@@ -42,3 +42,20 @@ arrB=[3,4,5]
 arrApB=[1,2,3,4,5]
 arrAmB=[1,2]
 arrAiB=[3]
+
+verbose_key_sets={
+    "set A": [1,2,3,4],
+    "set B": [2,3,4,5],
+    "set C": [3,4,5,6],
+    "set D": [4,5,6,7],
+}
+
+verbose_key_sets_euler={
+    ("set A",): [1],
+    ("set A","set B",):[2],
+    ("set A","set B","set C",):[3],
+    ("set A","set B","set C","set D",):[4],
+    ("set B","set C","set D",):[5],
+    ("set C","set D",):[6],
+    ("set D",): [7],
+}
