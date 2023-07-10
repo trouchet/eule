@@ -1,4 +1,4 @@
-![a night owl](https://github.com/trouchet/eule/blob/master/images/eule_small.png?raw=true)
+![a night owl](https://github.com/trouchet/eule/blob/main/images/eule_small.png?raw=true)
 
 [![Version](https://img.shields.io/pypi/v/eule.svg)](https://pypi.python.org/pypi/eule)
 [![python](https://img.shields.io/pypi/pyversions/eule.svg)](https://pypi.org/project/eule/)
@@ -17,7 +17,7 @@ Euler\'s diagrams are non-empty Venn\'s diagrams. For further information about:
 Motivation
 ================
 
-<img src="https://github.com/trouchet/eule/blob/master/images/euler_venn.png?raw=true" width="400" height="364"/>
+<img src="https://github.com/trouchet/eule/blob/main/images/euler_venn.png?raw=true" width="400" height="364"/>
 
 How to install
 ================
