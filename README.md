@@ -49,7 +49,14 @@ euler_keys_ = euler_keys(sets)
 euler_boundaries_ = euler_boundaries(sets)
 
 # Euler dictionary: 
-# {('b', 'c'): [4], ('c', 'd'): [5], ('a', 'b', 'c', 'd'): [3], ('d',): [6], ('a', 'b'): [2], ('a',): [1]}
+# {
+#     ('b', 'c'): [4],
+#     ('c', 'd'): [5],
+#     ('a', 'b', 'c', 'd'): [3],
+#     ('d',): [6],
+#     ('a', 'b'): [2],
+#     ('a',): [1]
+# }
 print(euler_diagram)
 
 # Euler keys list:
