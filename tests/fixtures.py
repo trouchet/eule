@@ -1,5 +1,11 @@
 # Fixture for functionalities
 
+def parametrize_test_cases(labels, test_cases):
+    return {
+        "labels": labels,
+        "test_cases": test_cases
+    }
+
 # tuplify
 tuple_=(1,3,2,4)
 value=5
@@ -18,6 +24,10 @@ sorted_delimited_string='1,2,3,4'
 uncleared_dict={'a': [1, 2, 3], 'b': []}
 dict_keys_with_non_empty_elements=['a']
 
+# Sets to Euler sets
+
+
+
 # "listToSet", "unite", "difference"
 sets = {
     'a': [1, 2, 3],
@@ -25,6 +35,49 @@ sets = {
     'c': [3, 4, 5],
     'd': [3, 5, 6]
 }
+
+sets_to_euler_tuples=parametrize_test_cases(\
+    "test_sets,euler_sets", \
+    [
+        (
+            {'a': [1, 2, 3]}, 
+            {('a'): [1, 2, 3]}
+        ),
+        (
+            {'a': [1], 'b': [1, 2]}, 
+            {('b', ): [2], ('a','b'): [1]}
+        ),
+        (
+            {'a': [1, 2, 3], 'b': [2, 3, 4]}, 
+            {
+                ('b', ): [4],
+                ('a','b'): [2, 3],
+                ('a', ): [1],
+            }
+        ),
+        (
+            {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5]}, 
+            {
+                ('a','b'): [2],
+                ('b','c'): [4],
+                ('a','b','c'): [3],
+                ('c', ): [5],
+                ('a', ): [1],
+            } 
+        ),
+        (
+            {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5], 'd': [3, 5, 6]},
+            {
+                ('a','b'): [2],
+                ('b','c'): [4],
+                ('a','b','c','d'): [3],
+                ('c','d'): [5],
+                ('d', ): [6],
+                ('a', ): [1],
+            }
+        )
+    ]
+)
 
 setsBoundaries={
     'a': ['b', 'c', 'd'], 

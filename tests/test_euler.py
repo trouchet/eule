@@ -3,9 +3,11 @@ from __future__ import annotations
 import pytest
 
 from eule.eule import euler_generator, euler, \
-    euler_keys, euler_boundaries
+    euler_keys, euler_boundaries, Euler
 
-from .fixtures import sets, setsBoundaries, verbose_key_sets, verbose_key_sets_euler
+from .fixtures import sets, setsBoundaries, \
+    verbose_key_sets, verbose_key_sets_euler, \
+    sets_to_euler_tuples
 
 def test_verbose_keys_euler():
     """
@@ -148,7 +150,7 @@ def test_spread_euler_4_sets():
 
     assert result == expected_output
 
-def test_spread_euler_4_sets():
+def test_euler_keys():
     """
     Returns an euler keys for 4 valid sets
     """
@@ -165,3 +167,9 @@ def test_spread_euler_4_sets():
 
 def test_boundaries():
     assert euler_boundaries(sets) == setsBoundaries
+
+@pytest.mark.parametrize(\
+        sets_to_euler_tuples["labels"], sets_to_euler_tuples["test_cases"]\
+)
+def test_euler_class(test_sets, euler_sets):
+    assert euler(test_sets) == euler_sets 
