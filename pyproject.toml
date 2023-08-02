@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "eule"
-version = "1.0.1"
+version = "1.0.2"
 description = "Euler diagrams in python"
 authors = ["Bruno Peixoto <brunolnetto@gmail.com>"]
 license = "MIT license"
@@ -41,7 +41,7 @@ pytest-cov = "^4.0.0"
 pytest-watch = "^4.2.0"
 pylint = "^2.15.9"
 wheel = "^0.38.4"
-watchdog = "^2.2.0"
+watchdog = "^3.0.0"
 isort = "^5.11.4"
 mypy = "^0.991"
 types-mock = "^4.0.15.2"
