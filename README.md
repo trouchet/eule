@@ -1,4 +1,4 @@
-![a night owl](https://github.com/trouchet/eule/blob/master/images/eule_small.png?raw=true)
+![a night owl](https://github.com/trouchet/eule/blob/main/images/eule_small.png?raw=true)
 
 [![Version](https://img.shields.io/pypi/v/eule.svg)](https://pypi.python.org/pypi/eule)
 [![python](https://img.shields.io/pypi/pyversions/eule.svg)](https://pypi.org/project/eule/)
@@ -17,7 +17,7 @@ Euler\'s diagrams are non-empty Venn\'s diagrams. For further information about:
 Motivation
 ================
 
-<img src="https://github.com/trouchet/eule/blob/master/images/euler_venn.png?raw=true" width="400" height="364"/>
+<img src="https://github.com/trouchet/eule/blob/main/images/euler_venn.png?raw=true" width="400" height="364"/>
 
 How to install
 ================
@@ -35,7 +35,7 @@ We run command `python example.py` on the folder with file `example.py` and foll
 
 ``` {.python}
 #!/usr/bin/env python
-from eule import euler
+from eule import euler, euler_keys, euler_boundaries
 
 sets = {
     'a': [1, 2, 3],
@@ -45,23 +45,30 @@ sets = {
 }
 
 euler_diagram = euler(sets)
-euler_keys = euler_keys(sets)
-euler_boundaries = euler_boundaries(sets)
+euler_keys_ = euler_keys(sets)
+euler_boundaries_ = euler_boundaries(sets)
 
 # Euler dictionary: 
-# {'a,b': [2], 'b,c': [4], 'a,b,c,d': [3], 'c,d': [5], 'd': [6], 'a': [1]}
+# {
+#     ('b', 'c'): [4],
+#     ('c', 'd'): [5],
+#     ('a', 'b', 'c', 'd'): [3],
+#     ('d',): [6],
+#     ('a', 'b'): [2],
+#     ('a',): [1]
+# }
 print(euler_diagram)
 
 # Euler keys list:
-# ['a,b', 'b,c', 'a,b,c,d', 'c,d', 'd', 'a']
-print(euler_keys)
+# [('b', 'c'), ('c', 'd'), ('a', 'b', 'c', 'd'), ('d',), ('a', 'b'), ('a',)]
+print(euler_keys_)
 
 # Euler boundaries dictionary: 
 # {
-#   'a': ['b', 'c', 'd'], 
-#   'b': ['a', 'c', 'd'], 
-#   'c': ['a', 'b', 'd'], 
-#   'd': ['a', 'b', 'c']
+#     'a': ['b', 'c', 'd'],
+#     'b': ['a', 'c', 'd'],
+#     'c': ['a', 'b', 'd'],
+#     'd': ['a', 'b', 'c']
 # }
-print(euler_boundaries)
+print(euler_boundaries_)
 ```
