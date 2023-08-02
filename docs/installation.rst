@@ -31,17 +31,18 @@ You can either clone the public repository:
 
     $ git clone git://github.com/trouchet/eule
 
-Or download the `tarball`_:
+Or download and untar the `tarball`_: :-P
 
 .. code-block:: console
-
-    $ curl -OJL https://github.com/trouchet/eule/tarball/master
+ 
+    $ curl -L https://github.com/trouchet/eule/tarball/master -o eule.tar.gz
+    $ tar -xzf eule.tar.gz
 
 Once you have a copy of the source, you can install it with:
 
 .. code-block:: console
 
-    $ python setup.py install
+    $ make install
 
 
 .. _Github repo: https://github.com/trouchet/eule
