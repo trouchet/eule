@@ -36,6 +36,28 @@ sets = {
     'd': [3, 5, 6]
 }
 
+keys_to_sets_tuples=parametrize_test_cases(\
+    "key,set_elements", \
+    [
+        ('a', [1, 2, 3]),
+        (('a',), [1, 2, 3]),
+        (('a', 'b'), [1, 2, 3, 4]),
+        (('a', 'b', 'c'), [1, 2, 3, 4, 5]),
+        (('a', 'b', 'c', 'd'), [1, 2, 3, 4, 5, 6])
+    ]
+)
+
+match_items_tuple=parametrize_test_cases(\
+    "elements,expected_matched_sets", \
+    [
+        ({1, 2, 3}, {'a'}),
+        ({1, 2, 3, 4}, {'a', 'b'}),
+        ({1, 2, 3, 4, 5}, {'a', 'b', 'c'}),
+        ({2, 3, 4, 5}, {'b', 'c'}),
+        ({2, 3, 4, 5, 6}, {'b', 'c', 'd'})
+    ]
+)
+
 sets_to_euler_tuples=parametrize_test_cases(\
     "test_sets,euler_sets", \
     [
@@ -66,7 +88,7 @@ sets_to_euler_tuples=parametrize_test_cases(\
             } 
         ),
         (
-            {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5], 'd': [3, 5, 6]},
+            sets,
             {
                 ('a','b'): [2],
                 ('b','c'): [4],
@@ -78,6 +100,10 @@ sets_to_euler_tuples=parametrize_test_cases(\
         )
     ]
 )
+
+eulerSetsKeys=[
+    ('a','b'), ('b','c'), ('a','b','c','d'), ('c','d'), ('d', ), ('a', )
+]
 
 setsBoundaries={
     'a': ['b', 'c', 'd'], 

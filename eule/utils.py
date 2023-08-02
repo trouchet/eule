@@ -11,7 +11,7 @@ def reduc(func, elems, elem0):
     """
     return reduce(func, elems + [elem0])
 
-def uniq(lst):
+def uniq(lst:list):
     """This map returns list with unique elements
 
     :param list lst: array of elements entries 
@@ -58,7 +58,7 @@ def clear(sets):
 
     return list(filter(non_empty_mask, sets.keys(), ),)
 
-def update_tuple(tuple_, value):
+def update_tuple(tuple_:tuple, value):
     """This map updates and sorts a tuple with a value
 
     :param tuple of elements:
@@ -72,7 +72,7 @@ def update_tuple(tuple_, value):
     
     return tuple(tuple_lst)
 
-def list_to_set(arr):
+def list_to_set(arr:list):
     """This map converts a list into a set
 
     :param list of elements:  
@@ -81,7 +81,7 @@ def list_to_set(arr):
     """
     return {s for s in arr}
 
-def union(listA, listB):
+def union(listA:list, listB:list):
     """This map returns the union of two lists without repetition
 
     :param listA:
@@ -92,7 +92,7 @@ def union(listA, listB):
 
     return list(list_to_set(listA).union(list_to_set(listB)))
 
-def difference(listA, listB):
+def difference(listA:list, listB:list):
     """This map returns the difference of a list respective to other, without repetition
 
     :param listA:
@@ -103,7 +103,7 @@ def difference(listA, listB):
     
     return list(list_to_set(listA)-(list_to_set(listB)))
 
-def intersection(listA, listB):
+def intersection(listA:list, listB:list):
     """This map returns the intersection of a list respective to other, without repetition
 
     :param listA:

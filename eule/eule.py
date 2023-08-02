@@ -158,3 +158,83 @@ def euler_boundaries(sets):
                 boundaries[setKey] = union(boundaries[setKey], difference(eulerSetKeys, [setKey]))
                 
     return {setKey: sorted(neighborsKeys) for setKey, neighborsKeys in boundaries.items()}
+
+class Euler(object):
+    def __init__(self, sets):
+        self.sets=deepcopy(sets)
+        self.esets=euler(sets)
+
+    def __getitem__(self, keys):
+        if not isinstance(keys, tuple):
+            try:
+                return self.sets[keys]
+
+            except:
+                raise KeyError(keys)
+        
+        else:
+            elements=[]
+            try:
+                for key in keys:
+                    elements=union(self.sets[key], elements)
+
+                return elements
+            except:
+                keys=str(keys)
+                header=f"The keys must be among keys: ({keys})."
+                
+                msg=f"{header}"
+
+                raise TypeError(msg)
+    
+    def __repr__(self):
+        return str(self.as_dict())
+
+    def euler_keys(self):
+        return euler_keys(self.sets)
+
+    def euler_boundaries(self):
+        return euler_boundaries(self.sets)
+
+    def as_dict(self):
+        return self.esets
+    
+    def match(self, items: set):
+        if not isinstance(items, set):
+            raise TypeError("Items must be of type 'set'")
+        
+        # Initial value: Empty set
+        set_keys=set()
+
+        # Loop along euler set key tuples
+        for key, value in self.sets.items():
+            intersection_elems=items.intersection(set(value))
+
+            # Match operator produces the non-repeated union of euler keys which
+            # has its value set as items subset.
+            if(len(intersection_elems)==len(value)):
+                set_keys.add(key)
+            
+        
+        return set_keys
+
+    def remove_key(self, key):
+        if(key in list(self.sets.keys())):
+            self.sets = {
+                key_: value \
+                for key_, value in self.sets.items() \
+                if key_ is not key 
+            }
+
+            self.esets=euler(self.sets)
+        
+        else:
+            keys=list(self.sets.keys())
+
+            msg1=f"Key {key} is not available on current set."
+            msg2=f"Available keys are: {keys}"
+            
+            warn(msg1+" "+msg2)
+
+    
+    

@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 import pytest
+from copy import deepcopy
 
 from eule.eule import euler_generator, euler, \
     euler_keys, euler_boundaries, Euler
 
 from .fixtures import sets, setsBoundaries, \
     verbose_key_sets, verbose_key_sets_euler, \
-    sets_to_euler_tuples
+    sets_to_euler_tuples, keys_to_sets_tuples, \
+    match_items_tuple, eulerSetsKeys, setsBoundaries
 
 def test_verbose_keys_euler():
     """
@@ -76,79 +78,11 @@ def test_spread_euler_ill_input_num():
     with pytest.raises(TypeError, match='Ill-conditioned input.'):
         euler(1)
 
-
-def test_spread_euler_1_set():
-    """
-    Returns an euler dictionary for 1 valid set
-    """
-    input_ = {'a': [1, 2, 3]}
-    result = euler(input_)
-    expected_output = {('a'): [1, 2, 3]}
-
-    assert result == expected_output
-
-
-def test_spread_euler_2_sets_with_non_exclusivity():
-    """
-    Returns an euler dictionary for 2 valid sets
-    """
-    input_ = {'a': [1], 'b': [1, 2]}
-    result = euler(input_)
-    expected_output = {('b', ): [2], ('a','b'): [1]}
-
-    assert result == expected_output
-
-
-def test_spread_euler_2_sets():
-    """
-    Returns an euler dictionary for 2 valid sets
-    """
-    input_ = {'a': [1, 2, 3], 'b': [2, 3, 4]}
-    result = euler(input_)
-    expected_output = {
-        ('b', ): [4],
-        ('a','b'): [2, 3],
-        ('a', ): [1],
-    }
-
-    assert result == expected_output
-
-
-def test_spread_euler_3_sets():
-    """
-    Returns an euler dictionary for 3 valid sets
-    """
-
-    input_ = {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5]}
-    result = euler(input_)
-    expected_output = {
-        ('a','b'): [2],
-        ('b','c'): [4],
-        ('a','b','c'): [3],
-        ('c', ): [5],
-        ('a', ): [1],
-    }
-
-    assert result == expected_output
-
-
-def test_spread_euler_4_sets():
-    """
-    Returns an euler dictionary for 4 valid sets
-    """
-    input_ = {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5], 'd': [3, 5, 6]}
-
-    result = euler(input_)
-    expected_output = {
-        ('a','b'): [2],
-        ('b','c'): [4],
-        ('a','b','c','d'): [3],
-        ('c','d'): [5],
-        ('d', ): [6],
-        ('a', ): [1],
-    }
-
-    assert result == expected_output
+@pytest.mark.parametrize(\
+        sets_to_euler_tuples["labels"], sets_to_euler_tuples["test_cases"]\
+)
+def test_euler(test_sets, euler_sets):
+    assert euler(test_sets) == euler_sets 
 
 def test_euler_keys():
     """
@@ -171,5 +105,119 @@ def test_boundaries():
 @pytest.mark.parametrize(\
         sets_to_euler_tuples["labels"], sets_to_euler_tuples["test_cases"]\
 )
-def test_euler_class(test_sets, euler_sets):
-    assert euler(test_sets) == euler_sets 
+def test_euler_class_properties(test_sets, euler_sets):
+    euler_instance=Euler(test_sets)
+    
+    assert euler_instance.sets == test_sets
+    assert euler_instance.esets == euler_sets
+    assert euler_instance.as_dict() == euler_sets
+    assert euler_instance.__repr__() == str(euler_instance.as_dict())
+
+@pytest.mark.parametrize(\
+        keys_to_sets_tuples["labels"], keys_to_sets_tuples["test_cases"]\
+)
+def test_euler_class_getitem(key, set_elements):
+    euler_instance=Euler(sets)
+    
+    assert euler_instance[key] == set_elements
+
+def test_euler_class_getitem_error():
+    """
+    Raises an Exception for ill-conditioned input as string
+    """
+    euler_instance=Euler(sets)
+    wrong_key='A'
+    
+    with pytest.raises(KeyError, match=wrong_key):
+        euler_instance[wrong_key]
+
+    with pytest.raises(TypeError, match='The keys must be among keys'):
+        euler_instance[(wrong_key, )]
+
+def test_euler_class_remove_key():
+    """
+    Raises an Exception for ill-conditioned input as string
+    """
+    euler_instance=Euler(deepcopy(sets))
+    removing_key='a'
+    remaining_sets={
+        key: value
+        for key, value in sets.items()
+        if key is not removing_key
+    }
+
+    euler_instance.remove_key(removing_key)
+    
+    assert euler_instance.sets == remaining_sets
+    assert euler_instance.esets == euler(remaining_sets)
+
+def test_euler_class_warning_1item():
+    """
+    Raises a warning for duplicated dict values
+    """
+    euler_instance=Euler(deepcopy(sets))
+    wrong_key='A'
+    
+    with pytest.warns(Warning):
+        euler_instance.remove_key(wrong_key)
+
+def test_euler_class_remove_key():
+    """
+    Raises an Exception for ill-conditioned input as string
+    """
+    euler_instance=Euler(deepcopy(sets))
+    removing_key='a'
+    remaining_sets={
+        key: value
+        for key, value in sets.items()
+        if key is not removing_key
+    }
+
+    euler_instance.remove_key(removing_key)
+    
+    assert euler_instance.sets == remaining_sets
+    assert euler_instance.esets == euler(remaining_sets)
+
+@pytest.mark.parametrize(\
+        match_items_tuple["labels"], \
+        match_items_tuple["test_cases"]
+)
+def test_euler_class_match(elements,expected_matched_sets):
+    """
+    Raises an Exception for ill-conditioned input as string
+    """
+    euler_instance=Euler(deepcopy(sets))
+    matched_sets=euler_instance.match(elements)
+    
+    assert matched_sets == expected_matched_sets
+
+def test_euler_class_match_error():
+    """
+    Raises an Exception for ill-conditioned input as string
+    """
+    euler_instance=Euler(deepcopy(sets))
+    matched_elems=['42', 'Ford Prefect']
+
+    with pytest.raises(TypeError, match="Items must be of type 'set'"):
+        euler_instance.match(matched_elems)
+
+def test_euler_class_keys():
+    """
+    Returns an euler keys for 4 valid sets
+    """
+    euler_instance=Euler(deepcopy(sets))
+    
+    result = euler_instance.euler_keys()
+    expected_output = eulerSetsKeys
+
+    def intersection(a, b): return list(set(a) & set(b))
+
+    assert len(intersection(result, expected_output)) == len(expected_output)
+
+def test_euler_class_boundaries():
+    euler_instance=Euler(deepcopy(sets))
+
+    result = euler_instance.euler_boundaries()
+    expected_output = setsBoundaries
+
+    assert result == expected_output
