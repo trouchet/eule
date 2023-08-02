@@ -24,3 +24,7 @@ History
 
 * Review documentation with only sphinx structure suggestions;
 
+1.0.2 (2023-08-02)
+------------------
+
+* Add class Euler to wrap main package functionalities
