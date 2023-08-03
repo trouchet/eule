@@ -28,3 +28,8 @@ History
 ------------------
 
 * Add class Euler to wrap main package functionalities
+
+1.0.2 (2023-08-03)
+------------------
+
+* Add example to README and readthedocs page
