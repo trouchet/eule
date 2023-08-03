@@ -31,7 +31,7 @@ You can either clone the public repository:
 
     $ git clone git://github.com/trouchet/eule
 
-Or download and untar the `tarball`_: :-P
+Or download and untar the `tarball`_:
 
 .. code-block:: console
  
