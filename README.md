@@ -17,19 +17,36 @@ Euler\'s diagrams are non-empty Venn\'s diagrams. For further information about:
 Motivation
 ================
 
-<img src="https://github.com/trouchet/eule/blob/main/images/euler_venn.png?raw=true" width="400" height="364"/>
+<details>
+    <summary>
+    Click to unfold usage
+    </summary>
+
+    <img src="https://github.com/trouchet/eule/blob/main/images/euler_venn.png?raw=true" width="400" height="364"/>    
+</details>
 
 How to install
 ================
 
-We run the command on desired installation environment:
+<details>
+    <summary>
+    Click to unfold usage
+    </summary>
+
+    We run the command on desired installation environment:
 
 ``` {.bash}
 pip install eule
 ```
+</details>
 
 Minimal example
 ================
+
+<details>
+    <summary>
+    Click to unfold usage
+    </summary>
 
 We run command `python example.py` on the folder with file `example.py` and following content:
 
@@ -102,3 +119,6 @@ print('\n')
 euler_instance.remove_key('a')
 print(euler_instance.as_dict())
 ```
+
+</details>
+
