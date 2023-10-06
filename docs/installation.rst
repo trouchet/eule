@@ -34,7 +34,7 @@ You can either clone the public repository:
 Or download and untar the `tarball`_:
 
 .. code-block:: console
- 
+
     $ curl -L https://github.com/trouchet/eule/tarball/master -o eule.tar.gz
     $ tar -xzf eule.tar.gz
 

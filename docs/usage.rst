@@ -16,7 +16,7 @@ We run a file with extension `*.py` with following content:
 
     from eule import euler, euler_keys, euler_boundaries, Euler
 
-    sets = {    
+    sets = {
         'a': [1, 2, 3],
         'b': [2, 3, 4],
         'c': [3, 4, 5],
