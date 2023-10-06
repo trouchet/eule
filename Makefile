@@ -93,6 +93,9 @@ install: clean ## install the package to the active Python's site-packages
 echo: ## echo current package version
 	echo "v$$(poetry version -s)"
 
+what: ## List all commits made since last version bump
+	git log --oneline "$$(git rev-list -n 1 "v$$(poetry version -s)")..$$(git rev-parse HEAD)"
+
 bump: ## bump version to user-provided {patch|minor|major} semantic
 	poetry version $(v)
 	git add pyproject.toml
