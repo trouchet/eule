@@ -31,6 +31,11 @@ pip install eule
 Minimal example
 ================
 
+<details>
+    <summary>
+    Click to unfold usage
+    </summary>
+
 We run command `python example.py` on the folder with file `example.py` and following content:
 
 ``` {.python}
@@ -102,3 +107,6 @@ print('\n')
 euler_instance.remove_key('a')
 print(euler_instance.as_dict())
 ```
+
+</details>
+
