@@ -127,11 +127,11 @@ def test_euler_class_getitem_error():
     """
     euler_instance=Euler(sets)
     wrong_key='A'
-
+    
     with pytest.raises(KeyError, match=wrong_key):
         euler_instance[wrong_key]
 
-    with pytest.raises(TypeError, match='The keys must be among keys'):
+    with pytest.raises(KeyError, match='The keys must be among keys'):
         euler_instance[(wrong_key, )]
 
 def test_euler_class_remove_key():

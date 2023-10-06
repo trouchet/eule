@@ -182,13 +182,13 @@ class Euler:
                     elements=union(self.sets[key], elements)
 
                 return elements
-            except TypeError:
+            except KeyError:
                 keys=str(keys)
                 header=f'The keys must be among keys: ({keys}).'
 
                 msg=f'{header}'
 
-                raise TypeError(msg)
+                raise KeyError(msg)
 
     def __repr__(self):
         return str(self.as_dict())
