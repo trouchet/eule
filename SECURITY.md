@@ -15,4 +15,4 @@ This section tells how to report a vulnerability.
 
 1. Where to go: [Issues section](https://github.com/trouchet/eule/issues)
 2. How often they can expect to get an update on a reported vulnerability: estimated response time: 1 to 2 weeks
-3. What to expect if the vulnerability is accepted or declined: you can expect to have a vulnerability accepted if it has a reproducible example. 
+3. What to expect if the vulnerability is accepted or declined: you can expect to have a vulnerability accepted if it has a reproducible example.
