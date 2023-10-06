@@ -1,6 +1,8 @@
 .PHONY: help clean test coverage docs servedocs install
 .DEFAULT_GOAL := help
 
+SHELL := /bin/bash
+
 define BROWSER_PYSCRIPT
 import os, webbrowser, sys
 
@@ -96,7 +98,14 @@ echo: ## echo current package version
 what: ## List all commits made since last version bump
 	git log --oneline "$$(git rev-list -n 1 "v$$(poetry version -s)")..$$(git rev-parse HEAD)"
 
+check-bump: ## check if bump version is valid
+	@if [ "$(v)" != "patch" ] && [ "$(v)" != "minor" ] && [ "$(v)" != "major" ]; then \
+		echo "Invalid input for 'v': $(v). Please use 'patch', 'minor', or 'major'."; \
+		exit 1; \
+	fi; \
+
 bump: ## bump version to user-provided {patch|minor|major} semantic
+	@$(MAKE) check-bump v=$(v)
 	poetry version $(v)
 	git add pyproject.toml
 	git commit -m "release/ tag v$$(poetry version -s)"
@@ -104,7 +113,7 @@ bump: ## bump version to user-provided {patch|minor|major} semantic
 	git push
 	git push --tags
 	poetry version
-
+	
 publish: clean ## build source and publish package
 	poetry publish --build
 
