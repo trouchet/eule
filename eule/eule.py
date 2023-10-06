@@ -27,14 +27,17 @@ def validate_euler_generator_input(sets_):
 
 
 def euler_generator(sets):
-    """This generator function returns each tuple (key, elems) of the Euler diagram in a generator-wise fashion systematic:
-    
+    """This generator function returns each tuple (key, elems) of the
+    Euler diagram in a generator-wise fashion systematic:
+
     1. Begin with the available `sets` and their exclusive elements;
     2. Compute complementary elements to current key-set;
-    3. In case complementary set-keys AND current set content are not empty, continue; Otherwise, go to next key-set;
+    3. In case complementary set-keys AND current set content are not empty,
+    continue; Otherwise, go to next key-set;
     4. Find the euler diagram on complementary sets;
     5. Compute exclusive combination elements;
-    6. In case there are exclusive elements to combination: yield exclusive combination elements; Remove exclusive combination elements from current key-set. 
+    6. In case there are exclusive elements to combination: yield exclusive
+    scombination elements; Remove exclusive combination elements from current key-set.
 
     :param dict sets: array/dict of arrays
     :returns: (key, euler_set) tuple of given sets
@@ -56,7 +59,7 @@ def euler_generator(sets):
         # Traverse the combination lattice
         for set_key in set_keys:
             compl_sets_keys = difference(set_keys, [set_key])
-            
+
             # There are still sets to analyze
             if len(compl_sets_keys) != 0 and len(sets[set_key]) != 0:
                 # Complementary sets
@@ -67,15 +70,15 @@ def euler_generator(sets):
 
                     # Remove current set_key elements
                     comb_elems = difference(celements, sets_[set_key])
-                    
+
                     # Non-empty combination exclusivity case
                     if len(comb_elems) != 0:
                         # Sort keys to assure deterministic behavior
                         sorted_comb_key = tuplify(sorted(tuplify(euler_tuple)))
-                        
+
                         # 1. Exclusive elements respective complementary keys
                         yield (sorted_comb_key, comb_elems)
-                        
+
                         # Remove comb_elems elements from its original sets
                         for euler_set_key in sorted_comb_key:
                             sets_[euler_set_key] = difference(sets_[euler_set_key], comb_elems)
@@ -83,13 +86,13 @@ def euler_generator(sets):
                         pass
 
                     # Retrieve intersection elements
-                    comb_elems = intersection(celements, sets[set_key]) 
-                    
+                    comb_elems = intersection(celements, sets[set_key])
+
                     # Non-empty intersection set
                     if len(comb_elems) != 0:
                         # Sort keys to assure deterministic behavior
                         comb_key = tuplify(sorted(update_tuple(euler_tuple, set_key)))
-                        
+
                         # 2. Intersection of analysis element and exclusive group:
                         yield (comb_key, comb_elems)
 
@@ -107,14 +110,14 @@ def euler_generator(sets):
                 if len(sets_[set_key]) != 0:
                     # Load combination key
                     comb_key = (set_key, )
-                    comb_elems = sets_[set_key]       
+                    comb_elems = sets_[set_key]
 
                     # 3. Remaining exclusive elements
                     yield (comb_key, comb_elems)
 
                     # Remove remaining set elements
                     sets_[set_key] = []
-                
+
                 else:
                     pass
 
@@ -123,7 +126,7 @@ def euler_generator(sets):
 
 def euler(sets):
     """Euler diagram dictionary of set-dictionary of non-repetitive elements
-    
+
     :param dict sets: array/dict of arrays
     :returns: euler sets
     :rtype: dict
@@ -132,7 +135,7 @@ def euler(sets):
 
 def euler_keys(sets):
     """Euler diagram keys
-    
+
     :param dict sets: array/dict of arrays
     :returns: euler sets keys
     :rtype: list
@@ -140,8 +143,8 @@ def euler_keys(sets):
     return list(euler(sets).keys())
 
 def euler_boundaries(sets):
-    """Euler diagram set boundaries 
-    
+    """Euler diagram set boundaries
+
     :param dict sets: array/dict of arrays
     :returns: euler boundary dict
     :rtype: list
@@ -156,10 +159,10 @@ def euler_boundaries(sets):
         for eulerSetKeys in eulerSetsKeys:
             if setKey in eulerSetKeys:
                 boundaries[setKey] = union(boundaries[setKey], difference(eulerSetKeys, [setKey]))
-                
+
     return {setKey: sorted(neighborsKeys) for setKey, neighborsKeys in boundaries.items()}
 
-class Euler(object):
+class Euler:
     def __init__(self, sets):
         self.sets=deepcopy(sets)
         self.esets=euler(sets)
@@ -169,9 +172,9 @@ class Euler(object):
             try:
                 return self.sets[keys]
 
-            except:
+            except KeyError:
                 raise KeyError(keys)
-        
+
         else:
             elements=[]
             try:
@@ -179,14 +182,14 @@ class Euler(object):
                     elements=union(self.sets[key], elements)
 
                 return elements
-            except:
+            except TypeError:
                 keys=str(keys)
-                header=f"The keys must be among keys: ({keys})."
-                
-                msg=f"{header}"
+                header=f'The keys must be among keys: ({keys}).'
+
+                msg=f'{header}'
 
                 raise TypeError(msg)
-    
+
     def __repr__(self):
         return str(self.as_dict())
 
@@ -198,11 +201,11 @@ class Euler(object):
 
     def as_dict(self):
         return self.esets
-    
+
     def match(self, items: set):
         if not isinstance(items, set):
             raise TypeError("Items must be of type 'set'")
-        
+
         # Initial value: Empty set
         set_keys=set()
 
@@ -214,8 +217,8 @@ class Euler(object):
             # has its value set as items subset.
             if(len(intersection_elems)==len(value)):
                 set_keys.add(key)
-            
-        
+
+
         return set_keys
 
     def remove_key(self, key):
@@ -223,18 +226,17 @@ class Euler(object):
             self.sets = {
                 key_: value \
                 for key_, value in self.sets.items() \
-                if key_ is not key 
+                if key_ is not key
             }
 
             self.esets=euler(self.sets)
-        
+
         else:
             keys=list(self.sets.keys())
 
-            msg1=f"Key {key} is not available on current set."
-            msg2=f"Available keys are: {keys}"
-            
-            warn(msg1+" "+msg2)
+            msg1=f'Key {key} is not available on current set.'
+            msg2=f'Available keys are: {keys}'
 
-    
-    
+            warn(msg1+' '+msg2)
+
+

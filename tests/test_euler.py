@@ -9,13 +9,13 @@ from eule.eule import euler_generator, euler, \
 from .fixtures import sets, setsBoundaries, \
     verbose_key_sets, verbose_key_sets_euler, \
     sets_to_euler_tuples, keys_to_sets_tuples, \
-    match_items_tuple, eulerSetsKeys, setsBoundaries
+    match_items_tuple, eulerSetsKeys
 
 def test_verbose_keys_euler():
     """
     Generates a tuple with key-value
     """
-    
+
     assert euler(verbose_key_sets) == verbose_key_sets_euler
 
 def test_euler_iter_1_input():
@@ -79,10 +79,10 @@ def test_spread_euler_ill_input_num():
         euler(1)
 
 @pytest.mark.parametrize(\
-        sets_to_euler_tuples["labels"], sets_to_euler_tuples["test_cases"]\
+        sets_to_euler_tuples['labels'], sets_to_euler_tuples['test_cases']\
 )
 def test_euler(test_sets, euler_sets):
-    assert euler(test_sets) == euler_sets 
+    assert euler(test_sets) == euler_sets
 
 def test_euler_keys():
     """
@@ -103,22 +103,22 @@ def test_boundaries():
     assert euler_boundaries(sets) == setsBoundaries
 
 @pytest.mark.parametrize(\
-        sets_to_euler_tuples["labels"], sets_to_euler_tuples["test_cases"]\
+        sets_to_euler_tuples['labels'], sets_to_euler_tuples['test_cases']\
 )
 def test_euler_class_properties(test_sets, euler_sets):
     euler_instance=Euler(test_sets)
-    
+
     assert euler_instance.sets == test_sets
     assert euler_instance.esets == euler_sets
     assert euler_instance.as_dict() == euler_sets
     assert euler_instance.__repr__() == str(euler_instance.as_dict())
 
 @pytest.mark.parametrize(\
-        keys_to_sets_tuples["labels"], keys_to_sets_tuples["test_cases"]\
+        keys_to_sets_tuples['labels'], keys_to_sets_tuples['test_cases']\
 )
 def test_euler_class_getitem(key, set_elements):
     euler_instance=Euler(sets)
-    
+
     assert euler_instance[key] == set_elements
 
 def test_euler_class_getitem_error():
@@ -127,7 +127,7 @@ def test_euler_class_getitem_error():
     """
     euler_instance=Euler(sets)
     wrong_key='A'
-    
+
     with pytest.raises(KeyError, match=wrong_key):
         euler_instance[wrong_key]
 
@@ -147,7 +147,7 @@ def test_euler_class_remove_key():
     }
 
     euler_instance.remove_key(removing_key)
-    
+
     assert euler_instance.sets == remaining_sets
     assert euler_instance.esets == euler(remaining_sets)
 
@@ -157,30 +157,13 @@ def test_euler_class_warning_1item():
     """
     euler_instance=Euler(deepcopy(sets))
     wrong_key='A'
-    
+
     with pytest.warns(Warning):
         euler_instance.remove_key(wrong_key)
 
-def test_euler_class_remove_key():
-    """
-    Raises an Exception for ill-conditioned input as string
-    """
-    euler_instance=Euler(deepcopy(sets))
-    removing_key='a'
-    remaining_sets={
-        key: value
-        for key, value in sets.items()
-        if key is not removing_key
-    }
-
-    euler_instance.remove_key(removing_key)
-    
-    assert euler_instance.sets == remaining_sets
-    assert euler_instance.esets == euler(remaining_sets)
-
 @pytest.mark.parametrize(\
-        match_items_tuple["labels"], \
-        match_items_tuple["test_cases"]
+        match_items_tuple['labels'], \
+        match_items_tuple['test_cases']
 )
 def test_euler_class_match(elements,expected_matched_sets):
     """
@@ -188,7 +171,7 @@ def test_euler_class_match(elements,expected_matched_sets):
     """
     euler_instance=Euler(deepcopy(sets))
     matched_sets=euler_instance.match(elements)
-    
+
     assert matched_sets == expected_matched_sets
 
 def test_euler_class_match_error():
@@ -206,7 +189,7 @@ def test_euler_class_keys():
     Returns an euler keys for 4 valid sets
     """
     euler_instance=Euler(deepcopy(sets))
-    
+
     result = euler_instance.euler_keys()
     expected_output = eulerSetsKeys
 
