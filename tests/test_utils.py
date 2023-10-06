@@ -84,7 +84,7 @@ def test_update_tuple():
 
 def test_tuplify():
     """
-    tests 
+    tests
     """
     assert utils.tuplify(tupleA) == tupleA
     assert utils.tuplify(arrA) == tupleA

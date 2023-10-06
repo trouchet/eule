@@ -2,8 +2,8 @@
 
 def parametrize_test_cases(labels, test_cases):
     return {
-        "labels": labels,
-        "test_cases": test_cases
+        'labels': labels,
+        'test_cases': test_cases
     }
 
 # tuplify
@@ -37,7 +37,7 @@ sets = {
 }
 
 keys_to_sets_tuples=parametrize_test_cases(\
-    "key,set_elements", \
+    'key,set_elements', \
     [
         ('a', [1, 2, 3]),
         (('a',), [1, 2, 3]),
@@ -48,7 +48,7 @@ keys_to_sets_tuples=parametrize_test_cases(\
 )
 
 match_items_tuple=parametrize_test_cases(\
-    "elements,expected_matched_sets", \
+    'elements,expected_matched_sets', \
     [
         ({1, 2, 3}, {'a'}),
         ({1, 2, 3, 4}, {'a', 'b'}),
@@ -59,18 +59,18 @@ match_items_tuple=parametrize_test_cases(\
 )
 
 sets_to_euler_tuples=parametrize_test_cases(\
-    "test_sets,euler_sets", \
+    'test_sets,euler_sets', \
     [
         (
-            {'a': [1, 2, 3]}, 
+            {'a': [1, 2, 3]},
             {('a'): [1, 2, 3]}
         ),
         (
-            {'a': [1], 'b': [1, 2]}, 
+            {'a': [1], 'b': [1, 2]},
             {('b', ): [2], ('a','b'): [1]}
         ),
         (
-            {'a': [1, 2, 3], 'b': [2, 3, 4]}, 
+            {'a': [1, 2, 3], 'b': [2, 3, 4]},
             {
                 ('b', ): [4],
                 ('a','b'): [2, 3],
@@ -78,14 +78,14 @@ sets_to_euler_tuples=parametrize_test_cases(\
             }
         ),
         (
-            {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5]}, 
+            {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5]},
             {
                 ('a','b'): [2],
                 ('b','c'): [4],
                 ('a','b','c'): [3],
                 ('c', ): [5],
                 ('a', ): [1],
-            } 
+            }
         ),
         (
             sets,
@@ -106,9 +106,9 @@ eulerSetsKeys=[
 ]
 
 setsBoundaries={
-    'a': ['b', 'c', 'd'], 
-    'b': ['a', 'c', 'd'], 
-    'c': ['a', 'b', 'd'], 
+    'a': ['b', 'c', 'd'],
+    'b': ['a', 'c', 'd'],
+    'c': ['a', 'b', 'd'],
     'd': ['a', 'b', 'c']
 }
 
@@ -123,18 +123,18 @@ arrAmB=[1,2]
 arrAiB=[3]
 
 verbose_key_sets={
-    "set A": [1,2,3,4],
-    "set B": [2,3,4,5],
-    "set C": [3,4,5,6],
-    "set D": [4,5,6,7],
+    'set A': [1,2,3,4],
+    'set B': [2,3,4,5],
+    'set C': [3,4,5,6],
+    'set D': [4,5,6,7],
 }
 
 verbose_key_sets_euler={
-    ("set A",): [1],
-    ("set A","set B",):[2],
-    ("set A","set B","set C",):[3],
-    ("set A","set B","set C","set D",):[4],
-    ("set B","set C","set D",):[5],
-    ("set C","set D",):[6],
-    ("set D",): [7],
+    ('set A',): [1],
+    ('set A','set B',):[2],
+    ('set A','set B','set C',):[3],
+    ('set A','set B','set C','set D',):[4],
+    ('set B','set C','set D',):[5],
+    ('set C','set D',):[6],
+    ('set D',): [7],
 }
