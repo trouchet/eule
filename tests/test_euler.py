@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pytest
 from copy import deepcopy
+from reprlib import repr
 
 from eule.eule import euler_generator, euler, \
     euler_keys, euler_boundaries, Euler
@@ -111,7 +112,11 @@ def test_euler_class_properties(test_sets, euler_sets):
     assert euler_instance.sets == test_sets
     assert euler_instance.esets == euler_sets
     assert euler_instance.as_dict() == euler_sets
-    assert euler_instance.__repr__() == str(euler_instance.as_dict())
+    
+    esets_repr=repr(euler_instance.esets)
+    expected_repr = f"Euler({esets_repr})"
+    
+    assert euler_instance.__repr__() == expected_repr
 
 @pytest.mark.parametrize(\
         keys_to_sets_tuples['labels'], keys_to_sets_tuples['test_cases']\

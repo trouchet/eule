@@ -2,6 +2,7 @@
 
 from copy import deepcopy
 from warnings import warn
+from reprlib import repr
 
 from .utils import update_tuple, clear, reduc, uniq, union, difference, intersection, tuplify
 
@@ -164,10 +165,31 @@ def euler_boundaries(sets):
 
 class Euler:
     def __init__(self, sets):
+        """
+        Initialize an Euler object.
+
+        Parameters:
+        sets (dict): A dictionary containing sets indexed by keys.
+
+        This constructor makes a deep copy of the input sets and computes the Euler set representation.
+        """ 
         self.sets=deepcopy(sets)
         self.esets=euler(sets)
 
     def __getitem__(self, keys):
+        """
+        Get the elements from the sets associated with the specified keys.
+
+        Parameters:
+        keys (tuple or str): The key or keys for accessing the sets.
+
+        Returns:
+        list: The union of sets associated with the specified keys.
+
+        If a single key is provided, it returns the elements of the set associated with that key.
+        If a tuple of keys is provided, it returns the union of sets associated with those keys.
+        """
+
         if not isinstance(keys, tuple):
             try:
                 return self.sets[keys]
@@ -190,19 +212,48 @@ class Euler:
 
                 raise KeyError(msg)
 
-    def __repr__(self):
-        return str(self.as_dict())
-
     def euler_keys(self):
+        """
+        Get the keys associated with the Euler set representation.
+
+        Returns:
+        list: A list of keys corresponding to the Euler set representation.
+        """
+
         return euler_keys(self.sets)
 
     def euler_boundaries(self):
+        """
+        Get the boundaries of the Euler set representation.
+
+        Returns:
+        tuple: A tuple containing the lower and upper boundaries of the Euler set representation.
+        """
         return euler_boundaries(self.sets)
 
     def as_dict(self):
+        """
+        Get the Euler set representation as a dictionary.
+
+        Returns:
+        dict: The Euler set representation as a dictionary.
+        """
+
         return self.esets
 
     def match(self, items: set):
+        """
+        Match a set of items to the sets in the Euler representation.
+
+        Parameters:
+        items (set): A set of items to match against the sets in the Euler representation.
+
+        Returns:
+        set: A set of keys corresponding to sets that are subsets of the provided items.
+
+        It checks which sets in the Euler representation are subsets of the provided items and returns their keys.
+        """
+
         if not isinstance(items, set):
             raise TypeError("Items must be of type 'set'")
 
@@ -222,6 +273,17 @@ class Euler:
         return set_keys
 
     def remove_key(self, key):
+        """
+        Remove a key from the sets in the Euler representation.
+
+        Parameters:
+        key: The key to be removed from the sets.
+
+        If the key exists, it is removed from the sets, and the Euler representation is updated.
+        If the key doesn't exist, a warning is issued.
+
+        """
+
         if(key in list(self.sets.keys())):
             self.sets = {
                 key_: value \
@@ -238,5 +300,16 @@ class Euler:
             msg2=f'Available keys are: {keys}'
 
             warn(msg1+' '+msg2)
+
+    def __repr__(self) -> str:
+        """
+        Get a string representation of the Euler object.
+
+        Returns:
+        str: A string representation of the Euler object in the format "Euler({Euler set representation})".
+        """
+        esets_repr=repr(self.esets)
+
+        return f"Euler({esets_repr})"        
 
 
