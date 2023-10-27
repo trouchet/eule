@@ -109,4 +109,3 @@ print(euler_instance.as_dict())
 ```
 
 </details>
-

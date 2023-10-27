@@ -171,8 +171,9 @@ class Euler:
         Parameters:
         sets (dict): A dictionary containing sets indexed by keys.
 
-        This constructor makes a deep copy of the input sets and computes the Euler set representation.
-        """ 
+        This constructor makes a deep copy of the input sets and computes
+        the Euler set representation.
+        """
         self.sets=deepcopy(sets)
         self.esets=euler(sets)
 
@@ -186,8 +187,9 @@ class Euler:
         Returns:
         list: The union of sets associated with the specified keys.
 
-        If a single key is provided, it returns the elements of the set associated with that key.
-        If a tuple of keys is provided, it returns the union of sets associated with those keys.
+        If a single key is provided, it returns the elements of the set associated
+        with that key. If a tuple of keys is provided, it returns the union of sets
+        associated with those keys.
         """
 
         if not isinstance(keys, tuple):
@@ -251,7 +253,8 @@ class Euler:
         Returns:
         set: A set of keys corresponding to sets that are subsets of the provided items.
 
-        It checks which sets in the Euler representation are subsets of the provided items and returns their keys.
+        It checks which sets in the Euler representation are subsets of the provided items
+        and returns their keys.
         """
 
         if not isinstance(items, set):
@@ -306,10 +309,9 @@ class Euler:
         Get a string representation of the Euler object.
 
         Returns:
-        str: A string representation of the Euler object in the format "Euler({Euler set representation})".
+        str: A string representation of the Euler object in the
+        format "Euler({Euler set representation})".
         """
         esets_repr=repr(self.esets)
 
-        return f"Euler({esets_repr})"        
-
-
+        return f'Euler({esets_repr})'

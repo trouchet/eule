@@ -112,10 +112,10 @@ def test_euler_class_properties(test_sets, euler_sets):
     assert euler_instance.sets == test_sets
     assert euler_instance.esets == euler_sets
     assert euler_instance.as_dict() == euler_sets
-    
+
     esets_repr=repr(euler_instance.esets)
-    expected_repr = f"Euler({esets_repr})"
-    
+    expected_repr = f'Euler({esets_repr})'
+
     assert euler_instance.__repr__() == expected_repr
 
 @pytest.mark.parametrize(\
@@ -132,7 +132,7 @@ def test_euler_class_getitem_error():
     """
     euler_instance=Euler(sets)
     wrong_key='A'
-    
+
     with pytest.raises(KeyError, match=wrong_key):
         euler_instance[wrong_key]
 

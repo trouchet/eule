@@ -1,6 +1,5 @@
-.PHONY: help clean test coverage docs servedocs install
+.PHONY: help clean test coverage docs servedocs install bump publish release
 .DEFAULT_GOAL := help
-
 SHELL := /bin/bash
 
 define BROWSER_PYSCRIPT
@@ -67,7 +66,7 @@ test: ## run tests quickly with the default Python
 
 watch: ## run tests on watchdog mode
 	poetry shell
-	ptw -- --cov=eule/ --cov-report term-missing
+	ptw .
 
 lint: clean ## perform inplace lint fixes
 	ruff --fix .
@@ -98,7 +97,7 @@ echo: ## echo current package version
 what: ## List all commits made since last version bump
 	git log --oneline "$$(git rev-list -n 1 "v$$(poetry version -s)")..$$(git rev-parse HEAD)"
 
-check-bump: ## check if bump version is valid
+check-bump: # check if bump version is valid
 	@if [ "$(v)" != "patch" ] && [ "$(v)" != "minor" ] && [ "$(v)" != "major" ]; then \
 		echo "Invalid input for 'v': $(v). Please use 'patch', 'minor', or 'major'."; \
 		exit 1; \
@@ -113,7 +112,7 @@ bump: ## bump version to user-provided {patch|minor|major} semantic
 	git push
 	git push --tags
 	poetry version
-	
+
 publish: clean ## build source and publish package
 	poetry publish --build
 
