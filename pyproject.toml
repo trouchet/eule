@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "eule"
-version = "1.0.5"
+version = "1.0.6"
 description = "Euler diagrams in python"
 authors = ["Bruno Peixoto <brunolnetto@gmail.com>"]
 license = "MIT license"
