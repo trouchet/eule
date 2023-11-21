@@ -35,6 +35,9 @@ sets = {
     'c': [3, 4, 5],
     'd': [3, 5, 6]
 }
+euler_sets_keys=[
+    ('a','b'), ('b','c'), ('a','b','c','d'), ('c','d'), ('d', ), ('a', )
+]
 
 keys_to_sets_tuples=parametrize_test_cases(\
     'key,set_elements', \
@@ -102,7 +105,10 @@ sets_to_euler_tuples=parametrize_test_cases(\
 )
 
 eulerSetsKeys=[
-    ('a','b'), ('b','c'), ('a','b','c','d'), ('c','d'), ('d', ), ('a', )
+    ('a','b'), 
+    ('b','c'), 
+    ('a','b','c','d'), 
+    ('c','d'), ('d', ), ('a', )
 ]
 
 setsBoundaries={
