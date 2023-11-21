@@ -79,4 +79,3 @@ def list_to_set(arr:list):
     :rtype: set
     """
     return {s for s in arr}
-

@@ -105,9 +105,9 @@ sets_to_euler_tuples=parametrize_test_cases(\
 )
 
 eulerSetsKeys=[
-    ('a','b'), 
-    ('b','c'), 
-    ('a','b','c','d'), 
+    ('a','b'),
+    ('b','c'),
+    ('a','b','c','d'),
     ('c','d'), ('d', ), ('a', )
 ]
 
