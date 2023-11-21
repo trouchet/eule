@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from eule.core import euler_generator, euler, \
+from .core import euler_generator, euler, \
     euler_keys, euler_boundaries, Euler
 
 __author__ = """Bruno Peixoto"""
