@@ -4,13 +4,15 @@ import pytest
 from copy import deepcopy
 from reprlib import repr
 
-from eule.eule import euler_generator, euler, \
+from eule.operations import intersection
+
+from eule.core import euler_generator, euler, \
     euler_keys, euler_boundaries, Euler
 
 from .fixtures import sets, setsBoundaries, \
     verbose_key_sets, verbose_key_sets_euler, \
     sets_to_euler_tuples, keys_to_sets_tuples, \
-    match_items_tuple, eulerSetsKeys
+    match_items_tuple, eulerSetsKeys, euler_sets_keys
 
 def test_verbose_keys_euler():
     """
@@ -92,13 +94,8 @@ def test_euler_keys():
     input_ = {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5], 'd': [3, 5, 6]}
 
     result = euler_keys(input_)
-    expected_output = [
-        ('a','b'), ('b','c'), ('a','b','c','d'), ('c','d'), ('d', ), ('a', )
-    ]
 
-    def intersection(a, b): return list(set(a) & set(b))
-
-    assert len(intersection(result, expected_output)) == len(expected_output)
+    assert len(intersection(result, euler_sets_keys)) == len(euler_sets_keys)
 
 def test_boundaries():
     assert euler_boundaries(sets) == setsBoundaries

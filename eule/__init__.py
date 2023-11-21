@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from .eule import euler, euler_keys, euler_boundaries, Euler
+from .core import euler, euler_keys, euler_boundaries, Euler
 
 __author__ = """Bruno Peixoto"""
 __email__ = 'brunolnetto@gmail.com'
