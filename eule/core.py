@@ -4,7 +4,7 @@ from copy import deepcopy
 from warnings import warn
 from reprlib import repr
 
-from .utils import update_tuple, clear, tuplify
+from .utils import update_tuple, ordenate_tuple, clear, tuplify
 from .operations import union, difference, intersection
 from .validators import validate_euler_generator_input
 
@@ -56,7 +56,7 @@ def euler_generator(sets):
                     # Non-empty combination exclusivity case
                     if len(comb_elems) != 0:
                         # Sort keys to assure deterministic behavior
-                        sorted_comb_key = tuplify(sorted(tuplify(euler_tuple)))
+                        sorted_comb_key = ordenate_tuple(tuplify(euler_tuple))
 
                         # 1. Exclusive elements respective complementary keys
                         yield (sorted_comb_key, comb_elems)
@@ -73,7 +73,7 @@ def euler_generator(sets):
                     # Non-empty intersection set
                     if len(comb_elems) != 0:
                         # Sort keys to assure deterministic behavior
-                        comb_key = tuplify(sorted(update_tuple(euler_tuple, set_key)))
+                        comb_key = ordenate_tuple(update_tuple(euler_tuple, set_key))
 
                         # 2. Intersection of analysis element and exclusive group:
                         yield (comb_key, comb_elems)

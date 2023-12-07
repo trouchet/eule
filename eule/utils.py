@@ -20,15 +20,6 @@ def uniq(lst:list):
     """
     return list(unique(lst))
 
-def dsort(str_, delimiter):
-    """This map returns a sorted string delimited by token
-
-    :param str str_:  string with delimiter between elements
-    :returns: string with sorted elements delimited by given delimiter
-    :rtype: str
-    """
-    return delimiter.join(sorted(str_.split(delimiter)))
-
 def tuplify(candidate):
     """This map returns a tuple element on given candidate
 
@@ -56,6 +47,20 @@ def clear(sets):
         return (len(sets[key]) != 0)
 
     return list(filter(non_empty_mask, sets.keys(), ),)
+
+def ordenate_tuple(tuple_:tuple):
+    """
+    Perform a custom operation on a tuple by updating it with a value and returning an ordered tuple.
+
+    :param input_tuple: The original tuple to be updated.
+    :type input_tuple: tuple
+    :param value: The element to be added to the tuple.
+    :type value: Any
+    :return: An ordered and updated tuple.
+    :rtype: tuple
+    """
+
+    return tuplify(sorted(tuple_))
 
 def update_tuple(tuple_:tuple, value):
     """This map updates and sorts a tuple with a value

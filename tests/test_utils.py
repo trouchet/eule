@@ -3,9 +3,9 @@ from __future__ import annotations
 import eule.utils as utils
 from .fixtures import arrA, setA, tupleA,  \
     arr_with_repetition_uniq, arr_with_repetition, \
-    unsorted_delimited_string, sorted_delimited_string, \
-    delimiter, dict_keys_with_non_empty_elements, \
-    uncleared_dict, tuple_, value, updated_tuple
+    dict_keys_with_non_empty_elements, \
+    uncleared_dict, tuple_, value, updated_tuple, \
+    ordenated_tuple
 
 def test_one_set_euler():
     """
@@ -33,18 +33,6 @@ def test_unique_elems():
     assert result == expected_output
 
 
-def test_dsort():
-    """
-    tests sorting delimited by token
-    """
-    input_ = unsorted_delimited_string
-    config = delimiter
-    result = utils.dsort(input_, config)
-    expected_output = sorted_delimited_string
-
-    assert result == expected_output
-
-
 def test_clear_sets():
     """
     tests dict clean with empty values
@@ -60,6 +48,9 @@ def test_list_to_set():
     tests list to set converter
     """
     assert utils.list_to_set(arrA) == setA
+
+def test_ordenate_tuple():
+    assert utils.ordenate_tuple(tuple_) == ordenated_tuple
 
 def test_update_tuple():
     assert utils.update_tuple(tuple_, value) == updated_tuple

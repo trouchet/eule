@@ -10,23 +10,17 @@ def parametrize_test_cases(labels, test_cases):
 tuple_=(1,3,2,4)
 value=5
 updated_tuple=(1,3,2,4,5)
+ordenated_tuple=(1,2,3,4)
 
 # "uniq"
 arr_with_repetition=[1, 2, 3, 3]
 arr_with_repetition_uniq=[1, 2, 3]
-
-# "dsort"
-unsorted_delimited_string='4,1,2,3'
-delimiter=','
-sorted_delimited_string='1,2,3,4'
 
 # "clear"
 uncleared_dict={'a': [1, 2, 3], 'b': []}
 dict_keys_with_non_empty_elements=['a']
 
 # Sets to Euler sets
-
-
 
 # "listToSet", "unite", "difference"
 sets = {
