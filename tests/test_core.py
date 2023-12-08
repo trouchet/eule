@@ -9,10 +9,10 @@ from eule.operations import intersection
 from eule.core import euler_generator, euler, \
     euler_keys, euler_boundaries, Euler
 
-from .fixtures import sets, setsBoundaries, \
+from .fixtures import sets, sets_boundaries, \
     verbose_key_sets, verbose_key_sets_euler, \
     sets_to_euler_tuples, keys_to_sets_tuples, \
-    match_items_tuple, eulerSetsKeys, euler_sets_keys
+    match_items_tuple, euler_sets_keys, euler_sets_keys
 
 def test_verbose_keys_euler():
     """
@@ -82,7 +82,8 @@ def test_spread_euler_ill_input_num():
         euler(1)
 
 @pytest.mark.parametrize(\
-        sets_to_euler_tuples['labels'], sets_to_euler_tuples['test_cases']\
+        sets_to_euler_tuples['labels'], \
+        sets_to_euler_tuples['cases']\
 )
 def test_euler(test_sets, euler_sets):
     assert euler(test_sets) == euler_sets
@@ -91,18 +92,17 @@ def test_euler_keys():
     """
     Returns an euler keys for 4 valid sets
     """
-    input_ = {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5], 'd': [3, 5, 6]}
-
-    result = euler_keys(input_)
+    result = euler_keys(deepcopy(sets))
     intersec_sets=intersection(result, euler_sets_keys)
 
     assert len(intersec_sets) == len(euler_sets_keys)
 
 def test_boundaries():
-    assert euler_boundaries(sets) == setsBoundaries
+    assert euler_boundaries(sets) == sets_boundaries
 
 @pytest.mark.parametrize(\
-        sets_to_euler_tuples['labels'], sets_to_euler_tuples['test_cases']\
+        sets_to_euler_tuples['labels'], \
+        sets_to_euler_tuples['cases'] \
 )
 def test_euler_class_properties(test_sets, euler_sets):
     euler_instance=Euler(test_sets)
@@ -117,7 +117,8 @@ def test_euler_class_properties(test_sets, euler_sets):
     assert euler_instance.__repr__() == expected_repr
 
 @pytest.mark.parametrize(\
-        keys_to_sets_tuples['labels'], keys_to_sets_tuples['test_cases']\
+        keys_to_sets_tuples['labels'], \
+        keys_to_sets_tuples['cases']\
 )
 def test_euler_class_getitem(key, set_elements):
     euler_instance=Euler(sets)
@@ -166,7 +167,7 @@ def test_euler_class_warning_1item():
 
 @pytest.mark.parametrize(\
         match_items_tuple['labels'], \
-        match_items_tuple['test_cases']
+        match_items_tuple['cases']
 )
 def test_euler_class_match(elements,expected_matched_sets):
     """
@@ -194,7 +195,7 @@ def test_euler_class_keys():
     euler_instance=Euler(deepcopy(sets))
 
     result = euler_instance.euler_keys()
-    expected_output = eulerSetsKeys
+    expected_output = euler_sets_keys
 
     intersec_set=intersection(result, expected_output)
 
@@ -204,6 +205,6 @@ def test_euler_class_boundaries():
     euler_instance=Euler(deepcopy(sets))
 
     result = euler_instance.euler_boundaries()
-    expected_output = setsBoundaries
+    expected_output = sets_boundaries
 
     assert result == expected_output

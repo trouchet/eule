@@ -1,9 +1,9 @@
 # Fixture for functionalities
 
-def parametrize_test_cases(labels, test_cases):
+def parametrize_cases(labels, test_cases):
     return {
         'labels': labels,
-        'test_cases': test_cases
+        'cases': test_cases
     }
 
 # tuplify
@@ -29,11 +29,19 @@ sets = {
     'c': [3, 4, 5],
     'd': [3, 5, 6]
 }
+
 euler_sets_keys=[
     ('a','b'), ('b','c'), ('a','b','c','d'), ('c','d'), ('d', ), ('a', )
 ]
 
-keys_to_sets_tuples=parametrize_test_cases(\
+sets_boundaries={
+    'a': ['b', 'c', 'd'],
+    'b': ['a', 'c', 'd'],
+    'c': ['a', 'b', 'd'],
+    'd': ['a', 'b', 'c']
+}
+
+keys_to_sets_tuples=parametrize_cases(\
     'key,set_elements', \
     [
         (('a',), [1, 2, 3]),
@@ -44,7 +52,7 @@ keys_to_sets_tuples=parametrize_test_cases(\
     ]
 )
 
-match_items_tuple=parametrize_test_cases(\
+match_items_tuple=parametrize_cases(\
     'elements,expected_matched_sets', \
     [
         ({1, 2, 3}, {'a'}),
@@ -55,7 +63,7 @@ match_items_tuple=parametrize_test_cases(\
     ]
 )
 
-sets_to_euler_tuples=parametrize_test_cases(\
+sets_to_euler_tuples=parametrize_cases(\
     'test_sets,euler_sets', \
     [
         (
@@ -75,7 +83,7 @@ sets_to_euler_tuples=parametrize_test_cases(\
             }
         ),
         (
-            {'a': [1, 2, 3],    'b': [2, 3, 4], 'c': [3, 4, 5]},
+            {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5]},
             {
                 ('a','b'): [2],
                 ('b','c'): [4],
@@ -97,20 +105,6 @@ sets_to_euler_tuples=parametrize_test_cases(\
         )
     ]
 )
-
-eulerSetsKeys=[
-    ('a','b'),
-    ('b','c'),
-    ('a','b','c','d'),
-    ('c','d'), ('d', ), ('a', )
-]
-
-setsBoundaries={
-    'a': ['b', 'c', 'd'],
-    'b': ['a', 'c', 'd'],
-    'c': ['a', 'b', 'd'],
-    'd': ['a', 'b', 'c']
-}
 
 arrA=[1,2,3]
 setA={1,2,3}
