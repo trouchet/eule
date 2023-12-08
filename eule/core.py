@@ -13,13 +13,13 @@ def euler_generator(sets):
     Euler diagram in a generator-wise fashion systematic:
 
     1. Begin with the available `sets` and their exclusive elements;
-    2. Compute complementary elements to current key-set;
-    3. In case complementary set-keys AND current set content are not empty,
-    continue; Otherwise, go to next key-set;
-    4. Find the euler diagram on complementary sets;
-    5. Compute exclusive combination elements;
-    6. In case there are exclusive elements to combination: yield exclusive
-    scombination elements; Remove exclusive combination elements from current key-set.
+    2. Compute complementary elements to the current key-set;
+    3. In case complementary set-keys AND current set content are not empty, continue; 
+    4. Otherwise, go to the next key-set;
+    5. Find the euler diagram on complementary sets;
+    6. Compute exclusive combination elements;
+    7. In case there are exclusive elements to the combination: yield exclusive
+       combination elements; Remove exclusive combination elements from the current key-set.
 
     :param dict sets: array/dict of arrays
     :returns: (key, euler_set) tuple of given sets

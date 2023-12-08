@@ -4,10 +4,10 @@ eule package
 Submodules
 ----------
 
-eule.eule module
+eule.core module
 ----------------
 
-.. automodule:: eule.eule
+.. automodule:: eule.core
    :members:
    :undoc-members:
    :show-inheritance:
