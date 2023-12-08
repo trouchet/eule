@@ -36,7 +36,7 @@ euler_sets_keys=[
 keys_to_sets_tuples=parametrize_test_cases(\
     'key,set_elements', \
     [
-        ('a', [1, 2, 3]),
+        (('a',), [1, 2, 3]),
         (('a',), [1, 2, 3]),
         (('a', 'b'), [1, 2, 3, 4]),
         (('a', 'b', 'c'), [1, 2, 3, 4, 5]),
@@ -60,7 +60,7 @@ sets_to_euler_tuples=parametrize_test_cases(\
     [
         (
             {'a': [1, 2, 3]},
-            {('a'): [1, 2, 3]}
+            {('a', ): [1, 2, 3]}
         ),
         (
             {'a': [1], 'b': [1, 2]},
@@ -75,7 +75,7 @@ sets_to_euler_tuples=parametrize_test_cases(\
             }
         ),
         (
-            {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5]},
+            {'a': [1, 2, 3],    'b': [2, 3, 4], 'c': [3, 4, 5]},
             {
                 ('a','b'): [2],
                 ('b','c'): [4],

@@ -32,7 +32,7 @@ def euler_generator(sets):
     if len(sets_.keys()) == 1:
         comb_key = list(sets_.keys())[0]
         comb_elements = list(sets_.values())[0]
-        yield ((comb_key), comb_elements)
+        yield ((comb_key, ), comb_elements)
 
     else:
         # Sets with non-empty elements
@@ -140,9 +140,14 @@ def euler_boundaries(sets):
     for setKey in setsKeys:
         for eulerSetKeys in eulerSetsKeys:
             if setKey in eulerSetKeys:
-                boundaries[setKey] = union(boundaries[setKey], difference(eulerSetKeys, [setKey]))
+                this_boundaries = boundaries[setKey]
+                ekeys_not_this = difference(eulerSetKeys, [setKey])
+                boundaries[setKey] = union(this_boundaries, ekeys_not_this)
 
-    return {setKey: sorted(neighborsKeys) for setKey, neighborsKeys in boundaries.items()}
+    return {\
+        setKey: sorted(neighborsKeys) \
+        for setKey, neighborsKeys in boundaries.items()\
+    }
 
 class Euler:
     def __init__(self, sets):
@@ -185,7 +190,7 @@ class Euler:
             try:
                 for key in keys:
                     elements=union(self.sets[key], elements)
-
+                
                 return elements
             except KeyError:
                 keys=str(keys)

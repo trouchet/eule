@@ -27,7 +27,7 @@ def test_euler_iter_1_input():
     """
     input_ = {'a': [1, 2]}
     euler_gen = euler_generator(input_)
-    expected_output = (('a'), [1, 2])
+    expected_output = (('a', ), [1, 2])
 
     assert next(euler_gen) == expected_output
 
@@ -94,8 +94,9 @@ def test_euler_keys():
     input_ = {'a': [1, 2, 3], 'b': [2, 3, 4], 'c': [3, 4, 5], 'd': [3, 5, 6]}
 
     result = euler_keys(input_)
+    intersec_sets=intersection(result, euler_sets_keys)
 
-    assert len(intersection(result, euler_sets_keys)) == len(euler_sets_keys)
+    assert len(intersec_sets) == len(euler_sets_keys)
 
 def test_boundaries():
     assert euler_boundaries(sets) == setsBoundaries
@@ -195,9 +196,9 @@ def test_euler_class_keys():
     result = euler_instance.euler_keys()
     expected_output = eulerSetsKeys
 
-    def intersection(a, b): return list(set(a) & set(b))
+    intersec_set=intersection(result, expected_output)
 
-    assert len(intersection(result, expected_output)) == len(expected_output)
+    assert len(intersec_set) == len(expected_output)
 
 def test_euler_class_boundaries():
     euler_instance=Euler(deepcopy(sets))
