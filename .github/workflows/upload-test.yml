@@ -13,7 +13,7 @@ jobs:
     #----------------------------------------------
     #       install & configure poetry  -----
     #----------------------------------------------
-      - name: Install and configure Poetry
+    - name: Install and configure Poetry
       uses: snok/install-poetry@v1
       with:
         virtualenvs-create: true
