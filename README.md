@@ -55,14 +55,14 @@ euler_boundaries = euler_boundaries(sets)
 euler_instance=Euler(sets)
 
 # Euler dictionary:
-# {'a,b': [2], 'b,c': [4], 'a,b,c,d': [3], 'c,d': [5], 'd': [6], 'a': [1]}
+# {('a', 'b'): [2], ('b', 'c'): [4], ('a', 'b', 'c', 'd'): [3], ('c', 'd'): [5], 'd': [6], 'a': [1]}
 print(euler_diagram)
 print(euler_instance.as_dict())
 
 print('\n')
 
 # Euler keys list:
-# ['a,b', 'b,c', 'a,b,c,d', 'c,d', 'd', 'a']
+# [('a', 'b'), ('b', 'c'), ('a', 'b', 'c', d'), ('c', 'd'), 'd', 'a']
 print(euler_keys)
 print(euler_instance.euler_keys())
 
