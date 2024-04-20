@@ -70,7 +70,6 @@ watch: ## run tests on watchdog mode
 
 lint: clean ## perform inplace lint fixes
 	ruff --fix .
-	pre-commit run --all-files
 
 cov: clean ## check code coverage quickly with the default Python
 	coverage run --source "$$PACKAGE_NAME" -m pytest
