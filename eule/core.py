@@ -1,4 +1,5 @@
 """Main module."""
+from typing import List, Tuple, Dict, Union
 
 from copy import deepcopy
 from warnings import warn
@@ -8,7 +9,9 @@ from .utils import update_tuple, ordenate_tuple, clear, tuplify
 from .operations import union, difference, intersection
 from .validators import validate_euler_generator_input
 
-def euler_generator(sets):
+def euler_generator(
+    sets: Union[List, Dict]
+):
     """This generator function returns each tuple (key, elems) of the
     Euler diagram in a generator-wise fashion systematic:
 
@@ -106,7 +109,9 @@ def euler_generator(sets):
                 set_keys = clear(sets_)
 
 
-def euler(sets):
+def euler(
+    sets: Union[List, Dict]
+):
     """Euler diagram dictionary of set-dictionary of non-repetitive elements
 
     :param dict sets: array/dict of arrays
@@ -115,7 +120,9 @@ def euler(sets):
     """
     return dict(euler_generator(sets))
 
-def euler_keys(sets):
+def euler_keys(
+    sets: Union[List, Dict]
+):
     """Euler diagram keys
 
     :param dict sets: array/dict of arrays
@@ -150,7 +157,7 @@ def euler_boundaries(sets):
     }
 
 class Euler:
-    def __init__(self, sets):
+    def __init__(self, sets: Union[List, Dict]):
         """
         Initialize an Euler object.
 
@@ -163,7 +170,7 @@ class Euler:
         self.sets=deepcopy(sets)
         self.esets=euler(sets)
 
-    def __getitem__(self, keys):
+    def __getitem__(self, keys: Union[str, Tuple]):
         """
         Get the elements from the sets associated with the specified keys.
 

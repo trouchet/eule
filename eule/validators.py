@@ -1,7 +1,11 @@
+from typing import Union, Dict, List
+
 from .utils import uniq, reduc
 from warnings import warn
 
-def validate_euler_generator_input(sets_):
+def validate_euler_generator_input(
+    sets_: Union[List, Dict]
+):
     # There are no sets
     if not isinstance(sets_, (list, dict)):
         msg_1 = 'Ill-conditioned input.'

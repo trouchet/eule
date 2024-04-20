@@ -1,8 +1,16 @@
 """utils module."""
 from functools import reduce
 from numpy import unique
+from typing import \
+    Union, Callable, Iterable, \
+    List, Dict, Tuple, Any
+from functools import reduce
 
-def reduc(func, elems, elem0):
+def reduc(
+    func: Callable[[Any, Any], Any], 
+    elems: Iterable[Any], 
+    elem0: Any
+) -> Any:
     """This function returns a reduce handler
 
     :param function func: Reduce callback
@@ -11,7 +19,7 @@ def reduc(func, elems, elem0):
     """
     return reduce(func, elems + [elem0])
 
-def uniq(lst:list):
+def uniq(lst: List):
     """This map returns list with unique elements
 
     :param list lst: array of elements entries
@@ -20,7 +28,9 @@ def uniq(lst:list):
     """
     return list(unique(lst))
 
-def tuplify(candidate):
+def tuplify(
+    candidate: Union[str, List, Tuple]
+):
     """This map returns a tuple element on given candidate
 
     :param candidate: tuplification candidate
@@ -36,7 +46,9 @@ def tuplify(candidate):
             )
         )
 
-def clear(sets):
+def clear(
+    sets: Union[List, Dict]
+):
     """This map returns a set with non-empty values
 
     :param dict set:
@@ -48,7 +60,7 @@ def clear(sets):
 
     return list(filter(non_empty_mask, sets.keys(), ),)
 
-def ordenate_tuple(tuple_:tuple):
+def ordenate_tuple(tuple_: Tuple):
     """
     Perform a custom operation on a tuple by updating it with a value and returning an ordered tuple.
 
@@ -62,7 +74,7 @@ def ordenate_tuple(tuple_:tuple):
 
     return tuplify(sorted(tuple_))
 
-def update_tuple(tuple_:tuple, value):
+def update_tuple(tuple_: Tuple, value):
     """This map updates and sorts a tuple with a value
 
     :param tuple of elements:
@@ -71,12 +83,12 @@ def update_tuple(tuple_:tuple, value):
     :rtype: tuple
     """
 
-    tuple_lst=list(tuplify(tuple_))
+    tuple_lst = list(tuplify(tuple_))
     tuple_lst.append(value)
 
     return tuple(tuple_lst)
 
-def list_to_set(arr:list):
+def list_to_set(arr: List):
     """This map converts a list into a set
 
     :param list of elements:
