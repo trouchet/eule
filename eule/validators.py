@@ -7,6 +7,12 @@ from .types import SetsType
 def validate_euler_generator_input(
     sets_: SetsType
 ):  
+    """This function validates the input for euler_generator
+
+    :param dict sets_: dictionary with sets
+    :returns: validated sets
+    :rtype: dict
+    """
     
     # There are no sets
     if not isinstance(sets_, (list, dict)):
