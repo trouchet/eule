@@ -9,12 +9,13 @@ from eule.operations import intersection
 from eule.core import euler_generator, euler, \
     euler_keys, euler_boundaries, Euler
 
-from .fixtures import sets, sets_boundaries, \
-    verbose_key_sets, verbose_key_sets_euler, \
-    sets_to_euler_tuples, keys_to_sets_tuples, \
-    match_items_tuple, euler_sets_keys
+from .fixtures import sets_to_euler_tuples, keys_to_sets_tuples, \
+    match_items_tuple
 
-def test_verbose_keys_euler():
+def test_verbose_keys_euler(
+    verbose_key_sets,
+    verbose_key_sets_euler
+):
     """
     Generates a tuple with key-value
     """
@@ -88,7 +89,8 @@ def test_spread_euler_ill_input_num():
 def test_euler(test_sets, euler_sets):
     assert euler(test_sets) == euler_sets
 
-def test_euler_keys():
+
+def test_euler_keys(sets, euler_sets_keys):
     """
     Returns an euler keys for 4 valid sets
     """
@@ -97,7 +99,7 @@ def test_euler_keys():
 
     assert len(intersec_sets) == len(euler_sets_keys)
 
-def test_boundaries():
+def test_boundaries(sets, sets_boundaries):
     assert euler_boundaries(sets) == sets_boundaries
 
 @pytest.mark.parametrize(\
@@ -120,12 +122,12 @@ def test_euler_class_properties(test_sets, euler_sets):
         keys_to_sets_tuples['labels'], \
         keys_to_sets_tuples['cases']\
 )
-def test_euler_class_getitem(key, set_elements):
+def test_euler_class_getitem(key, set_elements, sets):
     euler_instance=Euler(sets)
 
     assert euler_instance[key] == set_elements
 
-def test_euler_class_getitem_error():
+def test_euler_class_getitem_error(sets):
     """
     Raises an Exception for ill-conditioned input as string
     """
@@ -138,7 +140,7 @@ def test_euler_class_getitem_error():
     with pytest.raises(KeyError, match='The keys must be among keys'):
         euler_instance[(wrong_key, )]
 
-def test_euler_class_remove_key():
+def test_euler_class_remove_key(sets):
     """
     Raises an Exception for ill-conditioned input as string
     """
@@ -155,7 +157,7 @@ def test_euler_class_remove_key():
     assert euler_instance.sets == remaining_sets
     assert euler_instance.esets == euler(remaining_sets)
 
-def test_euler_class_warning_1item():
+def test_euler_class_warning_1item(sets):
     """
     Raises a warning for duplicated dict values
     """
@@ -169,7 +171,7 @@ def test_euler_class_warning_1item():
         match_items_tuple['labels'], \
         match_items_tuple['cases']
 )
-def test_euler_class_match(elements,expected_matched_sets):
+def test_euler_class_match(elements,expected_matched_sets, sets):
     """
     Raises an Exception for ill-conditioned input as string
     """
@@ -178,7 +180,7 @@ def test_euler_class_match(elements,expected_matched_sets):
 
     assert matched_sets == expected_matched_sets
 
-def test_euler_class_match_error():
+def test_euler_class_match_error(sets):
     """
     Raises an Exception for ill-conditioned input as string
     """
@@ -188,7 +190,7 @@ def test_euler_class_match_error():
     with pytest.raises(TypeError, match="Items must be of type 'set'"):
         euler_instance.match(matched_elems)
 
-def test_euler_class_keys():
+def test_euler_class_keys(sets, euler_sets_keys):
     """
     Returns an euler keys for 4 valid sets
     """
@@ -201,7 +203,7 @@ def test_euler_class_keys():
 
     assert len(intersec_set) == len(expected_output)
 
-def test_euler_class_boundaries():
+def test_euler_class_boundaries(sets, sets_boundaries):
     euler_instance=Euler(deepcopy(sets))
 
     result = euler_instance.euler_boundaries()

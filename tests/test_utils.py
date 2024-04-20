@@ -1,11 +1,6 @@
 from __future__ import annotations
 
 import eule.utils as utils
-from .fixtures import arrA, setA, tupleA,  \
-    arr_with_repetition_uniq, arr_with_repetition, \
-    dict_keys_with_non_empty_elements, \
-    uncleared_dict, tuple_, value, updated_tuple, \
-    ordenated_tuple
 
 def test_one_set_euler():
     """
@@ -22,7 +17,10 @@ def test_one_set_euler():
     assert result == expected_output
 
 
-def test_unique_elems():
+def test_unique_elems(
+    arr_with_repetition_uniq, 
+    arr_with_repetition
+):
     """
     tests the reduce function
     """
@@ -33,7 +31,10 @@ def test_unique_elems():
     assert result == expected_output
 
 
-def test_clear_sets():
+def test_clear_sets(
+    dict_keys_with_non_empty_elements, 
+    uncleared_dict
+):
     """
     tests dict clean with empty values
     """
@@ -43,19 +44,19 @@ def test_clear_sets():
 
     assert result == expected_output
 
-def test_list_to_set():
+def test_list_to_set(arrA, setA):
     """
     tests list to set converter
     """
     assert utils.list_to_set(arrA) == setA
 
-def test_ordenate_tuple():
+def test_ordenate_tuple(ordenated_tuple, tuple_):
     assert utils.ordenate_tuple(tuple_) == ordenated_tuple
 
-def test_update_tuple():
+def test_update_tuple(tuple_, value, updated_tuple):
     assert utils.update_tuple(tuple_, value) == updated_tuple
 
-def test_tuplify():
+def test_tuplify(arrA, tupleA):
     """
     tests
     """
