@@ -5,9 +5,16 @@ from copy import deepcopy
 from warnings import warn
 from reprlib import repr
 
-from .utils import update_tuple, ordenate_tuple, clear, tuplify
-from .operations import union, difference, intersection
-from .validators import validate_euler_generator_input
+from .utils import \
+    ordered_tuplify, \
+    update_ordered_tuple, \
+    clear
+from .operations import \
+    union, \
+    difference, \
+    intersection
+from .validators import \
+    validate_euler_generator_input
 
 def euler_generator(
     sets: Union[List, Dict]
@@ -28,6 +35,8 @@ def euler_generator(
     :returns: (key, euler_set) tuple of given sets
     :rtype: tuple
     """
+
+    # Deep copy of sets and validates for List case
     sets_ = deepcopy(sets)
     sets_ = validate_euler_generator_input(sets_)
 
@@ -43,23 +52,32 @@ def euler_generator(
 
         # Traverse the combination lattice
         for set_key in set_keys:
-            compl_sets_keys = difference(set_keys, [set_key])
+            other_keys = difference(set_keys, [set_key])
 
             # There are still sets to analyze
-            if len(compl_sets_keys) != 0 and len(sets[set_key]) != 0:
+            this_key_set = sets_[set_key]
+            
+            are_sets_still = len(other_keys) != 0 and \
+                             len(this_key_set) != 0
+            
+            if are_sets_still:
                 # Complementary sets
-                csets = {cset_key: sets_[cset_key] for cset_key in compl_sets_keys}
+                csets = {
+                    cset_key: sets_[cset_key] 
+                    for cset_key in other_keys
+                }
 
                 # Instrospective recursion: Exclusive combination elements
                 for euler_tuple, celements in euler_generator(csets):
 
                     # Remove current set_key elements
-                    comb_elems = difference(celements, sets_[set_key])
+                    this_key_set = sets_[set_key]
+                    comb_elems = difference(celements, this_key_set)
 
                     # Non-empty combination exclusivity case
                     if len(comb_elems) != 0:
                         # Sort keys to assure deterministic behavior
-                        sorted_comb_key = ordenate_tuple(tuplify(euler_tuple))
+                        sorted_comb_key = ordered_tuplify(euler_tuple)
 
                         # 1. Exclusive elements respective complementary keys
                         yield (sorted_comb_key, comb_elems)
@@ -76,7 +94,7 @@ def euler_generator(
                     # Non-empty intersection set
                     if len(comb_elems) != 0:
                         # Sort keys to assure deterministic behavior
-                        comb_key = ordenate_tuple(update_tuple(euler_tuple, set_key))
+                        comb_key = update_ordered_tuple(euler_tuple, set_key)
 
                         # 2. Intersection of analysis element and exclusive group:
                         yield (comb_key, comb_elems)

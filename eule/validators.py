@@ -13,7 +13,8 @@ def validate_euler_generator_input(
         raise TypeError(msg_1 + msg_2)
 
     is_unique_set_arr = [
-        len(uniq(values)) == len(values) for values in sets_.values()
+        len(uniq(values)) == len(values) 
+        for values in sets_.values()
     ]
 
     def and_map(a, b):

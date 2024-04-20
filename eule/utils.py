@@ -3,7 +3,7 @@ from functools import reduce
 from numpy import unique
 from typing import \
     Union, Callable, Iterable, \
-    List, Dict, Tuple, Any
+    List, Dict, Tuple, Set, Any
 
 def reduc(
     func: Callable[[Any, Any], Any], 
@@ -45,6 +45,32 @@ def tuplify(
             )
         )
 
+def sequence_to_set(sequence: Union[List, Tuple]):
+    """This map converts a list or a tuple into a set
+
+    :param list or tuple of elements:
+    :returns: a set-converted sequence
+    :rtype: set
+    """
+    return {s for s in sequence}
+
+def setify_sequences(
+    sequence_list: List[Union[List, Tuple, Set]]
+) -> Tuple[Set]:
+    """ This map returns a set of sets
+    
+    :param list of sets:
+    :returns: set of sets
+    :rtype: tuple
+    """
+
+    return (
+        sequence_to_set(sequence) 
+        if isinstance(sequence, (list, tuple)) 
+        else sequence
+        for sequence in sequence_list
+    )
+
 def clear(
     sets: Union[List, Dict]
 ):
@@ -59,7 +85,9 @@ def clear(
 
     return list(filter(non_empty_mask, sets.keys(), ),)
 
-def ordenate_tuple(tuple_: Tuple):
+def ordenate_tuple(
+    tuple_: Tuple
+):
     """
     Perform a custom operation on a tuple by updating it with a value and returning an ordered tuple.
 
@@ -73,7 +101,10 @@ def ordenate_tuple(tuple_: Tuple):
 
     return tuplify(sorted(tuple_))
 
-def update_tuple(tuple_: Tuple, value):
+def update_tuple(
+    tuple_: Tuple, 
+    value: Any
+):
     """This map updates and sorts a tuple with a value
 
     :param tuple of elements:
@@ -87,11 +118,27 @@ def update_tuple(tuple_: Tuple, value):
 
     return tuple(tuple_lst)
 
-def list_to_set(arr: List):
-    """This map converts a list into a set
+def ordered_tuplify(
+    candidate: Union[str, List, Tuple]
+) -> Tuple:
+    """This map returns a sorted tuple element on given candidate
 
-    :param list of elements:
-    :returns: a set-converted list
-    :rtype: set
+    :param candidate: tuplification candidate
+    :returns: tuple with sorted elements
+    :rtype: tuple
     """
-    return {s for s in arr}
+    return ordenate_tuple(tuplify(candidate))
+
+def update_ordered_tuple(
+    candidate: Tuple,
+    value: Any,
+) -> Tuple:
+    """This map returns a sorted tuple element on given candidate
+
+    :param candidate: tuplification candidate
+    :returns: tuple with sorted elements
+    :rtype: tuple
+    """
+    return ordenate_tuple(
+        update_tuple(tuplify(candidate), value)
+    )

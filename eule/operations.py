@@ -1,8 +1,13 @@
-from typing import List
+from typing import Union, List, Set
 
-from .utils import list_to_set
+from .utils import setify_sequences
 
-def union(listA: List, listB: List):
+SetType = Union[List, Set]
+
+def union(
+    set_A: SetType, 
+    set_B: SetType
+):
     """This map returns the union of two lists without repetition
 
     :param listA:
@@ -10,13 +15,14 @@ def union(listA: List, listB: List):
     :returns: list with non-repeated elements
     :rtype: list
     """
-
-    set_A = list_to_set(listA)
-    set_B = list_to_set(listB)
-
+    set_A, set_B = setify_sequences([set_A, set_B])
+    
     return list(set_A.union(set_B))
 
-def difference(list_A: List, list_B: List):
+def difference(
+    set_A: SetType, 
+    set_B: SetType
+):
     """This map returns the difference of a list respective to other, without repetition
 
     :param listA:
@@ -24,12 +30,14 @@ def difference(list_A: List, list_B: List):
     :returns: difference list with non-repeated elements
     :rtype: list
     """
-    set_A = list_to_set(list_A)
-    set_B = list_to_set(list_B)
+    set_A, set_B = setify_sequences([set_A, set_B])
 
     return list(set_A-set_B)
 
-def intersection(list_A: List, list_B: List):
+def intersection(
+    set_A: SetType, 
+    set_B: SetType
+):
     """This map returns the intersection of a list respective to other, without repetition
 
     :param listA:
@@ -37,7 +45,6 @@ def intersection(list_A: List, list_B: List):
     :returns: intersection list with non-repeated elements
     :rtype: list
     """
-    set_A = list_to_set(list_A)
-    set_B = list_to_set(list_B)
+    set_A, set_B = setify_sequences([set_A, set_B])
     
     return list(set_A.intersection(set_B))
