@@ -1,4 +1,3 @@
-from typing import Union, List, Set
 
 from .utils import setify_sequences
 from .types import SequenceType

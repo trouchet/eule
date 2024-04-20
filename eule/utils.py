@@ -3,7 +3,7 @@ from functools import reduce
 from numpy import unique
 from typing import \
     Union, Callable, Iterable, \
-    List, Dict, Tuple, Set, Any
+    List, Tuple, Set, Any
 from .types import \
     SetsType, \
     SequenceType, \

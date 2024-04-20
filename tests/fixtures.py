@@ -1,5 +1,4 @@
 # Fixture for functionalities
-import pytest
 
 def parametrize_cases(labels, test_cases):
     return {

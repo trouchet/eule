@@ -1,8 +1,7 @@
 from __future__ import annotations
 import pytest
 
-from eule.utils import reduce, \
-    uniq, \
+from eule.utils import uniq, \
     reduc, \
     clear_sets, \
     sequence_to_set, \
