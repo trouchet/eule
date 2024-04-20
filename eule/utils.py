@@ -4,7 +4,6 @@ from numpy import unique
 from typing import \
     Union, Callable, Iterable, \
     List, Dict, Tuple, Any
-from functools import reduce
 
 def reduc(
     func: Callable[[Any, Any], Any], 

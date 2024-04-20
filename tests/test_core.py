@@ -12,7 +12,7 @@ from eule.core import euler_generator, euler, \
 from .fixtures import sets, sets_boundaries, \
     verbose_key_sets, verbose_key_sets_euler, \
     sets_to_euler_tuples, keys_to_sets_tuples, \
-    match_items_tuple, euler_sets_keys, euler_sets_keys
+    match_items_tuple, euler_sets_keys
 
 def test_verbose_keys_euler():
     """
