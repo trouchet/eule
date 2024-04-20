@@ -62,7 +62,7 @@ clean-cache: # remove test and coverage artifacts
 
 test: ## run tests quickly with the default Python
 	poetry shell
-	pytest --cov=eule/ --cov-report term-missing
+	pytest
 
 watch: ## run tests on watchdog mode
 	poetry shell
@@ -72,11 +72,9 @@ lint: clean ## perform inplace lint fixes
 	ruff --fix .
 	pre-commit run --all-files
 
-coverage: clean ## check code coverage quickly with the default Python
+cov: clean ## check code coverage quickly with the default Python
 	coverage run --source "$$PACKAGE_NAME" -m pytest
 	coverage report -m --omit="$$COVERAGE_IGNORE_PATHS"
-	coverage html
-	$(BROWSER) htmlcov/index.html
 
 docs: clean ## generate Sphinx HTML documentation, including API docs
 	poetry shell
