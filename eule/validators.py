@@ -1,11 +1,13 @@
 from typing import Union, Dict, List
-
-from .utils import uniq, reduc
 from warnings import warn
 
+from .utils import reduc, uniq, sequence_to_set
+from .types import SetsType
+
 def validate_euler_generator_input(
-    sets_: Union[List, Dict]
-):
+    sets_: SetsType
+):  
+    
     # There are no sets
     if not isinstance(sets_, (list, dict)):
         msg_1 = 'Ill-conditioned input.'
@@ -13,7 +15,7 @@ def validate_euler_generator_input(
         raise TypeError(msg_1 + msg_2)
 
     is_unique_set_arr = [
-        len(uniq(values)) == len(values) 
+        len(sequence_to_set(values)) == len(values) 
         for values in sets_.values()
     ]
 
@@ -22,6 +24,9 @@ def validate_euler_generator_input(
 
     if not reduc(and_map, is_unique_set_arr, True):
         warn('Each array MUST NOT have duplicates')
-        sets_ = {key: uniq(values) for key, values in sets_.items()}
+        sets_ = {
+            key: uniq(values)
+            for key, values in sets_.items()
+        }
 
     return sets_

@@ -7,8 +7,6 @@ def parametrize_cases(labels, test_cases):
         'cases': test_cases
     }
 
-
-
 keys_to_sets_tuples=parametrize_cases(\
     'key,set_elements', \
     [

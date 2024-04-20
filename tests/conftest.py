@@ -26,14 +26,22 @@ def arr_with_repetition():
 def arr_with_repetition_uniq():
     return [1, 2, 3]
 
-# "clear"
+# "clear_sets"
 @pytest.fixture
 def uncleared_dict():
     return {'a': [1, 2, 3], 'b': []}
 
 @pytest.fixture
-def dict_keys_with_non_empty_elements():
-    return ['a']
+def cleared_dict():
+    return {'a': [1, 2, 3]}
+
+@pytest.fixture
+def uncleared_list():
+    return [[1, 2, 3], [], [4, 5]]
+
+@pytest.fixture
+def cleared_list():
+    return [[1, 2, 3], [4, 5]]
 
 # Sets to Euler sets
 

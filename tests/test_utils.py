@@ -1,9 +1,10 @@
 from __future__ import annotations
+import pytest
 
 from eule.utils import reduce, \
     uniq, \
     reduc, \
-    clear, \
+    clear_sets, \
     sequence_to_set, \
     tuplify, \
     ordenate_tuple, \
@@ -39,17 +40,28 @@ def test_unique_elems(
 
 
 def test_clear_sets(
-    dict_keys_with_non_empty_elements, 
-    uncleared_dict
+    uncleared_dict, 
+    cleared_dict
 ):
     """
     tests dict clean with empty values
     """
     input_ = uncleared_dict
-    result = clear(input_)
-    expected_output = dict_keys_with_non_empty_elements
+    expected_output = cleared_dict    
 
-    assert result == expected_output
+    assert clear_sets(input_) == expected_output
+
+def test_clear_sets_with_list(
+    uncleared_list,
+    cleared_list
+):
+    input_list = uncleared_list
+    expected_output = cleared_list
+    assert clear_sets(input_list) == expected_output
+
+def test_clear_sets_with_invalid_input():
+    with pytest.raises(TypeError):
+        clear_sets("invalid input")
 
 def test_list_to_set(arrA, setA):
     """

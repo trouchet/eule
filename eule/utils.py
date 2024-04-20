@@ -4,6 +4,10 @@ from numpy import unique
 from typing import \
     Union, Callable, Iterable, \
     List, Dict, Tuple, Set, Any
+from .types import \
+    SetsType, \
+    SequenceType, \
+    PseudoSequenceType
 
 def reduc(
     func: Callable[[Any, Any], Any], 
@@ -28,7 +32,7 @@ def uniq(lst: List):
     return list(unique(lst))
 
 def tuplify(
-    candidate: Union[str, List, Tuple]
+    candidate: PseudoSequenceType
 ):
     """This map returns a tuple element on given candidate
 
@@ -45,7 +49,7 @@ def tuplify(
             )
         )
 
-def sequence_to_set(sequence: Union[List, Tuple]):
+def sequence_to_set(sequence: SequenceType):
     """This map converts a list or a tuple into a set
 
     :param list or tuple of elements:
@@ -55,7 +59,7 @@ def sequence_to_set(sequence: Union[List, Tuple]):
     return {s for s in sequence}
 
 def setify_sequences(
-    sequence_list: List[Union[List, Tuple, Set]]
+    sequence_list: List[SequenceType]
 ) -> Tuple[Set]:
     """ This map returns a set of sets
     
@@ -71,8 +75,22 @@ def setify_sequences(
         for sequence in sequence_list
     )
 
-def clear(
-    sets: Union[List, Dict]
+def clear_sets(sets: SetsType):
+    """This map returns a set with non-empty values
+
+    :param dict set:
+    :returns: a set universe with
+    :rtype: dict
+    """
+    if isinstance(sets, dict):
+        return {k: v for k, v in sets.items() if v}
+    elif isinstance(sets, list):
+        return [elem for elem in sets if elem]
+    else:
+        raise TypeError("Input must be a list or dictionary")
+
+def cleared_set_keys(
+    candidate: SetsType
 ):
     """This map returns a set with non-empty values
 
@@ -80,16 +98,12 @@ def clear(
     :returns: a set universe with
     :rtype: dict
     """
-    def non_empty_mask(key):
-        return (len(sets[key]) != 0)
-
-    return list(filter(non_empty_mask, sets.keys(), ),)
+    return list(clear_sets(candidate).keys())
 
 def ordenate_tuple(
     tuple_: Tuple
 ):
-    """
-    Perform a custom operation on a tuple by updating it with a value and returning an ordered tuple.
+    """This map returns a sorted tuple element on given candidate
 
     :param input_tuple: The original tuple to be updated.
     :type input_tuple: tuple
