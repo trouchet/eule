@@ -9,14 +9,6 @@ packages = [{include = "eule"}]
 homepage = "https://pypi.org/project/eule/"
 repository = "https://github.com/trouchet/eule"
 keywords = ["euler-diagram", "sets"]
-classifiers = [
-    "Development Status :: 6 - Mature",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
-    "Natural Language :: English",
-    "Programming Language :: Python :: 3 :: Only",
-    "Topic :: Scientific/Engineering :: Information Analysis"
-]
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
