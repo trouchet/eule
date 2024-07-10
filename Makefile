@@ -58,7 +58,7 @@ clean-test: # remove test and coverage artifacts
 	rm -fr .tox/ .coverage coverage.* htmlcov/ .pytest_cache
 
 clean-cache: # remove test and coverage artifacts
-	find . -name '*cache*' -exec rm -rf {} +
+	find . -name '*pycache*' -exec rm -rf {} +
 
 test: ## run tests quickly with the default Python
 	poetry shell
@@ -84,9 +84,14 @@ docs: clean ## generate Sphinx HTML documentation, including API docs
 docs-watch: docs ## compile the docs watching for changes
 	watchmedo shell-command -p '*.rst' -c '$$DO_DOCS_HTML' -R -D .
 
-install: clean ## install the package to the active Python's site-packages
-	poetry shell
-	poetry install
+env: ## Creates a virtual environment. Usage: make env
+	pip install virtualenv
+	virtualenv .venv
+
+install: clean ## Installs the python requirements. Usage: make install
+	pip install uv
+	uv pip install -r requirements.txt
+	uv pip install -r requirements_dev.txt
 
 echo: ## echo current package version
 	echo "v$$(poetry version -s)"
@@ -115,3 +120,7 @@ publish: clean ## build source and publish package
 
 release: bump v=$(v) ## release package on PyPI
 	$(MAKE) -C publish
+
+requirements: ## Generates minimal requirements. Usage: make requirements
+	python3 scripts/clean_packages.py requirements.txt requirements.txt
+	python3 scripts/clean_packages.py requirements_dev.txt requirements_dev.txt
