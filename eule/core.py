@@ -41,92 +41,72 @@ def euler_generator(
     sets_ = deepcopy(sets)
     sets_ = validate_euler_generator_input(sets_)
     
+    # Sets with non-empty elements
+    set_keys = cleared_set_keys(sets_)
+
     # Only a set
-    if len(sets_.keys()) == 1:
-        comb_key = list(sets_.keys())[0]
+    if len(set_keys) == 1:
+        comb_key = set_keys[0]
         comb_elements = list(sets_.values())[0]
         yield ((comb_key, ), comb_elements)
 
-    else:
-        # Sets with non-empty elements
+    # Traverse the combination lattice
+    for set_key in set_keys:
+        other_keys = [k for k in set_keys if k != set_key]
+        this_set = sets_[set_key]
+
+        if not this_set or not other_keys:
+            continue
+        
+        # Complementary sets
+        csets = { cset_key: sets_[cset_key] for cset_key in other_keys }
+
+        # Instrospective recursion: Exclusive combination elements
+        for euler_tuple, celements in euler_generator(csets):
+            
+            # Remove current set_key elements
+            comb_elems = difference(celements, this_set)
+
+            # Non-empty combination exclusivity case
+            if comb_elems:
+                # Sort keys to assure deterministic behavior
+                sorted_comb_key = ordered_tuplify(euler_tuple)
+
+                # 1. Exclusive elements respective complementary keys
+                yield (sorted_comb_key, comb_elems)
+
+                # Remove comb_elems elements from its original sets
+                for euler_set_key in sorted_comb_key:
+                    sets_[euler_set_key] = difference(sets_[euler_set_key], comb_elems)
+
+            # Retrieve intersection elements
+            comb_elems = intersection(celements, sets_[set_key])
+
+            # Non-empty intersection set
+            if comb_elems:
+                # Sort keys to assure deterministic behavior
+                comb_key = update_ordered_tuple(euler_tuple, set_key)
+
+                # 2. Intersection of analysis element and exclusive group:
+                yield (comb_key, comb_elems)
+
+                # Remove intersection elements from current key-set and complementary sets
+                for euler_set_key in comb_key:
+                    sets_[euler_set_key] = difference(sets_[euler_set_key], comb_elems)
+
+                sets_[set_key] = difference(sets_[set_key], comb_elems)
+
+            set_keys = cleared_set_keys(sets_)
+
+        if sets_[set_key]:
+            # 3. Remaining exclusive elements
+            yield ((set_key, ), sets_[set_key])
+
+            # Remove remaining set elements
+            sets_[set_key] = []
+
         set_keys = cleared_set_keys(sets_)
-
-        # Traverse the combination lattice
-        for set_key in set_keys:
-            other_keys = difference(set_keys, [set_key])
-
-            # There are still sets to analyze
-            this_key_set = sets_[set_key]
-            
-            are_sets_still = len(other_keys) != 0 and \
-                             len(this_key_set) != 0
-            
-            if are_sets_still:
-                # Complementary sets
-                csets = {
-                    cset_key: sets_[cset_key] 
-                    for cset_key in other_keys
-                }
-
-                # Instrospective recursion: Exclusive combination elements
-                for euler_tuple, celements in euler_generator(csets):
-                    
-                    # Remove current set_key elements
-                    this_key_set = sets_[set_key]
-                    
-                    comb_elems = difference(celements, this_key_set)
-
-                    # Non-empty combination exclusivity case
-                    if len(comb_elems) != 0:
-                        # Sort keys to assure deterministic behavior
-                        sorted_comb_key = ordered_tuplify(euler_tuple)
-
-                        # 1. Exclusive elements respective complementary keys
-                        yield (sorted_comb_key, comb_elems)
-
-                        # Remove comb_elems elements from its original sets
-                        for euler_set_key in sorted_comb_key:
-                            sets_[euler_set_key] = difference(sets_[euler_set_key], comb_elems)
-                    else:
-                        pass
-
-                    # Retrieve intersection elements
-                    comb_elems = intersection(celements, sets[set_key])
-
-                    # Non-empty intersection set
-                    if len(comb_elems) != 0:
-                        # Sort keys to assure deterministic behavior
-                        comb_key = update_ordered_tuple(euler_tuple, set_key)
-
-                        # 2. Intersection of analysis element and exclusive group:
-                        yield (comb_key, comb_elems)
-
-                        # Remove intersection elements from current key-set and complementary sets
-                        for euler_set_key in comb_key:
-                            sets_[euler_set_key] = difference(sets_[euler_set_key], comb_elems)
-
-                        sets_[set_key] = difference(sets_[set_key], comb_elems)
-
-                    else:
-                        pass
-
-                    set_keys = cleared_set_keys(sets_)
-
-                if len(sets_[set_key]) != 0:
-                    # Load combination key
-                    comb_key = (set_key, )
-                    comb_elems = sets_[set_key]
-
-                    # 3. Remaining exclusive elements
-                    yield (comb_key, comb_elems)
-
-                    # Remove remaining set elements
-                    sets_[set_key] = []
-
-                else:
-                    pass
-
-                set_keys = cleared_set_keys(sets_)
+        
 
 
 def euler(
