@@ -1,5 +1,6 @@
 ![a night owl](https://github.com/trouchet/eule/blob/main/images/eule_small.png?raw=true)
 
+[![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
 [![Version](https://img.shields.io/pypi/v/eule.svg)](https://pypi.python.org/pypi/eule)
 [![downloads](https://img.shields.io/pypi/dm/eule)](https://pypi.org/project/eule/)
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/trouchet/eule/HEAD)
