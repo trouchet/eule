@@ -109,6 +109,8 @@ bump: ## bump version to user-provided {patch|minor|major} semantic
 	@$(MAKE) check-bump v=$(v)
 	poetry version $(v)
 	git add pyproject.toml
+	poetry lock
+	git add poetry.lock
 	git commit -m "release/ tag v$$(poetry version -s)"
 	git tag "v$$(poetry version -s)"
 	git push
