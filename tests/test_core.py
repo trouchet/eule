@@ -6,7 +6,7 @@ from reprlib import repr
 from eule.operations import intersection
 
 from eule.core import euler_generator, euler, \
-    euler_keys, euler_boundaries, Euler
+    euler_keys, euler_boundaries, Euler, euler_parallel
 from eule.utils import sequence_to_set
 
 from .fixtures import \
@@ -104,6 +104,7 @@ def test_euler(test_sets, euler_sets):
     }
 
     assert euler(setified_test_sets) == setified_euler_sets
+    assert euler_parallel(setified_test_sets) == setified_euler_sets
 
 
 def test_euler_keys(sets, euler_sets_keys):
