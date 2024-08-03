@@ -103,8 +103,16 @@ def test_euler(test_sets, euler_sets):
         for key, sequence in euler_sets.items()
     }
 
+    from time import time
+    from warnings import warn
+
+    start = time() 
     assert euler(setified_test_sets) == setified_euler_sets
+    warn(f'Time elapsed (recursive-serial): {time() - start}')
+
+    start = time()
     assert euler_parallel(setified_test_sets) == setified_euler_sets
+    warn(f'Time elapsed (recursive-parallel): {time() - start}')
 
 
 def test_euler_keys(sets, euler_sets_keys):
