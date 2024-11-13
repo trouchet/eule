@@ -18,7 +18,7 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Programming Language :: Python"
 ]
-dependencies = [ "numpy>1.24.1" ]
+dependencies = [ "numpy>1.24.4" ]
 
 [build-system]
 requires = ["hatchling"]
