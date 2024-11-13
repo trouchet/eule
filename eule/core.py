@@ -256,7 +256,7 @@ class Euler:
                 raise KeyError(keys) from error
 
         else:
-            elements=[]
+            elements: List = []
             try:
                 for key in keys:
                     elements=union(self.sets[key], elements)

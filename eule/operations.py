@@ -1,3 +1,4 @@
+from typing import Set
 
 from .types import SequenceType
 from .utils import setify_sequences

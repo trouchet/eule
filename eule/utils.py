@@ -27,7 +27,7 @@ def reduc(
     """
     return reduce(func, elems + [elem0])
 
-def uniq(lst: List):
+def uniq(lst: List) -> List[Any]:
     """This map returns list with unique elements
 
     :param list lst: array of elements entries
@@ -38,7 +38,7 @@ def uniq(lst: List):
 
 def tuplify(
     candidate: PseudoSequenceType
-):
+) -> Tuple:
     """This map returns a tuple element on given candidate
 
     :param candidate: tuplification candidate
@@ -54,7 +54,7 @@ def tuplify(
             )
         )
 
-def sequence_to_set(sequence: SequenceType):
+def sequence_to_set(sequence: SequenceType) -> Set:
     """This map converts a list or a tuple into a set
 
     :param list or tuple of elements:
@@ -96,7 +96,7 @@ def clear_sets(sets: SetsType):
 
 def cleared_set_keys(
     candidate: SetsType
-):
+) -> List[Any]:
     """This map returns a set with non-empty values
 
     :param dict set:
@@ -107,7 +107,7 @@ def cleared_set_keys(
 
 def ordenate_tuple(
     tuple_: Tuple
-):
+) -> Tuple[Any]:
     """This map returns a sorted tuple element on given candidate
 
     :param input_tuple: The original tuple to be updated.
@@ -123,7 +123,7 @@ def ordenate_tuple(
 def update_tuple(
     tuple_: Tuple,
     value: Any
-):
+) -> Tuple[Any]:
     """This map updates and sorts a tuple with a value
 
     :param tuple of elements:
@@ -139,7 +139,7 @@ def update_tuple(
 
 def ordered_tuplify(
     candidate: str | List | Tuple
-) -> Tuple:
+) -> Tuple[Any]:
     """This map returns a sorted tuple element on given candidate
 
     :param candidate: tuplification candidate
@@ -151,7 +151,7 @@ def ordered_tuplify(
 def update_ordered_tuple(
     candidate: Tuple,
     value: Any,
-) -> Tuple:
+) -> Tuple[Any]:
     """This map returns a sorted tuple element on given candidate
 
     :param candidate: tuplification candidate
