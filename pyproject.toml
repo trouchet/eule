@@ -18,20 +18,16 @@ classifiers = [
 ]
 dependencies = [ "numpy>2.0.0" ]
 
-[project.urls]
-
-homepage = "https://pypi.org/project/eule/"
-repository = "https://github.com/trouchet/eule"
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[project.urls]
+homepage = "https://pypi.org/project/eule/"
+repository = "https://github.com/trouchet/eule"
+
 [tool.hatch.build.targets.wheel]
 packages = ["eule/"]
-
-[project.urls]
-homepage = "https://github.com/trouchet/eule"
 
 [dependency-groups]
 build = [
