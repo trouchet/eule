@@ -29,7 +29,7 @@ repository = "https://github.com/trouchet/eule"
 [tool.hatch.build.targets.wheel]
 packages = ["eule/"]
 
-[dependency-groups]
+[project.optional-dependencies]
 build = [
     "mypy>=0.991",
     "wheel>=0.38.4",
