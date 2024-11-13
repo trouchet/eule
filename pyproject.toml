@@ -8,8 +8,6 @@ requires-python = ">=3.9"
 license = { text = "MIT License" }
 readme = "README.md"
 packages = [{include = "eule"}]
-homepage = "https://pypi.org/project/eule/"
-repository = "https://github.com/trouchet/eule"
 keywords = ["euler-diagram", "sets"]
 classifiers = [
     "Intended Audience :: Developers",
@@ -19,6 +17,11 @@ classifiers = [
     "Programming Language :: Python"
 ]
 dependencies = [ "numpy>2.0.0" ]
+
+[project.urls]
+
+homepage = "https://pypi.org/project/eule/"
+repository = "https://github.com/trouchet/eule"
 
 [build-system]
 requires = ["hatchling"]
