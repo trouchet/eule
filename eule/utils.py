@@ -1,17 +1,22 @@
 """utils module."""
 from functools import reduce
+from typing import Any
+from typing import Callable
+from typing import Iterable
+from typing import List
+from typing import Set
+from typing import Tuple
+
 from numpy import unique
-from typing import \
-    Union, Callable, Iterable, \
-    List, Tuple, Set, Any
-from .types import \
-    SetsType, \
-    SequenceType, \
-    PseudoSequenceType
+
+from .types import PseudoSequenceType
+from .types import SequenceType
+from .types import SetsType
+
 
 def reduc(
-    func: Callable[[Any, Any], Any], 
-    elems: Iterable[Any], 
+    func: Callable[[Any, Any], Any],
+    elems: Iterable[Any],
     elem0: Any
 ) -> Any:
     """This function returns a reduce handler
@@ -62,15 +67,15 @@ def setify_sequences(
     sequence_list: List[SequenceType]
 ) -> Tuple[Set]:
     """ This map returns a set of sets
-    
+
     :param list of sets:
     :returns: set of sets
     :rtype: tuple
     """
 
     return (
-        sequence_to_set(sequence) 
-        if isinstance(sequence, (list, tuple)) 
+        sequence_to_set(sequence)
+        if isinstance(sequence, (list, tuple))
         else sequence
         for sequence in sequence_list
     )
@@ -116,7 +121,7 @@ def ordenate_tuple(
     return tuplify(sorted(tuple_))
 
 def update_tuple(
-    tuple_: Tuple, 
+    tuple_: Tuple,
     value: Any
 ):
     """This map updates and sorts a tuple with a value
@@ -133,7 +138,7 @@ def update_tuple(
     return tuple(tuple_lst)
 
 def ordered_tuplify(
-    candidate: Union[str, List, Tuple]
+    candidate: str | List | Tuple
 ) -> Tuple:
     """This map returns a sorted tuple element on given candidate
 

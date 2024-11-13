@@ -1,18 +1,40 @@
 from __future__ import annotations
 
-import pytest
 from reprlib import repr
 
+import pytest
+from eule.core import Euler
+from eule.core import euler
+from eule.core import euler_boundaries
+from eule.core import euler_generator
+from eule.core import euler_keys
+from eule.core import euler_parallel
+from eule.core import euler_generator_worker 
 from eule.operations import intersection
-
-from eule.core import euler_generator, euler, \
-    euler_keys, euler_boundaries, Euler, euler_parallel
 from eule.utils import sequence_to_set
 
-from .fixtures import \
-    sets_to_euler_tuples, \
-    keys_to_sets_tuples, \
-    match_items_tuple
+from .fixtures import keys_to_sets_tuples
+from .fixtures import match_items_tuple
+from .fixtures import sets_to_euler_tuples
+from .fixtures import worker_args_tuples
+
+# Define test cases
+@pytest.mark.parametrize(\
+    worker_args_tuples['labels'], \
+    worker_args_tuples['cases']
+)
+def test_euler_generator_worker(args, expected):
+    print(args)
+    result = euler_generator_worker(args)
+    print(result)
+    assert result == expected
+
+# Edge cases
+def test_empty_all_sets():
+    args = ({'A': set(), 'B': set()}, ['A', 'B'], 'A')
+    expected = []  # Since all sets are empty
+    result = euler_generator_worker(args)
+    assert result == expected
 
 def test_verbose_keys_euler(
     verbose_key_sets,
@@ -103,16 +125,8 @@ def test_euler(test_sets, euler_sets):
         for key, sequence in euler_sets.items()
     }
 
-    from time import time
-    from warnings import warn
-
-    start = time() 
     assert euler(setified_test_sets) == setified_euler_sets
-    warn(f'Time elapsed (recursive-serial): {time() - start}')
-
-    start = time()
     assert euler_parallel(setified_test_sets) == setified_euler_sets
-    warn(f'Time elapsed (recursive-parallel): {time() - start}')
 
 
 def test_euler_keys(sets, euler_sets_keys):

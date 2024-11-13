@@ -1,4 +1,7 @@
-from eule.operations import difference, union, intersection
+from eule.operations import difference
+from eule.operations import intersection
+from eule.operations import union
+
 
 def test_difference(arrA, arrB, arrAmB):
     """

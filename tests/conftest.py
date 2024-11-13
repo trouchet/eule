@@ -1,52 +1,53 @@
 import pytest
 
+
 # tuplify
-@pytest.fixture
+@pytest.fixture()
 def tuple_():
     return (1,3,2,4)
 
-@pytest.fixture
+@pytest.fixture()
 def value():
     return 5
 
-@pytest.fixture
+@pytest.fixture()
 def updated_tuple():
     return (1,3,2,4,5)
 
-@pytest.fixture
+@pytest.fixture()
 def ordenated_tuple():
     return (1,2,3,4)
 
 # "uniq"
-@pytest.fixture
+@pytest.fixture()
 def arr_with_repetition():
     return [1, 2, 3, 3]
 
-@pytest.fixture
+@pytest.fixture()
 def arr_with_repetition_uniq():
     return [1, 2, 3]
 
 # "clear_sets"
-@pytest.fixture
+@pytest.fixture()
 def uncleared_dict():
     return {'a': [1, 2, 3], 'b': []}
 
-@pytest.fixture
+@pytest.fixture()
 def cleared_dict():
     return {'a': [1, 2, 3]}
 
-@pytest.fixture
+@pytest.fixture()
 def uncleared_list():
     return [[1, 2, 3], [], [4, 5]]
 
-@pytest.fixture
+@pytest.fixture()
 def cleared_list():
     return [[1, 2, 3], [4, 5]]
 
 # Sets to Euler sets
 
 # "listToSet", "unite", "difference"
-@pytest.fixture
+@pytest.fixture()
 def sets():
     return {
         'a': [1, 2, 3],
@@ -55,18 +56,18 @@ def sets():
         'd': [3, 5, 6]
     }
 
-@pytest.fixture
+@pytest.fixture()
 def euler_sets_keys():
     return [
-        ('a','b'), 
-        ('b','c'), 
-        ('a','b','c','d'), 
-        ('c','d'), 
-        ('d', ), 
+        ('a','b'),
+        ('b','c'),
+        ('a','b','c','d'),
+        ('c','d'),
+        ('d', ),
         ('a', )
     ]
 
-@pytest.fixture
+@pytest.fixture()
 def sets_boundaries():
     return {
         'a': ['b', 'c', 'd'],
@@ -75,35 +76,35 @@ def sets_boundaries():
         'd': ['a', 'b', 'c']
     }
 
-@pytest.fixture
+@pytest.fixture()
 def arrA():
     return [1,2,3]
 
-@pytest.fixture
+@pytest.fixture()
 def setA():
     return {1,2,3}
 
-@pytest.fixture
+@pytest.fixture()
 def tupleA():
     return (1,2,3)
 
-@pytest.fixture
+@pytest.fixture()
 def arrB():
     return [3,4,5]
 
-@pytest.fixture
+@pytest.fixture()
 def arrApB():
     return [1,2,3,4,5]
 
-@pytest.fixture
+@pytest.fixture()
 def arrAmB():
     return [1,2]
 
-@pytest.fixture
+@pytest.fixture()
 def arrAiB():
     return [3]
 
-@pytest.fixture
+@pytest.fixture()
 def verbose_key_sets():
     return {
         'set A': [1,2,3,4],
@@ -112,8 +113,8 @@ def verbose_key_sets():
         'set D': [4,5,6,7],
     }
 
-@pytest.fixture
-def verbose_key_sets_euler(): 
+@pytest.fixture()
+def verbose_key_sets_euler():
     return {
         ('set A',): [1],
         ('set A','set B',):[2],
