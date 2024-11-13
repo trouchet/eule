@@ -1,13 +1,14 @@
 from __future__ import annotations
-import pytest
 
-from eule.utils import uniq, \
-    reduc, \
-    clear_sets, \
-    sequence_to_set, \
-    tuplify, \
-    ordenate_tuple, \
-    update_tuple
+import pytest
+from eule.utils import clear_sets
+from eule.utils import ordenate_tuple
+from eule.utils import reduc
+from eule.utils import sequence_to_set
+from eule.utils import tuplify
+from eule.utils import uniq
+from eule.utils import update_tuple
+
 
 def test_one_set_euler():
     """
@@ -25,7 +26,7 @@ def test_one_set_euler():
 
 
 def test_unique_elems(
-    arr_with_repetition_uniq, 
+    arr_with_repetition_uniq,
     arr_with_repetition
 ):
     """
@@ -39,14 +40,14 @@ def test_unique_elems(
 
 
 def test_clear_sets(
-    uncleared_dict, 
+    uncleared_dict,
     cleared_dict
 ):
     """
     tests dict clean with empty values
     """
     input_ = uncleared_dict
-    expected_output = cleared_dict    
+    expected_output = cleared_dict
 
     assert clear_sets(input_) == expected_output
 

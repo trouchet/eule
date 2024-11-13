@@ -1,17 +1,22 @@
 """utils module."""
 from functools import reduce
+from typing import Any
+from typing import Callable
+from typing import Iterable
+from typing import List
+from typing import Set
+from typing import Tuple
+
 from numpy import unique
-from typing import \
-    Union, Callable, Iterable, \
-    List, Tuple, Set, Any
-from .types import \
-    SetsType, \
-    SequenceType, \
-    PseudoSequenceType
+
+from .types import PseudoSequenceType
+from .types import SequenceType
+from .types import SetsType
+
 
 def reduc(
-    func: Callable[[Any, Any], Any], 
-    elems: Iterable[Any], 
+    func: Callable[[Any, Any], Any],
+    elems: Iterable[Any],
     elem0: Any
 ) -> Any:
     """This function returns a reduce handler
@@ -22,7 +27,7 @@ def reduc(
     """
     return reduce(func, elems + [elem0])
 
-def uniq(lst: List):
+def uniq(lst: List) -> List[Any]:
     """This map returns list with unique elements
 
     :param list lst: array of elements entries
@@ -33,7 +38,7 @@ def uniq(lst: List):
 
 def tuplify(
     candidate: PseudoSequenceType
-):
+) -> Tuple:
     """This map returns a tuple element on given candidate
 
     :param candidate: tuplification candidate
@@ -49,7 +54,7 @@ def tuplify(
             )
         )
 
-def sequence_to_set(sequence: SequenceType):
+def sequence_to_set(sequence: SequenceType) -> Set:
     """This map converts a list or a tuple into a set
 
     :param list or tuple of elements:
@@ -62,15 +67,15 @@ def setify_sequences(
     sequence_list: List[SequenceType]
 ) -> Tuple[Set]:
     """ This map returns a set of sets
-    
+
     :param list of sets:
     :returns: set of sets
     :rtype: tuple
     """
 
     return (
-        sequence_to_set(sequence) 
-        if isinstance(sequence, (list, tuple)) 
+        sequence_to_set(sequence)
+        if isinstance(sequence, (list, tuple))
         else sequence
         for sequence in sequence_list
     )
@@ -91,7 +96,7 @@ def clear_sets(sets: SetsType):
 
 def cleared_set_keys(
     candidate: SetsType
-):
+) -> List[Any]:
     """This map returns a set with non-empty values
 
     :param dict set:
@@ -102,7 +107,7 @@ def cleared_set_keys(
 
 def ordenate_tuple(
     tuple_: Tuple
-):
+) -> Tuple[Any]:
     """This map returns a sorted tuple element on given candidate
 
     :param input_tuple: The original tuple to be updated.
@@ -116,9 +121,9 @@ def ordenate_tuple(
     return tuplify(sorted(tuple_))
 
 def update_tuple(
-    tuple_: Tuple, 
+    tuple_: Tuple,
     value: Any
-):
+) -> Tuple[Any]:
     """This map updates and sorts a tuple with a value
 
     :param tuple of elements:
@@ -133,8 +138,8 @@ def update_tuple(
     return tuple(tuple_lst)
 
 def ordered_tuplify(
-    candidate: Union[str, List, Tuple]
-) -> Tuple:
+    candidate: str | List | Tuple
+) -> Tuple[Any]:
     """This map returns a sorted tuple element on given candidate
 
     :param candidate: tuplification candidate
@@ -146,7 +151,7 @@ def ordered_tuplify(
 def update_ordered_tuple(
     candidate: Tuple,
     value: Any,
-) -> Tuple:
+) -> Tuple[Any]:
     """This map returns a sorted tuple element on given candidate
 
     :param candidate: tuplification candidate

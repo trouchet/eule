@@ -30,7 +30,7 @@ endef
 
 export PRINT_HELP_PYSCRIPT
 
-BROWSER := python -c "$$BROWSER_PYSCRIPT"
+BROWSER := python3 -c "$$BROWSER_PYSCRIPT"
 DO_DOCS_HTML := $(MAKE) -C clean-docs && $(MAKE) -C docs html
 SPHINXBUILD   = python3 -msphinx
 
@@ -65,18 +65,19 @@ test: ## run tests quickly with the default Python
 	pytest
 
 watch: ## run tests on watchdog mode
-	poetry shell
 	ptw .
 
+uv: ## install uv
+	pip install uv
+
 lint: clean ## perform inplace lint fixes
-	ruff --fix .
+	uv run ruff --fix .
 
 cov: clean ## check code coverage quickly with the default Python
-	coverage run --source "$$PACKAGE_NAME" -m pytest
-	coverage report -m --omit="$$COVERAGE_IGNORE_PATHS"
+	uv run coverage run --source "$$PACKAGE_NAME" -m pytest
+	uv run coverage report -m --omit="$$COVERAGE_IGNORE_PATHS"
 
 docs: clean ## generate Sphinx HTML documentation, including API docs
-	poetry shell
 	sphinx-apidoc -o "docs/" "$$PACKAGE_NAME" "tests" "examples" "conftest.py"
 	$(MAKE) -C docs html
 	$(BROWSER) 'docs/_build/html/index.html'
@@ -85,16 +86,11 @@ docs-watch: docs ## compile the docs watching for changes
 	watchmedo shell-command -p '*.rst' -c '$$DO_DOCS_HTML' -R -D .
 
 env: ## Creates a virtual environment. Usage: make env
-	pip install virtualenv
-	virtualenv .venv
+	uv venv
 
 install: clean ## Installs the python requirements. Usage: make install
-	pip install uv
 	uv pip install -r requirements.txt
 	uv pip install -r requirements_dev.txt
-
-echo: ## echo current package version
-	echo "v$$(poetry version -s)"
 
 what: ## List all commits made since last version bump
 	git log --oneline "$$(git rev-list -n 1 "v$$(poetry version -s)")..$$(git rev-parse HEAD)"
@@ -109,8 +105,8 @@ bump: ## bump version to user-provided {patch|minor|major} semantic
 	@$(MAKE) check-bump v=$(v)
 	poetry version $(v)
 	git add pyproject.toml
-	poetry lock
-	git add poetry.lock
+	uv lock
+	git add uv.lock
 	git commit -m "release/ tag v$$(poetry version -s)"
 	git tag "v$$(poetry version -s)"
 	git push

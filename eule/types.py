@@ -1,7 +1,10 @@
-from typing import Union, List, Dict, Tuple, Set
+from typing import Dict
+from typing import List
+from typing import Set
+from typing import Tuple
 
-KeyType = Union[str, Tuple]
-SetType = Union[List, Set]
-SetsType = Union[List[SetType], Dict[KeyType, SetType]]
-PseudoSequenceType = Union[str, List, Tuple]
-SequenceType = Union[List, Tuple, Set]
+KeyType = str | Tuple
+SetType = List | Set
+SetsType = List[SetType] | Dict[KeyType, SetType]
+PseudoSequenceType = str | List | Tuple
+SequenceType = List | Tuple | Set

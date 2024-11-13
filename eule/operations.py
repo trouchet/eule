@@ -1,9 +1,11 @@
+from typing import Set
 
-from .utils import setify_sequences
 from .types import SequenceType
+from .utils import setify_sequences
+
 
 def union(
-    sequence_A: SequenceType, 
+    sequence_A: SequenceType,
     sequence_B: SequenceType
 ):
     """This map returns the union of two lists without repetition
@@ -21,7 +23,7 @@ def union(
     return type_A(union_set)
 
 def difference(
-    sequence_A: SequenceType, 
+    sequence_A: SequenceType,
     sequence_B: SequenceType
 ):
     """This map returns the difference of a list respective to other, without repetition
@@ -40,7 +42,7 @@ def difference(
     return type_A(diff_set)
 
 def intersection(
-    sequence_A: SequenceType, 
+    sequence_A: SequenceType,
     sequence_B: SequenceType
 ):
     """This map returns the intersection of a list respective to other, without repetition
@@ -52,7 +54,7 @@ def intersection(
     """
     sequences = [sequence_A, sequence_B]
     set_A, set_B = setify_sequences(sequences)
-    
+
     intersec_set =  set_A.intersection(set_B)
     type_A = type(sequence_A)
 

@@ -1,22 +1,21 @@
 """Main module."""
-from typing import List, Dict, Union
-
-from multiprocessing import Pool
 from copy import deepcopy
-from warnings import warn
+from multiprocessing import Pool
 from reprlib import repr
+from typing import Dict
+from typing import List
+from warnings import warn
 
-from .utils import \
-    ordered_tuplify, \
-    update_ordered_tuple, \
-    cleared_set_keys
-from .operations import \
-    union, \
-    difference, \
-    intersection
-from .validators import \
-    validate_euler_generator_input
-from .types import SetsType, KeyType
+from .operations import difference
+from .operations import intersection
+from .operations import union
+from .types import KeyType
+from .types import SetsType
+from .utils import cleared_set_keys
+from .utils import ordered_tuplify
+from .utils import update_ordered_tuple
+from .validators import validate_euler_generator_input
+
 
 def euler_generator(
     sets: SetsType
@@ -26,7 +25,7 @@ def euler_generator(
 
     1. Begin with the available `sets` and their exclusive elements;
     2. Compute complementary elements to the current key-set;
-    3. In case complementary set-keys AND current set content are not empty, continue; 
+    3. In case complementary set-keys AND current set content are not empty, continue;
     4. Otherwise, go to the next key-set;
     5. Find the euler diagram on complementary sets;
     6. Compute exclusive combination elements;
@@ -37,11 +36,10 @@ def euler_generator(
     :returns: (key, euler_set) tuple of given sets
     :rtype: tuple
     """
-
     # Deep copy of sets and validates for List case
     sets_ = deepcopy(sets)
     sets_ = validate_euler_generator_input(sets_)
-    
+
     # Sets with non-empty elements
     set_keys = cleared_set_keys(sets_)
 
@@ -50,21 +48,19 @@ def euler_generator(
         comb_key = set_keys[0]
         comb_elements = list(sets_.values())[0]
         yield ((comb_key, ), comb_elements)
-
     # Traverse the combination lattice
     for set_key in set_keys:
         other_keys = [k for k in set_keys if k != set_key]
         this_set = sets_[set_key]
-
         if not this_set or not other_keys:
             continue
-        
+
         # Complementary sets
         csets = { cset_key: sets_[cset_key] for cset_key in other_keys }
 
         # Instrospective recursion: Exclusive combination elements
         for euler_tuple, celements in euler_generator(csets):
-            
+
             # Remove current set_key elements
             comb_elems = difference(celements, this_set)
 
@@ -113,38 +109,48 @@ def euler_generator_worker(args):
     results = []
     this_set = sets[set_key]
     
+    if this_set and len(set_keys) == 1:
+        sorted_comb_key = ordered_tuplify((set_key, ))
+        results.append((sorted_comb_key, this_set))
+        return results
+    
+    # Only a set
     other_keys = [key for key in set_keys if key != set_key]
     if not this_set or not other_keys:
         return results
-    
+
     # Complementary sets
     csets = {key: sets[key] for key in other_keys}
-    
+
     for euler_tuple, celements in euler_generator(csets):
         comb_elems = difference(celements, this_set)
-        
+
+        # Non-empty combination exclusivity case
         if comb_elems:
             sorted_comb_key = ordered_tuplify(euler_tuple)
-            results.append((sorted_comb_key, comb_elems))
-            
+            results.append((sorted_comb_key, comb_elems, ))
+
             # Update sets
             for euler_set_key in sorted_comb_key:
                 sets[euler_set_key] = difference(sets[euler_set_key], comb_elems)
 
+        # Retrieve intersection key elements
         comb_elems = intersection(celements, this_set)
-        
+
+        # Non-empty intersection set
         if comb_elems:
             comb_key = update_ordered_tuple(euler_tuple, set_key)
             results.append((comb_key, comb_elems))
-            
+
             for euler_set_key in comb_key:
                 sets[euler_set_key] = difference(sets[euler_set_key], comb_elems)
             sets[set_key] = difference(sets[set_key], comb_elems)
-    
+
+    # Remaining exclusive elements
     if sets[set_key]:
         results.append(((set_key,), sets[set_key]))
         sets[set_key] = []
-    
+
     return results
 
 def euler_generator_parallel(sets: SetsType):
@@ -168,9 +174,7 @@ def euler_generator_parallel(sets: SetsType):
 def euler_parallel(sets: SetsType):
     return dict(euler_generator_parallel(sets))
 
-def euler(
-    sets: SetsType
-):
+def euler(sets: SetsType):
     """Euler diagram dictionary of set-dictionary of non-repetitive elements
 
     :param dict sets: array/dict of arrays
@@ -201,7 +205,7 @@ def euler_boundaries(sets):
     setsKeys = list(sets.keys())
     eulerSetsKeys = euler_keys(sets)
 
-    boundaries = dict(map(lambda key: (key, []), setsKeys))
+    boundaries = {setKey: [] for setKey in setsKeys}
 
     for setKey in setsKeys:
         for eulerSetKeys in eulerSetsKeys:
@@ -216,7 +220,7 @@ def euler_boundaries(sets):
     }
 
 class Euler:
-    def __init__(self, sets: Union[List, Dict]):
+    def __init__(self, sets: List | Dict):
         """
         Initialize an Euler object.
 
@@ -248,23 +252,23 @@ class Euler:
             try:
                 return self.sets[keys]
 
-            except KeyError:
-                raise KeyError(keys)
+            except KeyError as error:
+                raise KeyError(keys) from error
 
         else:
-            elements=[]
+            elements: List = []
             try:
                 for key in keys:
                     elements=union(self.sets[key], elements)
-                
+
                 return elements
-            except KeyError:
+            except KeyError as err:
                 keys=str(keys)
                 header=f'The keys must be among keys: ({keys}).'
 
                 msg=f'{header}'
 
-                raise KeyError(msg)
+                raise KeyError(msg) from err
 
     def euler_keys(self):
         """

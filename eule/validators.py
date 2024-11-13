@@ -1,18 +1,21 @@
 from warnings import warn
 
-from .utils import reduc, uniq, sequence_to_set
 from .types import SetsType
+from .utils import reduc
+from .utils import sequence_to_set
+from .utils import uniq
+
 
 def validate_euler_generator_input(
     sets_: SetsType
-):  
+):
     """This function validates the input for euler_generator
 
     :param dict sets_: dictionary with sets
     :returns: validated sets
     :rtype: dict
     """
-    
+
     # There are no sets
     if not isinstance(sets_, (list, dict)):
         msg_1 = 'Ill-conditioned input.'
@@ -20,7 +23,7 @@ def validate_euler_generator_input(
         raise TypeError(msg_1 + msg_2)
 
     is_unique_set_arr = [
-        len(sequence_to_set(values)) == len(values) 
+        len(sequence_to_set(values)) == len(values)
         for values in sets_.values()
     ]
 
