@@ -155,8 +155,7 @@ def test_euler_class_properties(test_sets, euler_sets):
     assert euler_instance.esets == euler_sets
     assert euler_instance.as_dict() == euler_sets
 
-    esets_repr=repr(euler_instance.esets)
-    expected_repr = f'Euler({esets_repr})'
+    expected_repr = f'Euler(sets={len(test_sets)}, regions={len(euler_sets)})'
 
     assert euler_instance.__repr__() == expected_repr
 

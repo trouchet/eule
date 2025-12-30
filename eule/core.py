@@ -3,8 +3,11 @@ from copy import deepcopy
 from multiprocessing import Pool
 from reprlib import repr
 from typing import Dict
+from typing import Optional
+from typing import Union
 from typing import List
 from warnings import warn
+from collections import defaultdict
 
 from .operations import difference
 from .operations import intersection
@@ -174,7 +177,7 @@ def euler_generator_parallel(sets: SetsType):
 def euler_parallel(sets: SetsType):
     return dict(euler_generator_parallel(sets))
 
-def euler(sets: SetsType):
+def euler_func(sets: SetsType):
     """Euler diagram dictionary of set-dictionary of non-repetitive elements
 
     :param dict sets: array/dict of arrays
@@ -182,6 +185,22 @@ def euler(sets: SetsType):
     :rtype: dict
     """
     return dict(euler_generator(sets))
+
+def euler(sets: SetsType, use_clustering: Optional[bool] = None, **kwargs) -> Dict:
+    """
+    Compute Euler diagram (original function interface).
+    Optionally uses clustering for large set systems.
+    
+    Args:
+        sets: Dictionary or list of sets
+        use_clustering: If True, use clustering. If None, auto-decide
+        **kwargs: Clustering parameters
+    
+    Returns:
+        Dictionary of Euler diagram regions
+    """
+    e = Euler(sets, use_clustering=use_clustering, **kwargs)
+    return e.as_dict()
 
 def euler_keys(
     sets: SetsType
@@ -192,7 +211,7 @@ def euler_keys(
     :returns: euler sets keys
     :rtype: list
     """
-    return list(euler(sets).keys())
+    return list(euler_func(sets).keys())
 
 def euler_boundaries(sets):
     """Euler diagram set boundaries
@@ -220,18 +239,161 @@ def euler_boundaries(sets):
     }
 
 class Euler:
-    def __init__(self, sets: List | Dict):
+    def __init__(self, sets: Union[List, Dict], 
+                 use_clustering: Optional[bool] = None,
+                 method: str = 'leiden',
+                 allow_overlap: bool = False,
+                 parallel: Optional[bool] = None,
+                 **kwargs):
         """
-        Initialize an Euler object.
-
-        Parameters:
-        sets (dict): A dictionary containing sets indexed by keys.
-
-        This constructor makes a deep copy of the input sets and computes
-        the Euler set representation.
+        Initialize Euler diagram with optional clustering.
+        
+        Args:
+            sets: Dictionary or list of sets
+            use_clustering: If True, use graph-based clustering. 
+                          If None, auto-decide based on set count (>30 sets)
+            method: Clustering method ('leiden', 'spectral', 'hierarchical')
+            allow_overlap: If True, allow overlapping clusters (sets in multiple clusters)
+            parallel: Use parallel computation. If None, auto-decide based on cluster count
+            **kwargs: Additional clustering parameters:
+                - resolution: float (leiden, default 0.8)
+                - overlap_threshold: float (default 0.18)
+                - min_bridge_strength: float (default 0.15)
+                - max_cluster_size: int (default 30)
+                - min_cluster_size: int (default 3)
         """
-        self.sets=deepcopy(sets)
-        self.esets=euler(sets)
+        # Store original sets
+        self.sets = deepcopy(sets)
+        
+        # Auto-decide clustering
+        n_sets = len(sets)
+        if use_clustering is None:
+            use_clustering = n_sets > 30
+        
+        self.use_clustering = use_clustering
+        self.method = method
+        self.allow_overlap = allow_overlap
+        self.kwargs = kwargs
+        
+        # Clustering state
+        self.clustering = None
+        self.cluster_diagrams = None
+        self.metrics = None
+        self.overlapping_clustering = None
+        self.membership_strengths = None
+        
+        # Compute Euler diagram
+        if use_clustering:
+            self._compute_with_clustering(parallel)
+        else:
+            self.esets = euler_func(sets)
+    
+    def _compute_with_clustering(self, parallel: Optional[bool] = None):
+        """Compute Euler diagram using clustering approach"""
+        from .clustering import (SetOverlapGraph, LeidenClustering, 
+                                HierarchicalClustering, SpectralBisection,
+                                OverlappingClustering, compute_cluster_metrics,
+                                rebalance_clusters)
+        
+        # Build overlap graph
+        graph = SetOverlapGraph(self.sets)
+        
+        # Perform clustering
+        if self.allow_overlap:
+            clusterer = OverlappingClustering(
+                graph,
+                overlap_threshold=self.kwargs.get('overlap_threshold', 0.18),
+                min_bridge_strength=self.kwargs.get('min_bridge_strength', 0.15)
+            )
+            self.overlapping_clustering = clusterer.cluster(
+                base_resolution=self.kwargs.get('resolution', 0.8)
+            )
+            self.membership_strengths = clusterer.get_membership_strengths()
+            self.clustering = clusterer.get_primary_clustering()
+        else:
+            if self.method == 'leiden':
+                resolution = self.kwargs.get('resolution', 0.8)
+                clusterer = LeidenClustering(graph, resolution=resolution)
+                self.clustering = clusterer.cluster()
+            elif self.method == 'hierarchical':
+                max_size = self.kwargs.get('max_cluster_size', 30)
+                clusterer = HierarchicalClustering(graph, max_cluster_size=max_size)
+                self.clustering = clusterer.cluster()
+            elif self.method == 'spectral':
+                max_size = self.kwargs.get('max_cluster_size', 30)
+                clusterer = HierarchicalClustering(graph, max_cluster_size=max_size)
+                self.clustering = clusterer.cluster()
+            else:
+                raise ValueError(f"Unknown method: {self.method}")
+        
+        # Rebalance
+        max_size = self.kwargs.get('max_cluster_size', 30)
+        min_size = self.kwargs.get('min_cluster_size', 3)
+        self.clustering = rebalance_clusters(self.sets, self.clustering, max_size, min_size)
+        
+        # Compute metrics
+        self.metrics = compute_cluster_metrics(self.sets, self.clustering)
+        
+        # Compute Euler diagrams per cluster
+        self._compute_cluster_diagrams(parallel)
+        
+        # Merge into single esets
+        self._merge_cluster_diagrams()
+
+    def _compute_cluster_diagrams(self, parallel: Optional[bool] = None):
+        """Compute Euler diagram for each cluster"""
+        from multiprocessing import Pool
+        
+        # Get cluster sets
+        cluster_sets = self._get_cluster_sets()
+        n_clusters = len(cluster_sets)
+        
+        # Auto-decide parallel
+        if parallel is None:
+            parallel = n_clusters > 4 and len(self.sets) > 50
+        
+        # Compute
+        if parallel and n_clusters > 1:
+            with Pool() as pool:
+                results = pool.starmap(
+                    _compute_cluster_worker,
+                    [(cid, sets) for cid, sets in cluster_sets.items()]
+                )
+            self.cluster_diagrams = dict(results)
+        else:
+            self.cluster_diagrams = {}
+            for cluster_id, sets in cluster_sets.items():
+                self.cluster_diagrams[cluster_id] = euler_func(sets)
+    
+    def _get_cluster_sets(self) -> Dict[int, Dict]:
+        """Get sets grouped by cluster"""
+        if self.allow_overlap and self.overlapping_clustering:
+            # Overlapping: sets can appear in multiple clusters
+            cluster_sets = defaultdict(dict)
+            for key in self.sets.keys():
+                cluster_ids = self.overlapping_clustering[key]
+                for cluster_id in cluster_ids:
+                    cluster_sets[cluster_id][key] = self.sets[key]
+            return dict(cluster_sets)
+        else:
+            # Disjoint: each set in one cluster
+            cluster_sets = defaultdict(dict)
+            for key, cluster_id in self.clustering.items():
+                cluster_sets[cluster_id][key] = self.sets[key]
+            return dict(cluster_sets)
+    
+    def _merge_cluster_diagrams(self):
+        """Merge cluster diagrams into single esets dict"""
+        # For now, flatten with cluster prefix to avoid collisions
+        self.esets = {}
+        for cluster_id, diagram in self.cluster_diagrams.items():
+            for key_tuple, elements in diagram.items():
+                # Use original key if no collision, otherwise prefix
+                if key_tuple not in self.esets:
+                    self.esets[key_tuple] = elements
+                else:
+                    # Collision - use cluster prefix
+                    self.esets[(cluster_id, key_tuple)] = elements
 
     def __getitem__(self, keys: KeyType):
         """
@@ -287,7 +449,35 @@ class Euler:
         Returns:
         tuple: A tuple containing the lower and upper boundaries of the Euler set representation.
         """
-        return euler_boundaries(self.sets)
+        from .operations import difference, union
+        
+        sets_keys = list(self.sets.keys())
+        euler_sets_keys = self.euler_keys()
+        
+        boundaries = {set_key: [] for set_key in sets_keys}
+        
+        for set_key in sets_keys:
+            for euler_set_keys in euler_sets_keys:
+                # Handle both simple keys and cluster-prefixed keys
+                if isinstance(euler_set_keys, tuple) and len(euler_set_keys) == 2:
+                    if isinstance(euler_set_keys[1], tuple):
+                        # Cluster-prefixed: (cluster_id, (key_tuple,))
+                        actual_keys = euler_set_keys[1]
+                    else:
+                        # Regular tuple of keys
+                        actual_keys = euler_set_keys
+                else:
+                    actual_keys = euler_set_keys
+                
+                if set_key in actual_keys:
+                    this_boundaries = boundaries[set_key]
+                    ekeys_not_this = difference(actual_keys, [set_key])
+                    boundaries[set_key] = union(this_boundaries, ekeys_not_this)
+        
+        return {
+            set_key: sorted(neighbors_keys)
+            for set_key, neighbors_keys in boundaries.items()
+        }
 
     def as_dict(self):
         """
@@ -350,7 +540,7 @@ class Euler:
                 if key_ is not key
             }
 
-            self.esets=euler(self.sets)
+            self.esets=euler_func(self.sets)
 
         else:
             keys=list(self.sets.keys())
@@ -359,6 +549,107 @@ class Euler:
             msg2=f'Available keys are: {keys}'
 
             warn(msg1+' '+msg2)
+    
+    def get_clustering_info(self) -> Optional[Dict]:
+        """Get clustering information if clustering was used"""
+        if not self.use_clustering:
+            return None
+        
+        n_clusters = len(set(self.clustering.values()))
+        cluster_sizes = defaultdict(int)
+        for cluster_id in self.clustering.values():
+            cluster_sizes[cluster_id] += 1
+        
+        info = {
+            'method': self.method,
+            'n_clusters': n_clusters,
+            'cluster_sizes': dict(cluster_sizes),
+            'allow_overlap': self.allow_overlap,
+        }
+        
+        if self.allow_overlap and self.overlapping_clustering:
+            n_overlapping = sum(1 for clusters in self.overlapping_clustering.values() 
+                               if len(clusters) > 1)
+            info['n_overlapping_sets'] = n_overlapping
+            info['overlapping_sets'] = [
+                key for key, clusters in self.overlapping_clustering.items()
+                if len(clusters) > 1
+            ]
+        
+        if self.metrics:
+            info['metrics'] = {
+                cid: {
+                    'size': m.size,
+                    'intra_overlap': m.intra_overlap,
+                    'inter_overlap': m.inter_overlap,
+                    'score': m.score()
+                }
+                for cid, m in self.metrics.items()
+            }
+        
+        return info
+    
+    def get_bridge_sets(self) -> Optional[Dict[str, List[int]]]:
+        """Get sets that connect multiple clusters"""
+        if not self.use_clustering:
+            return None
+        
+        bridges = {}
+        
+        for key in self.sets.keys():
+            set_elements = set(self.sets[key])
+            own_cluster = self.clustering[key]
+            
+            connected_clusters = set()
+            for other_key in self.sets.keys():
+                if key == other_key:
+                    continue
+                other_cluster = self.clustering[other_key]
+                if other_cluster == own_cluster:
+                    continue
+                
+                other_elements = set(self.sets[other_key])
+                overlap = len(set_elements & other_elements)
+                if overlap > 0:
+                    connected_clusters.add(other_cluster)
+            
+            if connected_clusters:
+                bridges[key] = sorted(list(connected_clusters))
+        
+        return bridges
+    
+    def summary(self) -> str:
+        """Generate summary (enhanced if clustering used)"""
+        lines = [f"Euler Diagram"]
+        lines.append(f"  Sets: {len(self.sets)}")
+        lines.append(f"  Euler regions: {len(self.esets)}")
+        
+        if self.use_clustering:
+            info = self.get_clustering_info()
+            lines.append(f"\nClustering:")
+            lines.append(f"  Method: {info['method']}")
+            lines.append(f"  Clusters: {info['n_clusters']}")
+            lines.append(f"  Cluster sizes: {info['cluster_sizes']}")
+            
+            if self.allow_overlap and info.get('n_overlapping_sets', 0) > 0:
+                lines.append(f"  Overlapping sets: {info['n_overlapping_sets']}")
+                lines.append(f"  Sets with multiple memberships: {info['overlapping_sets'][:5]}")
+            
+            if self.metrics:
+                lines.append(f"\nCluster Quality:")
+                for cid, metric_info in info['metrics'].items():
+                    lines.append(
+                        f"  Cluster {cid}: size={metric_info['size']}, "
+                        f"score={metric_info['score']:.2f}"
+                    )
+            
+            bridges = self.get_bridge_sets()
+            if bridges:
+                lines.append(f"\nBridge sets: {len(bridges)}")
+                for key, clusters in list(bridges.items())[:5]:
+                    lines.append(f"  {key} -> clusters {clusters}")
+        
+        return "\n".join(lines)
 
     def __repr__(self) -> str:
         """
@@ -368,6 +659,12 @@ class Euler:
         str: A string representation of the Euler object in the
         format "Euler({Euler set representation})".
         """
-        esets_repr=repr(self.esets)
+        if self.use_clustering:
+            info = self.get_clustering_info()
+            return f"Euler(sets={len(self.sets)}, clusters={info['n_clusters']}, regions={len(self.esets)})"
+        else:
+            return f"Euler(sets={len(self.sets)}, regions={len(self.esets)})"
 
-        return f'Euler({esets_repr})'
+def _compute_cluster_worker(cluster_id: int, sets: Dict):
+    """Worker function for parallel cluster computation"""
+    return (cluster_id, euler_func(sets))
