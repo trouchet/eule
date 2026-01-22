@@ -12,4 +12,4 @@ sphinxcontrib-websupport==1.2.4
 tox==4.0.19
 types-mock==4.0.15.2
 types-toml==0.10.8.5
-wheel==0.38.4
+wheel==0.46.2
