@@ -185,7 +185,7 @@ try:
     print(f"    Fully optimal batches: {all_optimal_count}/{len(batches)} "
           f"({all_optimal_count/len(batches)*100:.1f}%)")
     
-    total_defects = sum(len(batch_set) for region, batch_set in defect_patterns)
+    total_defects = sum(count for region, count in defect_patterns)
     print(f"    Batches with defects: {total_defects}/{len(batches)} "
           f"({total_defects/len(batches)*100:.1f}%)")
     
