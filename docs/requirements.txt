@@ -32,16 +32,18 @@ pygments==2.15.0
     # via sphinx
 pytz==2022.7.1
     # via babel
-requests==2.32.2
+requests==2.32.4
     # via sphinx
+setuptools==80.10.2
+    # via sphinxcontrib-jquery
 snowballstemmer==2.2.0
     # via sphinx
 sphinx==5.3.0
     # via
-    #   -r requirements.in
+    #   -r docs/requirements.in
     #   sphinx-rtd-theme
 sphinx-rtd-theme==1.2.0
-    # via -r requirements.in
+    # via -r docs/requirements.in
 sphinxcontrib-applehelp==1.0.4
     # via sphinx
 sphinxcontrib-devhelp==1.0.2
@@ -60,6 +62,3 @@ urllib3==1.26.19
     # via requests
 zipp==3.19.1
     # via importlib-metadata
-
-# The following packages are considered to be unsafe in a requirements file:
-# setuptools
