@@ -323,6 +323,9 @@ docs = [
     { name = "toml" },
     { name = "types-toml" },
 ]
+interval = [
+    { name = "interval-sets", marker = "python_full_version >= '3.11'" },
+]
 lint = [
     { name = "black" },
     { name = "isort" },
@@ -345,6 +348,7 @@ requires-dist = [
     { name = "black", marker = "extra == 'lint'", specifier = ">=22.12,<25.0" },
     { name = "coverage", marker = "extra == 'test'", specifier = ">=7.0" },
     { name = "docutils", marker = "extra == 'docs'", specifier = ">=0.18.1" },
+    { name = "interval-sets", marker = "python_full_version >= '3.11' and extra == 'interval'", specifier = ">=0.1.0" },
     { name = "isort", marker = "extra == 'lint'", specifier = ">=5.11.4" },
     { name = "mypy", marker = "extra == 'build'", specifier = ">=0.991" },
     { name = "numpy", specifier = ">1.20.0" },
@@ -365,7 +369,7 @@ requires-dist = [
     { name = "watchdog", marker = "extra == 'test'", specifier = ">=3.0.0" },
     { name = "wheel", marker = "extra == 'build'", specifier = ">=0.38.4" },
 ]
-provides-extras = ["build", "test", "lint", "docs"]
+provides-extras = ["build", "test", "lint", "docs", "interval"]
 
 [[package]]
 name = "exceptiongroup"
@@ -431,6 +435,15 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d7/4b/cbd8e699e64a6f16ca3a8220661b5f83792b3017d0f79807cb8708d33913/iniconfig-2.0.0.tar.gz", hash = "sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3", size = 4646, upload-time = "2023-01-07T11:08:11.254Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ef/a6/62565a6e1cf69e10f5727360368e451d4b7f58beeac6173dc9db836a5b46/iniconfig-2.0.0-py3-none-any.whl", hash = "sha256:b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374", size = 5892, upload-time = "2023-01-07T11:08:09.864Z" },
+]
+
+[[package]]
+name = "interval-sets"
+version = "0.1.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/93/17/9e06a067740f678ba4e00a81e32419dca609fadf309ccc5a2709c2efe169/interval_sets-0.1.2.tar.gz", hash = "sha256:07486866e548713c8386aa0cfab7fa49fd45b821d186f5eb3e8fe3b15318536d", size = 41238, upload-time = "2026-01-29T22:29:00.469Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f2/96/c7100d2f99ba8779dfdc291ef2932b344202c38f445d80d68a5aab724ec0/interval_sets-0.1.2-py3-none-any.whl", hash = "sha256:a361ab5077ec49d5c690450a31dac6dd5b8eb210b7313902b482e18d1b2fbdb6", size = 4100, upload-time = "2026-01-29T22:28:58.779Z" },
 ]
 
 [[package]]
