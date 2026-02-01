@@ -1,133 +1,115 @@
 #!/usr/bin/env python3
 """
-Example: Understanding interval-sets vs eule - Different problem domains.
+Working Example: Using interval-sets with eule.
 
-This example demonstrates why interval-sets and eule are NOT interchangeable:
-
-- **interval-sets**: Continuous range analysis on ℝ (real number line)
-- **eule**: Discrete element partitioning (finite, countable sets)
+This demonstrates how to use IntervalSet objects with eule's Euler diagram
+generation through AUTOMATIC adapter integration - no manual wrapping needed!
 
 Requirements:
     - Python 3.11+
-    - interval-sets package: pip install interval-sets
+    - interval-sets package
 
 Installation:
     uv sync --extra interval
-
-Key Insight:
-    IntervalSet cannot be used with eule because:
-    1. IntervalSet.__iter__() yields Interval objects (not discrete elements)
-    2. Intervals represent infinite continuous points (not countable elements)
-    3. Different mathematical semantics (continuous vs discrete)
-
-See docs/INTERVALSET_COMPATIBILITY.md for detailed analysis.
 """
 
 try:
     from interval_sets import Interval, IntervalSet
     from eule import euler
-
-    print("Interval-Sets Library Demonstration")
-    print("=" * 60)
+    
+    print("=" * 70)
+    print("🎯 IntervalSet + Eule Automatic Integration")
+    print("=" * 70)
     print()
-    print("⚠️  IMPORTANT: Different Use Cases")
-    print()
-    print("interval-sets: Works with continuous ranges (e.g., temperature ranges)")
-    print("eule: Works with discrete elements (e.g., individual items)")
+    print("ℹ️  No manual wrapping needed - eule automatically handles IntervalSets!")
     print()
     
-    # Demonstrate interval-sets directly (continuous analysis)
-    print("1. Continuous Analysis with interval-sets (native):")
-    print("-" * 60)
+    # Example 1: Temperature ranges with automatic adaptation
+    print("📊 Example 1: Temperature Ranges (Automatic)")
+    print("-" * 70)
     
-    # Create temperature ranges
-    cold = IntervalSet([Interval.closed(0, 15)])
-    moderate = IntervalSet([Interval.closed(10, 25)])
-    hot = IntervalSet([Interval.closed(20, 40)])
-    
-    print(f"Cold temps:     {cold}")
-    print(f"Moderate temps: {moderate}")
-    print(f"Hot temps:      {hot}")
-    print()
-    
-    # Perform set operations directly
-    print("Regions (using interval-sets directly):")
-    print(f"  Cold only:         {cold - moderate}")
-    print(f"  Cold & Moderate:   {cold & moderate}")
-    print(f"  Moderate only:     {moderate - (cold | hot)}")
-    print(f"  Moderate & Hot:    {moderate & hot}")
-    print(f"  Hot only:          {hot - moderate}")
-    print()
-    
-    # Demonstrate discrete analysis with eule
-    print("2. Discrete Analysis with eule:")
-    print("-" * 60)
-    
-    # For discrete elements, use regular sets
-    discrete_sets = {
-        'category_a': {1, 2, 3, 4, 5},
-        'category_b': {3, 4, 5, 6, 7},
-        'category_c': {2, 4, 6, 8}
+    # Create temperature ranges as IntervalSet objects - no wrapping needed!
+    temp_ranges = {
+        'cold': IntervalSet([Interval.closed(0, 15)]),
+        'moderate': IntervalSet([Interval.closed(10, 25)]),
+        'hot': IntervalSet([Interval.closed(20, 40)])
     }
     
-    result = euler(discrete_sets)
-    
-    print("Sets:")
-    for name, elements in discrete_sets.items():
-        print(f"  {name}: {sorted(elements)}")
+    print(f"Cold:     {temp_ranges['cold']}")
+    print(f"Moderate: {temp_ranges['moderate']}")
+    print(f"Hot:      {temp_ranges['hot']}")
     print()
     
-    print("Euler Diagram Regions:")
-    for region, elements in sorted(result.items(), key=lambda x: str(x[0])):
-        print(f"  {region}: {sorted(elements)}")
+    print("🔧 Generating Euler diagram...")
+    print("   (eule automatically detects and adapts IntervalSet objects)")
+    result = euler(temp_ranges)
     
     print()
-    print("✅ Both libraries work correctly in their respective domains!")
+    print("📈 Euler Diagram Regions:")
+    for region, interval_set in sorted(result.items(), key=lambda x: str(x[0])):
+        print(f"  {region}: {interval_set}")
+    
     print()
-    print("=" * 60)
-    print("⚠️  IMPORTANT: Why IntervalSet ≠ eule")
-    print("=" * 60)
+    print("-" * 70)
+    
+    # Example 2: Mixed interval types
     print()
-    print("IntervalSet CANNOT be used with eule because:")
-    print("  1. Different element types:")
-    print("     - eule: discrete items (1, 2, 3, ...)")
-    print("     - IntervalSet: continuous ranges ([0, 10], [5, 15], ...)")
+    print("📊 Example 2: Time Periods (Open/Closed Intervals)")
+    print("-" * 70)
+    
+    # Demonstrate different interval types - all work automatically!
+    time_periods = {
+        'morning': IntervalSet([Interval.closed(6, 12)]),      # [6, 12]
+        'afternoon': IntervalSet([Interval.open(12, 18)]),     # (12, 18)
+        'evening': IntervalSet([Interval.right_open(18, 24)])  # [18, 24)
+    }
+    
+    print(f"Morning:   {time_periods['morning']}")
+    print(f"Afternoon: {time_periods['afternoon']}")
+    print(f"Evening:   {time_periods['evening']}")
     print()
-    print("  2. Different iteration:")
-    print("     - eule iterates over discrete elements: 1, then 2, then 3")
-    print("     - IntervalSet iterates over Interval objects (not points)")
+    
+    result2 = euler(time_periods)
+    
+    print("📈 Euler Diagram Regions:")
+    for region, interval_set in sorted(result2.items(), key=lambda x: str(x[0])):
+        print(f"  {region}: {interval_set}")
+    
     print()
-    print("  3. Different math:")
-    print("     - eule: {1,2} ∪ {2,3} = {1,2,3} (discrete)")
-    print("     - IntervalSet: [0,5] ∪ [3,8] = [0,8] (continuous merge)")
+    print("-" * 70)
+    
+    # Example 3: Complex overlapping intervals
     print()
-    print("Key Takeaway:")
-    print("  ✅ Use interval-sets for continuous ranges (temperatures, measurements)")
-    print("  ✅ Use eule for discrete elements (customers, categories, items)")
-    print("  ❌ Do NOT try to use IntervalSet with eule's Euler diagrams")
+    print("📊 Example 3: Project Timelines (Complex Overlaps)")
+    print("-" * 70)
+    
+    projects = {
+        'Project A': IntervalSet([Interval.closed(0, 30)]),
+        'Project B': IntervalSet([Interval.closed(15, 45)]),
+        'Project C': IntervalSet([Interval.closed(25, 60)])
+    }
+    
+    for name, timeline in projects.items():
+        print(f"{name}: {timeline}")
     print()
-    print("For details: See docs/INTERVALSET_COMPATIBILITY.md")
-
+    
+    result3 = euler(projects)
+    
+    print("📈 Euler Diagram Regions (days):")
+    for region, interval_set in sorted(result3.items(), key=lambda x: str(x[0])):
+        print(f"  {region}: {interval_set}")
+    
+    print()
+    print("=" * 70)
+    print("✅ Success! IntervalSet objects work seamlessly with eule!")
+    print("   No manual wrapping or adapter code needed!")
+    print("=" * 70)
+    
 except ImportError as e:
-    print("⚠️  interval-sets library not installed")
+    print("❌ Error: interval-sets library not installed")
     print()
-    print("To use this example, you need:")
-    print("  1. Python 3.11 or higher")
-    print("  2. Install interval-sets: uv sync --extra interval")
+    print("To use this example:")
+    print("  1. Install: uv sync --extra interval")
+    print("  2. Or: pip install interval-sets")
     print()
-    print("Alternative: Use eule with other set-like objects:")
-    print()
-    
-    from eule import euler
-    
-    # Demonstrate with regular sets
-    print("Example with regular sets:")
-    sets = [
-        {1, 2, 3, 4, 5, 10, 11, 12, 13, 14, 15},
-        {3, 4, 5, 6, 7, 12, 13, 14, 15, 16, 17, 18, 19, 20},
-        {2, 3, 4, 14, 15, 16}
-    ]
-    result = euler(sets)
-    print(f"Result: {result}")
-    print()
-    print("✅ Regular sets work without any additional dependencies!")
+    print(f"Error details: {e}")
