@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """
-Example: Understanding interval-sets vs discrete sets.
+Example: Understanding interval-sets vs eule - Different problem domains.
 
-This example demonstrates the difference between continuous intervals
-(interval-sets library) and discrete sets (eule's primary use case).
+This example demonstrates why interval-sets and eule are NOT interchangeable:
+
+- **interval-sets**: Continuous range analysis on ℝ (real number line)
+- **eule**: Discrete element partitioning (finite, countable sets)
 
 Requirements:
     - Python 3.11+
@@ -12,8 +14,13 @@ Requirements:
 Installation:
     uv sync --extra interval
 
-Note: interval-sets works with continuous ranges, while eule works with discrete elements.
-      For continuous analysis, use interval-sets directly. For discrete set analysis, use eule.
+Key Insight:
+    IntervalSet cannot be used with eule because:
+    1. IntervalSet.__iter__() yields Interval objects (not discrete elements)
+    2. Intervals represent infinite continuous points (not countable elements)
+    3. Different mathematical semantics (continuous vs discrete)
+
+See docs/INTERVALSET_COMPATIBILITY.md for detailed analysis.
 """
 
 try:
@@ -77,15 +84,29 @@ try:
     print()
     print("✅ Both libraries work correctly in their respective domains!")
     print()
-    print("Key Takeaway:")
-    print("  - Use interval-sets for continuous ranges (intervals on ℝ)")
-    print("  - Use eule for discrete elements (finite sets)")
-    print("  - Both libraries excel at different types of analysis")
+    print("=" * 60)
+    print("⚠️  IMPORTANT: Why IntervalSet ≠ eule")
+    print("=" * 60)
     print()
-    print("For eule extension with custom discrete set types:")
-    print("  - Implement SetLike protocol (union, intersection, difference, __iter__, __bool__)")
-    print("  - Register with: from eule import register_adapter")
-    print("  - See docs/design/PROTOCOL_SPECIFICATION.md for details")
+    print("IntervalSet CANNOT be used with eule because:")
+    print("  1. Different element types:")
+    print("     - eule: discrete items (1, 2, 3, ...)")
+    print("     - IntervalSet: continuous ranges ([0, 10], [5, 15], ...)")
+    print()
+    print("  2. Different iteration:")
+    print("     - eule iterates over discrete elements: 1, then 2, then 3")
+    print("     - IntervalSet iterates over Interval objects (not points)")
+    print()
+    print("  3. Different math:")
+    print("     - eule: {1,2} ∪ {2,3} = {1,2,3} (discrete)")
+    print("     - IntervalSet: [0,5] ∪ [3,8] = [0,8] (continuous merge)")
+    print()
+    print("Key Takeaway:")
+    print("  ✅ Use interval-sets for continuous ranges (temperatures, measurements)")
+    print("  ✅ Use eule for discrete elements (customers, categories, items)")
+    print("  ❌ Do NOT try to use IntervalSet with eule's Euler diagrams")
+    print()
+    print("For details: See docs/INTERVALSET_COMPATIBILITY.md")
 
 except ImportError as e:
     print("⚠️  interval-sets library not installed")

@@ -3,6 +3,13 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import annotations
+
+# Import adapters first to register them before any adaptation happens
+try:
+    import eule.adapters.interval_sets  # noqa: F401
+except ImportError:
+    pass  # interval-sets not installed
+
 from .core import (
     euler_generator,
     euler,

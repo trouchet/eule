@@ -108,3 +108,51 @@ print(euler_instance.as_dict())
 ```
 
 </details>
+
+## Extensibility
+
+Eule supports custom set-like types through the **SetLike protocol**. Any type implementing the required methods can work with eule automatically:
+
+```python
+from eule import euler
+
+class CustomSet:
+    def union(self, other): ...
+    def intersection(self, other): ...
+    def difference(self, other): ...
+    def __bool__(self): ...
+    def __iter__(self): ...
+    @classmethod
+    def from_iterable(cls, iterable): ...
+
+# Works automatically - no wrapping needed!
+result = euler({'a': CustomSet([1,2,3]), 'b': CustomSet([2,3,4])})
+```
+
+**Supported types**:
+- ✅ Built-in: `set`, `list`, `tuple`, `frozenset`
+- ✅ Custom types implementing SetLike protocol
+- ❌ **Not supported**: Continuous ranges (e.g., IntervalSet) - see [why](#why-not-intervalset)
+
+### Why Not IntervalSet?
+
+Eule is designed for **discrete element partitioning** (e.g., customers, categories, items), not **continuous range analysis** (e.g., temperatures, measurements).
+
+```python
+# ❌ IntervalSet doesn't work with eule
+from interval_sets import Interval, IntervalSet
+temps = {'cold': IntervalSet([Interval(0, 15)])}
+# Won't work - IntervalSet iterates over Interval objects, not discrete points
+
+# ✅ Use interval-sets directly for continuous analysis
+cold = IntervalSet([Interval(0, 15)])
+moderate = IntervalSet([Interval(10, 25)])
+overlap = cold & moderate  # [10, 15]
+```
+
+**Rule of thumb**: If you can count and list all elements → use eule. If elements form continuous ranges → use interval-sets or similar libraries directly.
+
+**Documentation**:
+- [SetLike Protocol Requirements](docs/SETLIKE_REQUIREMENTS.md)
+- [IntervalSet Compatibility Analysis](docs/INTERVALSET_COMPATIBILITY.md)
+- [Protocol Specification](docs/design/PROTOCOL_SPECIFICATION.md)

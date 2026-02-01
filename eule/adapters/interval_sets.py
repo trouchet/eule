@@ -39,36 +39,86 @@ class IntervalSetAdapter:
     
     def __init__(self, interval_set: '_IntervalSet'):
         """
-        Wrap an IntervalSet.
+        Wrap an IntervalSet or Interval.
         
         Args:
-            interval_set: The IntervalSet to wrap
+            interval_set: The IntervalSet or Interval to wrap
         """
-        self._data = interval_set
+        try:
+            from interval_sets import Interval, IntervalSet
+            # Normalize: always store as IntervalSet for consistency
+            if isinstance(interval_set, Interval):
+                self._data = IntervalSet([interval_set])
+            else:
+                self._data = interval_set
+        except ImportError:
+            self._data = interval_set
     
     def union(self, other: 'IntervalSetAdapter') -> 'IntervalSetAdapter':
         """Return the union of this set with another."""
-        if isinstance(other, IntervalSetAdapter):
-            result = self._data.union(other._data)
-        else:
-            result = self._data.union(other)
-        return IntervalSetAdapter(result)
+        try:
+            from interval_sets import Interval, IntervalSet
+            # Extract the underlying data, normalizing to IntervalSet
+            if isinstance(other, IntervalSetAdapter):
+                other_data = other._data
+            elif isinstance(other, Interval):
+                other_data = IntervalSet([other])
+            elif isinstance(other, IntervalSet):
+                other_data = other
+            else:
+                other_data = other
+                
+            result = self._data.union(other_data)
+            # Normalize result to IntervalSet
+            if isinstance(result, Interval):
+                result = IntervalSet([result])
+            return IntervalSetAdapter(result)
+        except ImportError:
+            raise ImportError("interval-sets library required")
     
     def intersection(self, other: 'IntervalSetAdapter') -> 'IntervalSetAdapter':
         """Return the intersection of this set with another."""
-        if isinstance(other, IntervalSetAdapter):
-            result = self._data.intersection(other._data)
-        else:
-            result = self._data.intersection(other)
-        return IntervalSetAdapter(result)
+        try:
+            from interval_sets import Interval, IntervalSet
+            # Extract the underlying data, normalizing to IntervalSet
+            if isinstance(other, IntervalSetAdapter):
+                other_data = other._data
+            elif isinstance(other, Interval):
+                other_data = IntervalSet([other])
+            elif isinstance(other, IntervalSet):
+                other_data = other
+            else:
+                other_data = other
+                
+            result = self._data.intersection(other_data)
+            # Normalize result to IntervalSet
+            if isinstance(result, Interval):
+                result = IntervalSet([result])
+            return IntervalSetAdapter(result)
+        except ImportError:
+            raise ImportError("interval-sets library required")
     
     def difference(self, other: 'IntervalSetAdapter') -> 'IntervalSetAdapter':
         """Return the difference of this set minus another."""
-        if isinstance(other, IntervalSetAdapter):
-            result = self._data.difference(other._data)
-        else:
-            result = self._data.difference(other)
-        return IntervalSetAdapter(result)
+        try:
+            from interval_sets import Interval, IntervalSet
+            # Extract the underlying data, normalizing to IntervalSet
+            if isinstance(other, IntervalSetAdapter):
+                other_data = other._data
+            elif isinstance(other, Interval):
+                other_data = IntervalSet([other])
+            elif isinstance(other, IntervalSet):
+                other_data = other
+            else:
+                other_data = other
+                
+            result = self._data.difference(other_data)
+            # Normalize result to IntervalSet
+            if isinstance(result, Interval):
+                result = IntervalSet([result])
+            return IntervalSetAdapter(result)
+        except ImportError:
+            raise ImportError("interval-sets library required")
     
     def __bool__(self) -> bool:
         """Return False if the set is empty, True otherwise."""
@@ -118,37 +168,37 @@ class IntervalSetAdapter:
 
 def register_interval_sets():
     """
-    Register IntervalSet with eule's type registry.
+    Register IntervalSet and Interval with eule's type registry.
     
     This function is called automatically when the adapter module is imported,
     but can also be called manually if needed.
+    
+    Note: IntervalSet operations often return Interval objects instead of
+    IntervalSet, so we need to handle both types.
     
     Returns:
         bool: True if registration succeeded, False if interval-sets not available
     """
     try:
-        from interval_sets import IntervalSet
+        from interval_sets import Interval, IntervalSet
         from ..registry import get_registry
         
         registry = get_registry()
         
-        # Register IntervalSet - but it already implements the protocol!
-        # So we just need to detect it and return it as-is
-        def is_interval_set(obj):
-            """Check if object is an IntervalSet."""
-            return isinstance(obj, IntervalSet)
+        # Register both IntervalSet and Interval
+        # Both need to be wrapped because:
+        # 1. They lack from_iterable() class method
+        # 2. Operations return Interval, not IntervalSet (normalization needed)
         
-        # Return as-is since IntervalSet already implements protocol
-        # But we need to add from_iterable support
-        def adapt_interval_set(obj):
-            """Adapt IntervalSet by adding from_iterable."""
-            # Check if it already has from_iterable
-            if hasattr(obj.__class__, 'from_iterable'):
-                return obj
-            # Otherwise wrap it
+        def is_interval_or_intervalset(obj):
+            """Check if object is an IntervalSet or Interval."""
+            return isinstance(obj, (IntervalSet, Interval))
+        
+        def adapt_interval_types(obj):
+            """Adapt IntervalSet or Interval by wrapping with adapter."""
             return IntervalSetAdapter(obj)
         
-        registry.register_detector(is_interval_set, adapt_interval_set)
+        registry.register_detector(is_interval_or_intervalset, adapt_interval_types)
         
         return True
         
