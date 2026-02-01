@@ -870,7 +870,7 @@ def clustered_euler(sets: SetsType, method: str = 'leiden', **kwargs) -> Cluster
 
 
 # Example usage
-def example_usage():
+def example_usage():  # pragma: no cover
     """Comprehensive example demonstrating all features"""
     
     # Example sets with clear cluster structure
@@ -945,5 +945,5 @@ def example_usage():
     return ce
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     example_usage()

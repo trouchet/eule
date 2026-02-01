@@ -10,6 +10,8 @@ from .core import (
     euler_boundaries,
     Euler
 )
+from .protocols import SetLike
+from .registry import register_adapter, register_detector
 
 __author__ = """Bruno Peixoto"""
 __email__ = 'brunolnetto@gmail.com'
@@ -19,5 +21,8 @@ __all__ = [
     'euler',
     'euler_keys',
     'euler_boundaries',
-    'Euler'
+    'Euler',
+    'SetLike',
+    'register_adapter',
+    'register_detector',
 ]

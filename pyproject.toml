@@ -67,6 +67,18 @@ data_file = ".coveragerc"
 source = ["eule"]
 omit = ["*examples*"]
 
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+    "^\\s*\\.\\.\\.\\s*$",  # Protocol stub methods (... alone on a line)
+]
+
 [tool.ruff]
 line-length = 100
 

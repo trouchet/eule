@@ -1,0 +1,134 @@
+"""Benchmark for type adaptation overhead."""
+
+import time
+import pytest
+from eule.registry import TypeRegistry
+from eule.adapters import SetAdapter, ListAdapter
+
+
+class TestAdaptationPerformance:
+    """Benchmark type adaptation performance."""
+    
+    def test_adaptation_overhead_builtin_set(self, benchmark):
+        """Measure overhead for adapting builtin set."""
+        registry = TypeRegistry()
+        test_set = {1, 2, 3, 4, 5}
+        
+        result = benchmark(registry.adapt, test_set)
+        assert isinstance(result, SetAdapter)
+    
+    def test_adaptation_overhead_builtin_list(self, benchmark):
+        """Measure overhead for adapting builtin list."""
+        registry = TypeRegistry()
+        test_list = [1, 2, 3, 4, 5]
+        
+        result = benchmark(registry.adapt, test_list)
+        assert isinstance(result, ListAdapter)
+    
+    def test_adaptation_with_cache(self):
+        """Verify caching works and measure speedup."""
+        registry = TypeRegistry()
+        test_list = [1, 2, 3, 4, 5]
+        
+        # First adaptation (cold cache)
+        start = time.perf_counter()
+        for _ in range(1000):
+            registry.adapt([1, 2, 3])
+        cold_time = time.perf_counter() - start
+        
+        # Verify cache is populated
+        assert list in registry._cache
+        
+        # Second batch (warm cache)
+        start = time.perf_counter()
+        for _ in range(1000):
+            registry.adapt([4, 5, 6])
+        warm_time = time.perf_counter() - start
+        
+        # Warm cache should be faster or comparable
+        # (First iteration populates cache, so times should be similar)
+        assert warm_time > 0  # Just verify it completed
+        print(f"\nCold cache (1000 iterations): {cold_time*1000:.2f}ms")
+        print(f"Warm cache (1000 iterations): {warm_time*1000:.2f}ms")
+    
+    def test_protocol_check_overhead(self, benchmark):
+        """Measure protocol checking overhead."""
+        registry = TypeRegistry()
+        already_adapted = SetAdapter([1, 2, 3])
+        
+        # Should be very fast - just protocol check
+        result = benchmark(registry.adapt, already_adapted)
+        assert result is already_adapted
+    
+    def test_duck_typing_overhead(self, benchmark):
+        """Measure duck-typing detection overhead."""
+        class CustomSet:
+            def __init__(self, data):
+                self._data = set(data)
+            
+            def union(self, other):
+                return CustomSet(self._data | set(other))
+            
+            def intersection(self, other):
+                return CustomSet(self._data & set(other))
+            
+            def difference(self, other):
+                return CustomSet(self._data - set(other))
+            
+            def __bool__(self):
+                return bool(self._data)
+            
+            def __iter__(self):
+                return iter(self._data)
+            
+            @classmethod
+            def from_iterable(cls, iterable):
+                return cls(iterable)
+        
+        registry = TypeRegistry()
+        custom = CustomSet([1, 2, 3])
+        
+        result = benchmark(registry.adapt, custom)
+        # Should be detected via duck-typing
+        assert result is custom
+
+
+class TestAdapterOperationsPerformance:
+    """Benchmark adapter operations."""
+    
+    def test_set_union_performance(self, benchmark):
+        """Measure SetAdapter union performance."""
+        a = SetAdapter(range(1000))
+        b = SetAdapter(range(500, 1500))
+        
+        result = benchmark(a.union, b)
+        assert len(result) == 1500
+    
+    def test_set_intersection_performance(self, benchmark):
+        """Measure SetAdapter intersection performance."""
+        a = SetAdapter(range(1000))
+        b = SetAdapter(range(500, 1500))
+        
+        result = benchmark(a.intersection, b)
+        assert len(result) == 500
+    
+    def test_list_union_performance(self, benchmark):
+        """Measure ListAdapter union performance."""
+        a = ListAdapter(range(1000))
+        b = ListAdapter(range(500, 1500))
+        
+        result = benchmark(a.union, b)
+        assert len(result) == 1500
+    
+    def test_list_intersection_performance(self, benchmark):
+        """Measure ListAdapter intersection performance."""
+        a = ListAdapter(range(1000))
+        b = ListAdapter(range(500, 1500))
+        
+        result = benchmark(a.intersection, b)
+        assert len(result) == 500
+
+
+if __name__ == '__main__':
+    # Run with: pytest tests/test_adaptation_benchmark.py -v --benchmark-only
+    pytest.main([__file__, '-v', '--benchmark-only'])

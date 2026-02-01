@@ -18,29 +18,30 @@ from .utils import cleared_set_keys
 from .utils import ordered_tuplify
 from .utils import update_ordered_tuple
 from .validators import validate_euler_generator_input
+from .adaptation import adapt_sets
 
 
-def euler_generator(
-    sets: SetsType
+def _euler_generator_internal(
+    sets: SetsType,
+    _skip_adaptation: bool = False
 ):
-    """This generator function returns each tuple (key, elems) of the
-    Euler diagram in a generator-wise fashion systematic:
-
-    1. Begin with the available `sets` and their exclusive elements;
-    2. Compute complementary elements to the current key-set;
-    3. In case complementary set-keys AND current set content are not empty, continue;
-    4. Otherwise, go to the next key-set;
-    5. Find the euler diagram on complementary sets;
-    6. Compute exclusive combination elements;
-    7. In case there are exclusive elements to the combination: yield exclusive
-       combination elements; Remove exclusive combination elements from the current key-set.
-
-    :param dict sets: array/dict of arrays
-    :returns: (key, euler_set) tuple of given sets
-    :rtype: tuple
+    """Internal generator that works with adapted sets.
+    
+    This is the core algorithm that works with SetLike objects.
+    Use euler_generator() for the public API.
+    
+    Args:
+        sets: Input sets (dict or list)
+        _skip_adaptation: Internal flag to skip adaptation for recursive calls
     """
-    # Deep copy of sets and validates for List case
-    sets_ = deepcopy(sets)
+    if not _skip_adaptation:
+        # Automatic adaptation layer (only on first call)
+        adapted_sets = adapt_sets(sets)
+    else:
+        adapted_sets = sets
+    
+    # Deep copy of adapted sets and validate
+    sets_ = deepcopy(adapted_sets)
     sets_ = validate_euler_generator_input(sets_)
 
     # Sets with non-empty elements
@@ -61,8 +62,8 @@ def euler_generator(
         # Complementary sets
         csets = { cset_key: sets_[cset_key] for cset_key in other_keys }
 
-        # Instrospective recursion: Exclusive combination elements
-        for euler_tuple, celements in euler_generator(csets):
+        # Instrospective recursion: Exclusive combination elements (skip adaptation)
+        for euler_tuple, celements in _euler_generator_internal(csets, _skip_adaptation=True):
 
             # Remove current set_key elements
             comb_elems = difference(celements, this_set)
@@ -107,15 +108,66 @@ def euler_generator(
 
         set_keys = cleared_set_keys(sets_)
 
+
+def euler_generator(
+    sets: SetsType
+):
+    """This generator function returns each tuple (key, elems) of the
+    Euler diagram in a generator-wise fashion systematic.
+    
+    Returns tuples with native Python types for backward compatibility.
+
+    :param dict sets: array/dict of arrays
+    :returns: (key, euler_set) tuple of given sets with native types
+    :rtype: tuple
+    """
+    from .adaptation import unwrap_result
+    from .utils import sequence_to_set, uniq
+    from .validators import validate_euler_generator_input
+    from warnings import warn
+    
+    # Validate BEFORE adaptation to preserve warning behavior
+    if isinstance(sets, dict):
+        is_unique_set_arr = []
+        for values in sets.values():
+            # Only check built-in types
+            if isinstance(values, (list, tuple)):
+                try:
+                    is_unique_set_arr.append(len(sequence_to_set(values)) == len(values))
+                except (TypeError, AttributeError):
+                    is_unique_set_arr.append(True)
+            else:
+                is_unique_set_arr.append(True)
+        
+        if is_unique_set_arr and not all(is_unique_set_arr):
+            warn('Each array MUST NOT have duplicates')
+    
+    # Now use internal generator which handles adaptation
+    for key_tuple, value in _euler_generator_internal(sets):
+        unwrapped_value = unwrap_result({0: value})[0]
+        yield (key_tuple, unwrapped_value)
+
 def euler_generator_worker(args):
+    """Worker function for parallel processing.
+    
+    This function adapts inputs automatically for compatibility.
+    """
+    from .adaptation import adapt_sets, unwrap_result
+    
     sets, set_keys, set_key = args
+    
+    # Adapt sets if not already adapted
+    if not all(hasattr(v, 'union') for v in sets.values() if v):
+        sets = adapt_sets(sets)
+    
     results = []
     this_set = sets[set_key]
     
     if this_set and len(set_keys) == 1:
         sorted_comb_key = ordered_tuplify((set_key, ))
         results.append((sorted_comb_key, this_set))
-        return results
+        # Unwrap for backward compatibility
+        return [(k, unwrap_result({0: v})[0]) for k, v in results]
     
     # Only a set
     other_keys = [key for key in set_keys if key != set_key]
@@ -125,7 +177,8 @@ def euler_generator_worker(args):
     # Complementary sets
     csets = {key: sets[key] for key in other_keys}
 
-    for euler_tuple, celements in euler_generator(csets):
+    # Use internal generator (no double-adaptation)
+    for euler_tuple, celements in _euler_generator_internal(csets):
         comb_elems = difference(celements, this_set)
 
         # Non-empty combination exclusivity case
@@ -154,7 +207,13 @@ def euler_generator_worker(args):
         results.append(((set_key,), sets[set_key]))
         sets[set_key] = []
 
-    return results
+    # Unwrap results for backward compatibility with tests
+    unwrapped_results = []
+    for key_tuple, value in results:
+        unwrapped_value = unwrap_result({0: value})[0]
+        unwrapped_results.append((key_tuple, unwrapped_value))
+    
+    return unwrapped_results
 
 def euler_generator_parallel(sets: SetsType):
     sets_ = deepcopy(sets)
@@ -184,7 +243,10 @@ def euler_func(sets: SetsType):
     :returns: euler sets
     :rtype: dict
     """
-    return dict(euler_generator(sets))
+    from .adaptation import unwrap_result
+    result = dict(euler_generator(sets))
+    # Unwrap SetLike objects back to native types for backward compatibility
+    return unwrap_result(result)
 
 def euler(sets: SetsType, use_clustering: Optional[bool] = None, **kwargs) -> Dict:
     """
@@ -264,9 +326,16 @@ class Euler:
         """
         # Store original sets
         self.sets = deepcopy(sets)
-        
-        # Auto-decide clustering
-        n_sets = len(sets)
+    
+        # Auto-decide clustering - validate input type first
+        try:
+            n_sets = len(sets)
+        except TypeError:
+            raise TypeError(
+                'Ill-conditioned input.'
+                'It must be either a dict or array of arrays object!'
+            )
+
         if use_clustering is None:
             use_clustering = n_sets > 30
         
@@ -484,10 +553,10 @@ class Euler:
         Get the Euler set representation as a dictionary.
 
         Returns:
-        dict: The Euler set representation as a dictionary.
+        dict: The Euler set representation as a dictionary with unwrapped native types.
         """
-
-        return self.esets
+        from .adaptation import unwrap_result
+        return unwrap_result(self.esets)
 
     def match(self, items: set):
         """
