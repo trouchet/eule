@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Example: Using eule with interval-sets library.
+Example: Understanding interval-sets vs discrete sets.
 
-This example demonstrates how eule can work with the interval-sets library
-to perform Euler diagram operations on interval objects.
+This example demonstrates the difference between continuous intervals
+(interval-sets library) and discrete sets (eule's primary use case).
 
 Requirements:
     - Python 3.11+
@@ -12,44 +12,80 @@ Requirements:
 Installation:
     uv sync --extra interval
 
-Note: The interval-sets library requires Python 3.11+. If you're using Python 3.9 or 3.10,
-      this example won't work, but you can still use eule with regular sets, lists, and
-      custom set-like objects.
+Note: interval-sets works with continuous ranges, while eule works with discrete elements.
+      For continuous analysis, use interval-sets directly. For discrete set analysis, use eule.
 """
 
 try:
-    from interval_sets import IntInterval
+    from interval_sets import Interval, IntervalSet
     from eule import euler
 
-    # Create interval sets
-    # IntInterval.closed(a, b) creates an interval [a, b] (inclusive on both ends)
-    intervals_a = IntInterval.closed(1, 5) | IntInterval.closed(10, 15)
-    intervals_b = IntInterval.closed(3, 7) | IntInterval.closed(12, 20)
-    intervals_c = IntInterval.closed(2, 4) | IntInterval.closed(14, 16)
-
-    print("Interval-Sets Integration Example")
+    print("Interval-Sets Library Demonstration")
     print("=" * 60)
     print()
-    print("Interval Set A:", intervals_a)
-    print("Interval Set B:", intervals_b)
-    print("Interval Set C:", intervals_c)
+    print("⚠️  IMPORTANT: Different Use Cases")
     print()
-
-    # Use eule's adaptation system to work with interval-sets
-    print("Computing Euler diagram with interval-sets...")
-    result = euler([intervals_a, intervals_b, intervals_c])
+    print("interval-sets: Works with continuous ranges (e.g., temperature ranges)")
+    print("eule: Works with discrete elements (e.g., individual items)")
+    print()
+    
+    # Demonstrate interval-sets directly (continuous analysis)
+    print("1. Continuous Analysis with interval-sets (native):")
+    print("-" * 60)
+    
+    # Create temperature ranges
+    cold = IntervalSet([Interval.closed(0, 15)])
+    moderate = IntervalSet([Interval.closed(10, 25)])
+    hot = IntervalSet([Interval.closed(20, 40)])
+    
+    print(f"Cold temps:     {cold}")
+    print(f"Moderate temps: {moderate}")
+    print(f"Hot temps:      {hot}")
+    print()
+    
+    # Perform set operations directly
+    print("Regions (using interval-sets directly):")
+    print(f"  Cold only:         {cold - moderate}")
+    print(f"  Cold & Moderate:   {cold & moderate}")
+    print(f"  Moderate only:     {moderate - (cold | hot)}")
+    print(f"  Moderate & Hot:    {moderate & hot}")
+    print(f"  Hot only:          {hot - moderate}")
+    print()
+    
+    # Demonstrate discrete analysis with eule
+    print("2. Discrete Analysis with eule:")
+    print("-" * 60)
+    
+    # For discrete elements, use regular sets
+    discrete_sets = {
+        'category_a': {1, 2, 3, 4, 5},
+        'category_b': {3, 4, 5, 6, 7},
+        'category_c': {2, 4, 6, 8}
+    }
+    
+    result = euler(discrete_sets)
+    
+    print("Sets:")
+    for name, elements in discrete_sets.items():
+        print(f"  {name}: {sorted(elements)}")
+    print()
+    
+    print("Euler Diagram Regions:")
+    for region, elements in sorted(result.items(), key=lambda x: str(x[0])):
+        print(f"  {region}: {sorted(elements)}")
     
     print()
-    print("Result:")
-    for region, elements in result.items():
-        print(f"  Region {region}: {elements}")
-    
+    print("✅ Both libraries work correctly in their respective domains!")
     print()
-    print("✅ Interval-sets integration working!")
+    print("Key Takeaway:")
+    print("  - Use interval-sets for continuous ranges (intervals on ℝ)")
+    print("  - Use eule for discrete elements (finite sets)")
+    print("  - Both libraries excel at different types of analysis")
     print()
-    print("The adaptation system automatically detected that interval-sets")
-    print("objects implement the SetLike protocol and used them directly")
-    print("without any explicit conversion.")
+    print("For eule extension with custom discrete set types:")
+    print("  - Implement SetLike protocol (union, intersection, difference, __iter__, __bool__)")
+    print("  - Register with: from eule import register_adapter")
+    print("  - See docs/design/PROTOCOL_SPECIFICATION.md for details")
 
 except ImportError as e:
     print("⚠️  interval-sets library not installed")
