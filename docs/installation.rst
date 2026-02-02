@@ -11,14 +11,28 @@ To install eule, run this command in your terminal:
 
     $ pip install eule
 
-This is the preferred method to install eule, as it will always install the most recent stable release.
+Optional Dependencies
+---------------------
 
-If you don't have `pip`_ installed, this `Python installation guide`_ can guide
-you through the process.
+For advanced features, you can install eule with extra dependencies:
 
-.. _pip: https://pip.pypa.io
-.. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
+**For Continuous Intervals (Time/Numbers)**:
 
+.. code-block:: console
+
+    $ pip install "eule[interval]"
+
+**For Geometry (2D/3D Shapes)**:
+
+.. code-block:: console
+
+    $ pip install "eule[geometry]"
+
+**For Everything**:
+
+.. code-block:: console
+
+    $ pip install "eule[interval,geometry]"
 
 From sources
 ------------
@@ -45,5 +59,7 @@ Once you have a copy of the source, you can install it with:
     $ make install
 
 
+.. _pip: https://pip.pypa.io
+.. _Python installation guide: http://docs.python-guide.org/en/latest/starting/installation/
 .. _Github repo: https://github.com/trouchet/eule
 .. _tarball: https://github.com/trouchet/eule/tarball/master

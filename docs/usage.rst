@@ -2,81 +2,110 @@
 Usage
 =====
 
-To use eule in a project::
+Eule is a universal logic engine that can generate Euler diagrams for any type of data that supports set operations (union, intersection, difference).
 
-    import eule
+It supports:
 
-Minimal example
------------------------------
+* **Discrete Sets** (standard Python sets, lists)
+* **Continuous Intervals** (via ``interval-sets``)
+* **Geometric Shapes** (via ``shapely``)
 
-We run a file with extension `*.py` with following content:
+Discrete Sets (Standard)
+------------------------
 
-..  code-block:: python
-    :caption: Minimal example
+The most common usage is with standard Python sets or lists of hashable items.
 
-    from eule import euler, euler_keys, euler_boundaries, Euler
+.. code-block:: python
+
+    from eule import euler
 
     sets = {
-        'a': [1, 2, 3],
-        'b': [2, 3, 4],
-        'c': [3, 4, 5],
-        'd': [3, 5, 6]
+        'A': {1, 2, 3},
+        'B': {2, 3, 4},
+        'C': {3, 4, 5}
     }
 
-    euler_diagram = euler(sets)
-    euler_keys = euler_keys(sets)
-    euler_boundaries = euler_boundaries(sets)
-    euler_instance=Euler(sets)
-
-    # Euler dictionary:
-    # {'a,b': [2], 'b,c': [4], 'a,b,c,d': [3], 'c,d': [5], 'd': [6], 'a': [1]}
-    print(euler_diagram)
-    print(euler_instance.as_dict())
-
-    print('\n')
-
-    # Euler keys list:
-    # ['a,b', 'b,c', 'a,b,c,d', 'c,d', 'd', 'a']
-    print(euler_keys)
-    print(euler_instance.euler_keys())
-
-    print('\n')
-
-    # Euler boundaries dictionary:
+    # Compute disjoint regions
+    diagram = euler(sets)
+    
+    # Result:
     # {
-    #   'a': ['b', 'c', 'd'],
-    #   'b': ['a', 'c', 'd'],
-    #   'c': ['a', 'b', 'd'],
-    #   'd': ['a', 'b', 'c']
+    #   ('A',): {1}, 
+    #   ('A', 'B'): {2},
+    #   ('A', 'B', 'C'): {3},
+    #   ('B', 'C'): {4},
+    #   ('C',): {5}
     # }
-    print(euler_boundaries)
-    print(euler_instance.euler_boundaries())
 
-    print('\n')
+Continuous Intervals
+--------------------
 
-    # Euler instance match:
-    # {'a'}
-    # {'a', 'b'}
-    # {'c', 'a', 'b'}
+Eule can analyze continuous ranges such as time intervals or numerical ranges using the ``interval-sets`` library.
+This is useful for scheduling, resource allocation, and timeline analysis.
 
-    print(euler_instance.match({1,2,3}))
-    print(euler_instance.match({1,2,3,4}))
-    print(euler_instance.match({1,2,3,4,5}))
+**Installation**: ``pip install "eule[interval]"``
 
-    print('\n')
+.. code-block:: python
 
-    # Euler instance getitem dunder:
-    # [1, 2, 3]
-    # [1, 2, 3]
-    # [1, 2, 3, 4]
-    # [1, 2, 3, 4, 5]
-    print(euler_instance['a'])
-    print(euler_instance[('a', )])
-    print(euler_instance[('a', 'b', )])
-    print(euler_instance[('a', 'b', 'c',)])
+    from interval_sets import IntervalSet, Interval
+    from eule import euler
 
-    print('\n')
+    # Define schedules
+    # Alice is busy 9-12 and 13-17
+    # Bob is busy 11-14
+    schedules = {
+        'Alice': IntervalSet([Interval(9, 12), Interval(13, 17)]),
+        'Bob':   IntervalSet([Interval(11, 14)])
+    }
 
-    # Euler instance remove_key:
-    euler_instance.remove_key('a')
-    print(euler_instance.as_dict())
+    # Compute overlap
+    diagram = euler(schedules)
+
+    # Result keys will show:
+    # ('Alice', 'Bob') -> Interval [11, 12] and [13, 14]
+    # ('Alice',)       -> Interval [9, 11] and [14, 17]
+    # ('Bob',)         -> empty (Bob is fully covered by Alice during his busy time except... wait)
+    # Actually Bob is busy 11-14. 
+    # Alice 9-12 covers 11-12. 
+    # Alice 13-17 covers 13-14.
+    # So Bob is exclusive during [12, 13].
+
+Geometric Shapes (2D/3D)
+------------------------
+
+Eule can compute the exact intersection and difference regions of 2D/3D shapes using ``shapely``.
+This is useful for GIS, CAD, and spatial analysis.
+
+**Installation**: ``pip install "eule[geometry]"``
+
+.. code-block:: python
+
+    from shapely.geometry import Polygon
+    from eule import euler
+
+    territories = {
+        'Wolves': Polygon([(0,0), (0,10), (10,10), (10,0)]), # 10x10 square at 0,0
+        'Bears':  Polygon([(5,5), (5,15), (15,15), (15,5)])  # 10x10 square at 5,5
+    }
+
+    diagram = euler(territories)
+
+    # Access the geometry of the intersection
+    intersection_region = diagram[('Wolves', 'Bears')]
+    print(intersection_region.area) 
+    # 25.0 (Overlap is 5x5 square)
+
+Advanced: Custom Types
+----------------------
+
+You can use eule with any custom class that implements the **SetLike Protocol**.
+
+Your class must implement:
+
+* ``union(self, other)``
+* ``intersection(self, other)``
+* ``difference(self, other)``
+* ``__iter__(self)``
+* ``__bool__(self)`` (to check for emptiness)
+
+See the `Protocol Specification <https://github.com/trouchet/eule/blob/main/docs/design/PROTOCOL_SPECIFICATION.md>`_ for details.

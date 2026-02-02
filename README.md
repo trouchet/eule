@@ -4,155 +4,106 @@
 [![downloads](https://img.shields.io/pypi/dm/eule)](https://pypi.org/project/eule/)
 [![codecov](https://codecov.io/gh/trouchet/eule/branch/main/graph/badge.svg?token=PJMBaLIqar)](https://codecov.io/gh/trouchet/eule)
 [![Documentation Status](https://readthedocs.org/projects/eule/badge/?version=latest)](https://eule.readthedocs.io/en/latest/?version=latest)
-
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/trouchet/eule/HEAD)
 
-Euler\'s diagrams are non-empty Venn\'s diagrams. For further information about:
+**Eule** is a universal logic engine for generating Euler diagrams and analyzing set relationships. 
 
-1. the library: on URL <https://eule.readthedocs.io>;
-2. Euler diagrams: on wikipedia article <https://en.wikipedia.org/wiki/Euler_diagram>
+It generates **non-empty Euler diagrams** (disjoint partitions) for **ANY** type of overlapping data:
+- **Discrete Sets**: Strings, integers, custom objects.
+- **Continuous Intervals**: Time ranges, numerical values (via `interval-sets`).
+- **Geometric Shapes**: 2D Polygons, 3D Boxes (via `shapely` and `box-sets`).
 
 Motivation
 ================
 
 <img src="https://github.com/trouchet/eule/blob/main/images/euler_venn.png?raw=true" width="400" height="364"/>
 
-How to install
+Installation
 ================
 
-We run the command on desired installation environment:
-
-``` {.bash}
+```bash
+# Standard install (Discrete sets)
 pip install eule
+
+# With Interval support
+pip install "eule[interval]"
+
+# With Geometry support
+pip install "eule[geometry]"
+
+# For all features
+pip install "eule[interval,geometry]"
 ```
 
-Minimal example
-================
+Universal Logic Engine 🚀
+=========================
 
-<details>
-    <summary>
-    Click to unfold usage
-    </summary>
+Eule is no longer just for Python sets. It now supports the **SetLike Protocol**, allowing it to compute disjoint regions for advanced mathematical objects.
 
-We run command `python example.py` on the folder with file `example.py` and following content:
-
-``` {.python}
-#!/usr/bin/env python
-from eule import euler, euler_keys, euler_boundaries, Euler
-
-sets = {
-    'a': [1, 2, 3],
-    'b': [2, 3, 4],
-    'c': [3, 4, 5],
-    'd': [3, 5, 6]
-}
-
-euler_diagram = euler(sets)
-euler_keys = euler_keys(sets)
-euler_boundaries = euler_boundaries(sets)
-euler_instance=Euler(sets)
-
-# Euler dictionary:
-# {('a', 'b'): [2], ('b', 'c'): [4], ('a', 'b', 'c', 'd'): [3], ('c', 'd'): [5], ('d', ): [6], ('a', ): [1]}
-print(euler_diagram)
-print(euler_instance.as_dict())
-
-print('\n')
-
-# Euler keys list:
-# [('a', 'b'), ('b', 'c'), ('a', 'b', 'c', d'), ('c', 'd'), ('d', ), ('a', )]
-print(euler_keys)
-print(euler_instance.euler_keys())
-
-print('\n')
-
-# Euler boundaries dictionary:
-# {
-#   'a': ['b', 'c', 'd'],
-#   'b': ['a', 'c', 'd'],
-#   'c': ['a', 'b', 'd'],
-#   'd': ['a', 'b', 'c']
-# }
-print(euler_boundaries)
-print(euler_instance.euler_boundaries())
-
-print('\n')
-
-# Euler instance match:
-# {'a'}
-# {'a', 'b'}
-# {'c', 'a', 'b'}
-
-print(euler_instance.match({1,2,3}))
-print(euler_instance.match({1,2,3,4}))
-print(euler_instance.match({1,2,3,4,5}))
-
-print('\n')
-
-# Euler instance getitem dunder:
-# [1, 2, 3]
-# [1, 2, 3]
-# [1, 2, 3, 4]
-# [1, 2, 3, 4, 5]
-print(euler_instance['a'])
-print(euler_instance[('a', )])
-print(euler_instance[('a', 'b', )])
-print(euler_instance[('a', 'b', 'c',)])
-
-print('\n')
-
-# Euler instance remove_key:
-# {('b', 'c'): [4], ('c', 'd'): [5], ('b', 'c', 'd'): [3], ('d',): [6], ('b',): [2]}
-euler_instance.remove_key('a')
-print(euler_instance.as_dict())
-```
-
-</details>
-
-## Extensibility
-
-Eule supports custom set-like types through the **SetLike protocol**. Any type implementing the required methods can work with eule automatically:
-
+### 1. Discrete Sets (Standard)
 ```python
 from eule import euler
 
-class CustomSet:
-    def union(self, other): ...
-    def intersection(self, other): ...
-    def difference(self, other): ...
-    def __bool__(self): ...
-    def __iter__(self): ...
-    @classmethod
-    def from_iterable(cls, iterable): ...
-
-# Works automatically - no wrapping needed!
-result = euler({'a': CustomSet([1,2,3]), 'b': CustomSet([2,3,4])})
+sets = {
+    'A': {1, 2, 3},
+    'B': {2, 3, 4},
+    'C': {3, 4, 5}
+}
+diagram = euler(sets)
+# Returns disjoint decomposition: 
+# {'A': {1}, 'B': {5}, 'C': {6}, 'A,B': {2}, ...}
 ```
 
-**Supported types**:
-- ✅ Built-in: `set`, `list`, `tuple`, `frozenset`
-- ✅ Custom types implementing SetLike protocol
-- ❌ **Not supported**: Continuous ranges (e.g., IntervalSet) - see [why](#why-not-intervalset)
-
-### Why Not IntervalSet?
-
-Eule is designed for **discrete element partitioning** (e.g., customers, categories, items), not **continuous range analysis** (e.g., temperatures, measurements).
+### 2. Continuous Intervals (Time/Numbers)
+*Requires `interval-sets`*
 
 ```python
-# ❌ IntervalSet doesn't work with eule
-from interval_sets import Interval, IntervalSet
-temps = {'cold': IntervalSet([Interval(0, 15)])}
-# Won't work - IntervalSet iterates over Interval objects, not discrete points
+from interval_sets import IntervalSet, Interval
+from eule import euler
 
-# ✅ Use interval-sets directly for continuous analysis
-cold = IntervalSet([Interval(0, 15)])
-moderate = IntervalSet([Interval(10, 25)])
-overlap = cold & moderate  # [10, 15]
+schedules = {
+    'Alice': IntervalSet([Interval(9, 12), Interval(13, 17)]),
+    'Bob':   IntervalSet([Interval(11, 14)])
+}
+
+# Find exact overlap: 11:00-12:00 and 13:00-14:00
+diagram = euler(schedules) 
 ```
 
-**Rule of thumb**: If you can count and list all elements → use eule. If elements form continuous ranges → use interval-sets or similar libraries directly.
+### 3. Geometric Shapes (2D/3D)
+*Requires `shapely`*
 
-**Documentation**:
-- [SetLike Protocol Requirements](docs/SETLIKE_REQUIREMENTS.md)
-- [IntervalSet Compatibility Analysis](docs/INTERVALSET_COMPATIBILITY.md)
-- [Protocol Specification](docs/design/PROTOCOL_SPECIFICATION.md)
+```python
+from shapely.geometry import Polygon
+from eule import euler
+
+territories = {
+    'Wolves': Polygon([(0,0), (0,10), (10,10), (10,0)]),
+    'Bears':  Polygon([(5,5), (5,15), (15,15), (15,5)])
+}
+
+# Automatically computes the exact Intersection Polygon!
+diagram = euler(territories)
+```
+
+Examples
+========
+
+Check the `examples/` directory for advanced real-world use cases:
+
+- **[case_scatter_hulls.py](examples/case_scatter_hulls.py)**: 🐾 **Ecology / Spatial** - Convex Hull analysis of scatter points (e.g., animal territories).
+- **[case_3d_clash_detection.py](examples/case_3d_clash_detection.py)**: 🏗️ **Engineering / BIM** - 3D Box collision detection (Beams vs HVAC).
+- **[case_scheduling.py](examples/case_scheduling.py)**: 🗓️ **Productivity** - Finding common free time across multiple calendars.
+- **[case_audio_mixing.py](examples/case_audio_mixing.py)**: 🎵 **Audio Engineering** - Frequency masking analysis (Kick vs Bass clash detection).
+- **[case_astronomy.py](examples/case_astronomy.py)**: 🔭 **Astronomy** - Multi-telescope sky survey coverage planning.
+- **[case_security_audit.py](examples/case_security_audit.py)**: 🔐 **Cybersecurity** - Segregation of Duties (SoD) audit for toxic permission combinations.
+- **[case_nlp_stylometry.py](examples/case_nlp_stylometry.py)**: 📜 **NLP** - Vocabulary overlap analysis.
+- **[case_genomics.py](examples/case_genomics.py)**: 🧬 **Bioinformatics** - Identify functional genomic regions (e.g., Active Promoters).
+- **[case_network_security.py](examples/case_network_security.py)**: 🛡️ **NetOps / Security** - Audit firewall rules using IP ranges.
+- **[case_customer_segmentation.py](examples/case_customer_segmentation.py)**: 👥 **Business** - Segment customers by continuous metrics.
+
+How to Contribute
+=================
+
+We welcome implementations of the `SetLike` protocol for new domains!
+See [Protocol Specification](docs/design/PROTOCOL_SPECIFICATION.md).

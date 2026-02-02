@@ -7,8 +7,10 @@ from __future__ import annotations
 # Import adapters first to register them before any adaptation happens
 try:
     import eule.adapters.interval_sets  # noqa: F401
+    import eule.adapters.box_sets  # noqa: F401
+    import eule.adapters.shapely_geom  # noqa: F401
 except ImportError:
-    pass  # interval-sets not installed
+    pass  # dependencies not installed
 
 from .core import (
     euler_generator,
