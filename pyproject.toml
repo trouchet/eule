@@ -1,6 +1,6 @@
 [project]
 name = "eule"
-version = "1.4.0"
+version = "1.5.0"
 description = "Euler diagrams in python"
 authors = [{ name = "Bruno Peixoto", email = "brunolnetto@gmail.com" }]
 maintainers = [{ name = "Bruno Peixoto", email = "brunolnetto@gmail.com" }]
@@ -116,4 +116,3 @@ exclude = [
     "auto_examples",
     "venv"
 ]
-
