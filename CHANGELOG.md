@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2026-02-06
+
+### Added
+- **Spider Logic Extension**: Implementation of Spider Diagrams for formal logical reasoning.
+- **Spider Class**: New entity to handle spatial ambiguity, "leg-landing" rationale, and R-sets (complements).
+- **Euler.spiders()**: Method to generate the spider-set space ($2^m-1$ cardinality) from an Euler diagram.
+- **Generator-based Combinatorics**: Memory-efficient $O(1)$ generation of large combinatorial spaces.
+- **New Example**: `case_spider_logic.py` demonstrating formal reasoning and R-set calculation.
+
 ## [1.4.0] - 2026-02-01
 
 ### Added

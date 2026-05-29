@@ -19,6 +19,7 @@ from .core import (
     euler_boundaries,
     Euler
 )
+from .spiders import spider_sets, Spider, spider_generator
 from .protocols import SetLike
 from .registry import register_adapter, register_detector
 
@@ -31,6 +32,9 @@ __all__ = [
     'euler_keys',
     'euler_boundaries',
     'Euler',
+    'spider_sets',
+    'Spider',
+    'spider_generator',
     'SetLike',
     'register_adapter',
     'register_detector',

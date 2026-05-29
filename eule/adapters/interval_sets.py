@@ -7,11 +7,11 @@ allowing IntervalSet objects to work seamlessly with eule's Euler diagram genera
 
 from typing import TYPE_CHECKING, Any, Iterator
 
-if TYPE_CHECKING:
-    try:
-        from interval_sets import IntervalSet as _IntervalSet
-    except ImportError:
-        _IntervalSet = Any  # type: ignore
+if TYPE_CHECKING:  # pragma: no cover
+    try:  # pragma: no cover
+        from interval_sets import IntervalSet as _IntervalSet  # pragma: no cover
+    except ImportError:  # pragma: no cover
+        _IntervalSet = Any  # type: ignore  # pragma: no cover
 
 
 class IntervalSetAdapter:
@@ -37,29 +37,27 @@ class IntervalSetAdapter:
         >>> diagram = euler(temps)
     """
     
-    def __init__(self, interval_set: '_IntervalSet'):
+    def __init__(self, interval_set: Any):
         """
         Wrap an IntervalSet or Interval.
-        
-        Args:
-            interval_set: The IntervalSet or Interval to wrap
         """
+        self._data = interval_set
+        
+        # Try to normalize if possible
         try:
             from interval_sets import Interval, IntervalSet
-            # Normalize: always store as IntervalSet for consistency
-            if isinstance(interval_set, Interval):
+            if isinstance(interval_set, Interval) or type(interval_set).__name__ == 'Interval':
                 self._data = IntervalSet([interval_set])
-            else:
-                self._data = interval_set
         except ImportError:
-            self._data = interval_set
+            pass
     
-    def union(self, other: 'IntervalSetAdapter') -> 'IntervalSetAdapter':
+    def union(self, other: Any) -> 'IntervalSetAdapter':
         """Return the union of this set with another."""
         try:
             from interval_sets import Interval, IntervalSet
-            # Extract the underlying data, normalizing to IntervalSet
-            if isinstance(other, IntervalSetAdapter):
+            
+            # Use hasattr check to handle reloaded adapter classes
+            if hasattr(other, '_data'):
                 other_data = other._data
             elif isinstance(other, Interval):
                 other_data = IntervalSet([other])
@@ -76,12 +74,12 @@ class IntervalSetAdapter:
         except ImportError:
             raise ImportError("interval-sets library required")
     
-    def intersection(self, other: 'IntervalSetAdapter') -> 'IntervalSetAdapter':
+    def intersection(self, other: Any) -> 'IntervalSetAdapter':
         """Return the intersection of this set with another."""
         try:
             from interval_sets import Interval, IntervalSet
-            # Extract the underlying data, normalizing to IntervalSet
-            if isinstance(other, IntervalSetAdapter):
+            
+            if hasattr(other, '_data'):
                 other_data = other._data
             elif isinstance(other, Interval):
                 other_data = IntervalSet([other])
@@ -98,12 +96,12 @@ class IntervalSetAdapter:
         except ImportError:
             raise ImportError("interval-sets library required")
     
-    def difference(self, other: 'IntervalSetAdapter') -> 'IntervalSetAdapter':
+    def difference(self, other: Any) -> 'IntervalSetAdapter':
         """Return the difference of this set minus another."""
         try:
             from interval_sets import Interval, IntervalSet
-            # Extract the underlying data, normalizing to IntervalSet
-            if isinstance(other, IntervalSetAdapter):
+            
+            if hasattr(other, '_data'):
                 other_data = other._data
             elif isinstance(other, Interval):
                 other_data = IntervalSet([other])
@@ -120,13 +118,26 @@ class IntervalSetAdapter:
         except ImportError:
             raise ImportError("interval-sets library required")
     
+    def is_empty(self) -> bool:
+        """Return True if the set is empty."""
+        return not bool(self._data)
+
     def __bool__(self) -> bool:
         """Return False if the set is empty, True otherwise."""
-        return bool(self._data)
+        return not self.is_empty()
     
     def __iter__(self) -> Iterator:
         """Return an iterator over elements in the set."""
         return iter(self._data)
+
+    def __getattr__(self, name):
+        """Proxy missing attributes (e.g., _intervals, _intervals_count) to underlying data."""
+        if name.startswith('_') and name != '_data':
+             # Use __dict__ to avoid infinite recursion
+             data = self.__dict__.get('_data')
+             if data is not None:
+                 return getattr(data, name)
+        raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
     
     @classmethod
     def from_iterable(cls, iterable) -> 'IntervalSetAdapter':
@@ -161,7 +172,7 @@ class IntervalSetAdapter:
         return f"IntervalSetAdapter({self._data!r})"
     
     def __eq__(self, other) -> bool:
-        if isinstance(other, IntervalSetAdapter):
+        if hasattr(other, '_data'):
             return self._data == other._data
         return self._data == other
 
@@ -191,8 +202,12 @@ def register_interval_sets():
         # 2. Operations return Interval, not IntervalSet (normalization needed)
         
         def is_interval_or_intervalset(obj):
-            """Check if object is an IntervalSet or Interval."""
-            return isinstance(obj, (IntervalSet, Interval))
+            """Check if object is an IntervalSet or Interval (robust to reloads)."""
+            return (
+                isinstance(obj, (IntervalSet, Interval)) or 
+                type(obj).__name__ in ('Interval', 'IntervalSet') or
+                hasattr(obj, 'intervals')
+            )
         
         def adapt_interval_types(obj):
             """Adapt IntervalSet or Interval by wrapping with adapter."""

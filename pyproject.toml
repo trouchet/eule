@@ -81,10 +81,17 @@ exclude_lines = [
     "raise AssertionError",
     "raise NotImplementedError",
     "if __name__ == .__main__.:",
-    "if TYPE_CHECKING:",
     "@abstractmethod",
-    "^\\s*\\.\\.\\.\\s*$",  # Protocol stub methods (... alone on a line)
+    "^\\s*\\.\\.\\.\\s*$",  # Protocol stub methods
+    "\\.\\.\\.\\s*#",      # Stubs with comments
+    "\\.\\.\\.$"           # Plain stubs
 ]
+# Partial branches to exclude (TYPE_CHECKING is never True at runtime)
+partial_branches = [
+    "pragma: no branch",
+    "if TYPE_CHECKING:",
+]
+
 
 [tool.ruff]
 line-length = 100

@@ -720,6 +720,16 @@ class Euler:
         
         return "\n".join(lines)
 
+    def spiders(self, k: int = None):
+        """
+        Generate spider sets for this Euler diagram.
+        
+        :param k: Optional constraint. Returns spiders with exactly k legs.
+        :return: An iterator of Spider objects.
+        """
+        from .spiders import spider_sets
+        return spider_sets(self, k=k)
+
     def __repr__(self) -> str:
         """
         Get a string representation of the Euler object.

@@ -101,6 +101,34 @@ Check the `examples/` directory for advanced real-world use cases:
 - **[case_genomics.py](examples/case_genomics.py)**: 🧬 **Bioinformatics** - Identify functional genomic regions (e.g., Active Promoters).
 - **[case_network_security.py](examples/case_network_security.py)**: 🛡️ **NetOps / Security** - Audit firewall rules using IP ranges.
 - **[case_customer_segmentation.py](examples/case_customer_segmentation.py)**: 👥 **Business** - Segment customers by continuous metrics.
+- **[case_spider_logic.py](examples/case_spider_logic.py)**: 🕷️ **Formal Logic** - Spider Diagram analysis and existential ambiguity.
+
+4. Spider Logic (Formal Reasoning) 🕷️
+======================================
+
+Eule now supports **Spider Diagrams**, an extension of Euler diagrams used in formal logic to represent elements (spiders) that may exist across multiple disjoint zones (habitat).
+
+```python
+from eule import Euler
+
+sets = {'A': {1, 2}, 'B': {2, 3}}
+eu = Euler(sets)
+
+# Generate spiders with 2 'legs' (ambiguous elements)
+for spider in eu.spiders(k=2):
+    print(spider.description()) 
+    # Output: "Ambiguous element of ('A', 'B'), potentially overlapping with nothing"
+    
+    print(spider.r_set) 
+    # Output: The forbidden zones (Complement)
+```
+
+Key Concepts:
+- **Spider**: An element denoted by a set of "feet" in disjoint zones.
+- **Habitat**: The union of all zones the spider touches.
+- **Rationale**: Automatic semantic description of the element's ambiguity.
+- **R-set**: The complement territory (Universe - Habitat).
+
 
 How to Contribute
 =================

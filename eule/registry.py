@@ -165,6 +165,12 @@ class TypeRegistry:
         """Clear the adapter cache."""
         self._cache.clear()
 
+    def reset(self) -> None:
+        """Clear all registered adapters, detectors, and cache."""
+        self._type_adapters.clear()
+        self._detection_rules.clear()
+        self._cache.clear()
+
 
 # Global registry instance
 _global_registry = TypeRegistry()

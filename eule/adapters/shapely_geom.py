@@ -5,14 +5,14 @@ Allows arbitrary 2D shapes to be used in Euler diagrams.
 
 from typing import TYPE_CHECKING, Any, Iterator, Union, List
 
-if TYPE_CHECKING:
-    try:
-        from shapely.geometry.base import BaseGeometry
-        from shapely.geometry import Polygon, MultiPolygon
-    except ImportError:
-        BaseGeometry = Any
-        Polygon = Any
-        MultiPolygon = Any
+if TYPE_CHECKING:  # pragma: no cover
+    try:  # pragma: no cover
+        from shapely.geometry.base import BaseGeometry  # pragma: no cover
+        from shapely.geometry import Polygon, MultiPolygon  # pragma: no cover
+    except ImportError:  # pragma: no cover
+        BaseGeometry = Any  # pragma: no cover
+        Polygon = Any  # pragma: no cover
+        MultiPolygon = Any  # pragma: no cover
 
 class ShapelyAdapter:
     """

@@ -5,12 +5,12 @@ Allows multi-dimensional BoxSet objects to be used directly in Euler diagrams.
 
 from typing import TYPE_CHECKING, Any, Iterator, Union
 
-if TYPE_CHECKING:
-    try:
-        from interval_sets import Box, BoxSet
-    except ImportError:
-        Box = Any
-        BoxSet = Any
+if TYPE_CHECKING:  # pragma: no cover
+    try:  # pragma: no cover
+        from interval_sets import Box, BoxSet  # pragma: no cover
+    except ImportError:  # pragma: no cover
+        Box = Any  # pragma: no cover
+        BoxSet = Any  # pragma: no cover
 
 
 class BoxSetAdapter:
@@ -21,38 +21,77 @@ class BoxSetAdapter:
     This wrapper normalizes the interface for eule's consumption.
     """
     
-    def __init__(self, box_set: Union['Box', 'BoxSet']):
+    def __init__(self, box_set: Union['Box', 'BoxSet', Any]):
         """
         Wrap a BoxSet or Box.
         """
+        self._data = box_set
+        
+        # Try to normalize if possible
         try:
             from interval_sets import Box, BoxSet
-            # Normalize to BoxSet
-            if isinstance(box_set, Box):
+            if isinstance(box_set, Box) or type(box_set).__name__ == 'Box':
                 self._data = BoxSet([box_set])
-            elif hasattr(box_set, 'dimension'): # Duck typing for BoxSet
-                self._data = box_set
-            else:
-                 # Fallback, try to treat as iterable of intervals if list?
-                 # Actually BoxSet constructor takes iterable.
-                 # But let's assume we are passed a Box/BoxSet instance
-                 raise TypeError(f"Expected Box or BoxSet, got {type(box_set)}")
-                 
         except ImportError:
-             self._data = box_set
+            pass
 
-    def union(self, other: 'BoxSetAdapter') -> 'BoxSetAdapter':
+    def union(self, other: Union['BoxSetAdapter', 'Box', 'BoxSet']) -> 'BoxSetAdapter':
         """Return the union of this set with another."""
-        return self._wrap_result(self._data.union(other._data))
+        try:
+            from interval_sets import Box, BoxSet
+            
+            if hasattr(other, '_data'):
+                other_data = other._data
+            elif isinstance(other, Box):
+                other_data = BoxSet([other])
+            elif isinstance(other, BoxSet):
+                other_data = other
+            else:
+                other_data = other
+                
+            return self._wrap_result(self._data.union(other_data))
+        except ImportError:
+            # Fallback for when library is missing but we're operating on dummy data
+            other_data = other._data if hasattr(other, '_data') else other
+            return self._wrap_result(self._data.union(other_data))
     
-    def intersection(self, other: 'BoxSetAdapter') -> 'BoxSetAdapter':
+    def intersection(self, other: Union['BoxSetAdapter', 'Box', 'BoxSet']) -> 'BoxSetAdapter':
         """Return the intersection of this set with another."""
-        # Boxset intersection returns BoxSet
-        return self._wrap_result(self._data.intersection(other._data))
+        try:
+            from interval_sets import Box, BoxSet
+            
+            if hasattr(other, '_data'):
+                other_data = other._data
+            elif isinstance(other, Box):
+                other_data = BoxSet([other])
+            elif isinstance(other, BoxSet):
+                other_data = other
+            else:
+                other_data = other
+                
+            return self._wrap_result(self._data.intersection(other_data))
+        except ImportError:
+            other_data = other._data if hasattr(other, '_data') else other
+            return self._wrap_result(self._data.intersection(other_data))
     
-    def difference(self, other: 'BoxSetAdapter') -> 'BoxSetAdapter':
+    def difference(self, other: Union['BoxSetAdapter', 'Box', 'BoxSet']) -> 'BoxSetAdapter':
         """Return the difference of this set minus another."""
-        return self._wrap_result(self._data.difference(other._data))
+        try:
+            from interval_sets import Box, BoxSet
+            
+            if hasattr(other, '_data'):
+                other_data = other._data
+            elif isinstance(other, Box):
+                other_data = BoxSet([other])
+            elif isinstance(other, BoxSet):
+                other_data = other
+            else:
+                other_data = other
+                
+            return self._wrap_result(self._data.difference(other_data))
+        except ImportError:
+            other_data = other._data if hasattr(other, '_data') else other
+            return self._wrap_result(self._data.difference(other_data))
     
     def _wrap_result(self, result) -> 'BoxSetAdapter':
         """Helper to wrap result back into adapter"""
@@ -66,52 +105,34 @@ class BoxSetAdapter:
         except ImportError:
             return BoxSetAdapter(result)
 
+    def is_empty(self) -> bool:
+        """Return True if the set is empty."""
+        try:
+            return self._data.is_empty()
+        except (AttributeError, TypeError):
+            return not bool(list(self._data.boxes))
+
     def __bool__(self) -> bool:
         """Return False if the set is empty."""
-        return not self._data.is_empty()
+        return not self.is_empty()
     
     def __iter__(self) -> Iterator:
-        """
-        Iterate over the disjoint boxes in the set.
-        Eule iterates over elements of a set.
-        For discrete sets, these are items.
-        For usage in Eule, we want the 'element' to be something hashable/comparable?
-        Wait, eule is Set -> Power Set of disjoint regions.
-        If we return Boxes, eule will treat each Box as an element?
-        
-        CRITICAL: Eule's core logic 'difference(set, element)' expects 
-        that elements can be removed from sets.
-        But 'BoxSet' is a continuous set. It doesn't have 'elements' in the discrete sense.
-        
-        However, Eule's 'difference' operation is polymorphic.
-        If 'BoxSetAdapter' implements 'diff(BoxSetAdapter)', then eule.core will call:
-        sets[key] = difference(sets[key], comb_elems)
-        
-        So what does __iter__ need to yield?
-        In eule logic:
-        tuple_keys, celements = _euler_generator(csets)
-        
-        The generator yields 'celements', which is an intersection of sets.
-        For BoxSet usage, 'celements' will be a BoxSetAdapter representing a region.
-        
-        It doesn't iteration over 'elements' in the standard sense unless 
-        we fall back to standard set operations. 
-        But eule adapter logic bypasses standard set ops if the object supports the protocol.
-        
-        However, verify eule/core.py usage of iter.
-        It seems eule core doesn't strictly iterate if it uses the SetLike protocol...
-        EXCEPT: Eule typically returns a dictionary where values are lists/sets.
-        
-        If we return a BoxSetAdapter, the final user sees this object.
-        They can iterate it (getting Boxes).
-        """
+        """Iterate over the disjoint boxes in the set."""
         return iter(self._data.boxes)
+
+    def __getattr__(self, name):
+        """Proxy missing attributes (e.g., _boxes) to the underlying data."""
+        if name.startswith('_') and name != '_data':
+             data = self.__dict__.get('_data')
+             if data is not None:
+                 return getattr(data, name)
+        raise AttributeError(f"'{type(self).__name__}' object has no attribute '{name}'")
     
     def __repr__(self) -> str:
         return f"BoxSetAdapter({self._data})"
 
     def __eq__(self, other) -> bool:
-        if isinstance(other, BoxSetAdapter):
+        if hasattr(other, '_data'):
             return self._data == other._data
         return self._data == other
 
@@ -124,8 +145,12 @@ def register_box_sets():
         registry = get_registry()
         
         def is_box_type(obj):
-            """Check if object is Box or BoxSet."""
-            return isinstance(obj, (Box, BoxSet))
+            """Check if object is Box or BoxSet (robust to reloads)."""
+            return (
+                isinstance(obj, (Box, BoxSet)) or 
+                type(obj).__name__ in ('Box', 'BoxSet') or
+                hasattr(obj, 'boxes')
+            )
         
         def adapt_box_type(obj):
             """Adapt Box/BoxSet."""
