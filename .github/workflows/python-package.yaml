@@ -19,7 +19,7 @@ jobs:
       max-parallel: 3
       fail-fast: false
       matrix:
-        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13']
+        python-version: ['3.11', '3.12', '3.13']
 
     steps:
       - uses: actions/checkout@v3
@@ -44,70 +44,45 @@ jobs:
 
   tests:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
 
     strategy:
-      max-parallel: 42
       fail-fast: false
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ['3.11', '3.12', '3.13']
+        dependencies: ['minimal', 'all-extras']
 
     steps:
-      #----------------------------------------------
-      #       check-out repo and set-up python
-      #----------------------------------------------
       - name: Check out repository
-        uses: actions/checkout@v3
-      - name: Set up python
-        id: setup-python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
+        uses: actions/checkout@v4
 
-      #----------------------------------------------
-      #       install & configure uv
-      #----------------------------------------------
       - name: Install uv
-        uses: astral-sh/setup-uv@v3
-        with:
-          # Install a specific version of uv.
-          version: "0.5.1"
-
-      - name: Set up Python
-        run: uv python install
-
-      - name: Install the project
-        run: uv sync --all-extras --dev
-
-      #----------------------------------------------
-      #       install dependencies if cache does not exist
-      #----------------------------------------------
-      - name: Define a cache dependency glob
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
           cache-dependency-glob: "uv.lock"
 
+      - name: Install Python
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Validate lockfile
+        run: uv lock --check
+
+      - name: Install minimal dependencies
+        if: matrix.dependencies == 'minimal'
+        run: uv sync --locked --python ${{ matrix.python-version }} --extra test
+
+      - name: Install all extras
+        if: matrix.dependencies == 'all-extras'
+        run: uv sync --locked --python ${{ matrix.python-version }} --all-extras
+
       - name: Run tests
-        # For example, using `pytest`
-        run: uv run pytest tests
-
-      #----------------------------------------------
-      #       Test coverage
-      #----------------------------------------------
-      - name: Run tests and generate coverage
         run: |
-          uv run pytest --cov=eule tests/
-          # Uncomment when achieve sufficient coverage threshold
-          uv run coverage report -m
+          uv run --no-sync --python ${{ matrix.python-version }} \
+            pytest tests/ -q -W error -rs
 
-      #----------------------------------------------
-      #       Update codecov coverage
-      #----------------------------------------------
-      - name: Upload test results to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Run coverage
+        if: matrix.dependencies == 'all-extras'
+        run: |
+          uv run --no-sync --python ${{ matrix.python-version }} \
+            pytest tests/ --cov=eule --cov-report=term-missing \
+            -q -W error
