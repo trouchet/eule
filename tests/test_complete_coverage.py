@@ -99,7 +99,7 @@ class TestRegistryTypeErrorHandling:
         registry = get_registry()
         
         # Mock object that might trigger edge cases
-        mock_obj = MagicMock()
+        mock_obj = MagicMock(spec=[])
         
         result = registry._is_setlike(mock_obj)
         # Should return False for objects that don't match protocol
