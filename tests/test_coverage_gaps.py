@@ -243,7 +243,11 @@ class TestCoreGaps:
         }
         
         # Should handle deduplication without issues
-        result = euler(sets)
+        with pytest.warns(
+            UserWarning,
+            match="Each array MUST NOT have duplicates"
+        ):
+            result = euler(sets)
         assert isinstance(result, dict)
         assert len(result) > 0
     

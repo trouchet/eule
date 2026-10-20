@@ -309,10 +309,24 @@ class EulerBenchmark:
             n_clusters = len(set(ce.clustering.values()))
             cluster_sizes = [len([k for k in ce.clustering if ce.clustering[k] == cid]) 
                            for cid in set(ce.clustering.values())]
-            avg_size = np.mean(cluster_sizes)
-            avg_score = np.mean([m.score() for m in ce.metrics.values() if m.score() != float('inf')])
-            
-            print(f"{method:<20s} | {elapsed:8.4f}s | {n_clusters:8d} | {avg_size:8.1f} | {avg_score:10.2f}")
+            avg_size = (
+                f"{np.mean(cluster_sizes):.1f}"
+                if cluster_sizes else "N/A"
+            )
+
+            scores = [metric.score() for metric in ce.metrics.values()]
+            finite_scores = [
+                score for score in scores if np.isfinite(score)
+            ]
+            avg_score = (
+                f"{np.mean(finite_scores):.2f}"
+                if finite_scores else "N/A"
+            )
+
+            print(
+                f"{method:<20s} | {elapsed:8.4f}s | "
+                f"{n_clusters:8d} | {avg_size:>8s} | {avg_score:>10s}"
+            )
     
     def benchmark_overlapping(self, n_sets: int = 30):
         """Benchmark overlapping vs disjoint clustering"""
