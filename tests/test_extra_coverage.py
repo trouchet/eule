@@ -266,7 +266,7 @@ def test_registration_failure_recovery_safe():
     """Target registry failure paths."""
     real_import = __import__
     def mocked_import(name, *args, **kwargs):
-        if name in ['interval_sets', 'shapely']:
+        if name == 'interval_sets' or name == 'shapely' or name.startswith('shapely.'):
             raise ImportError("Mocked ImportError")
         return real_import(name, *args, **kwargs)
     

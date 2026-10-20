@@ -267,17 +267,21 @@ class TestIntervalSetsIntegration:
     """Test interval-sets integration (if installed)."""
     
     def test_interval_sets_optional(self):
-        """Test that interval-sets is optional."""
-        try:
-            from eule.adapters.interval_sets import IntervalSetAdapter
-            # If available, test basic functionality
-            from interval_set import IntervalSet
-            
-            adapter = IntervalSetAdapter(IntervalSet.from_ranges((1, 5), (10, 15)))
-            assert adapter is not None
-        except ImportError:
-            # interval-sets not installed, skip
-            pytest.skip("interval-sets not installed")
+        """Verify integration when interval-sets is installed."""
+        pytest.importorskip("interval_sets")
+
+        from interval_sets import Interval, IntervalSet
+        from eule.adapters.interval_sets import IntervalSetAdapter
+
+        intervals = IntervalSet([
+            Interval(1, 5),
+            Interval(10, 15),
+        ])
+
+        adapter = IntervalSetAdapter(intervals)
+
+        assert adapter is not None
+        assert bool(adapter)
 
 
 if __name__ == '__main__':
